@@ -4,7 +4,7 @@ angular.module('nearPlaceApp').factory('File', function ($q) {
   return {
 
     upload: function (file) {
-
+      console.log("Jpeg file:", file);
       var defer = $q.defer();
 
       var parseFile = new Parse.File('image.jpg', file);
@@ -17,7 +17,23 @@ angular.module('nearPlaceApp').factory('File', function ($q) {
         }
       });
 
-       return defer.promise;
-     }
-   };
+      return defer.promise;
+    },
+    uploadAudio: function (file) {
+      console.log("Audio file:", file);
+      var defer = $q.defer();
+
+      var parseFile = new Parse.File('audio.mp3', file);
+      parseFile.save({
+        success: function (savedFile) {
+          defer.resolve(savedFile);
+        },
+        error: function (error) {
+          defer.reject(error);
+        }
+      });
+
+      return defer.promise;
+    }
+  };
 });

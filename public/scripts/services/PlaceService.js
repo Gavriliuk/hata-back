@@ -283,6 +283,15 @@
         }
     });
 
+   Object.defineProperty(Place.prototype, 'audio', {
+        get: function () {
+            return this.get('audio');
+        },
+        set: function (value) {
+            this.set('audio', value);
+        }
+    });
+
     Object.defineProperty(Place.prototype, 'imageThumb', {
         get: function () {
             return this.get('imageThumb');

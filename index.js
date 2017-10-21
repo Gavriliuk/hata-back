@@ -1,5 +1,6 @@
 require('newrelic');
 var express = require('express');
+// var range = require('express-range');
 var ParseServer = require('parse-server').ParseServer;
 var S3Adapter = require('parse-server').S3Adapter;
 var FSFilesAdapter = require('parse-server-fs-adapter');
@@ -12,7 +13,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 // Parse configuration
 var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev';
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://734f868f.ngrok.io/parse';
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
 var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
 var appId = process.env.APP_ID || 'myAppId';
 var masterKey = process.env.MASTER_KEY || 'myMasterKey';
@@ -25,9 +27,9 @@ var fromAddress = process.env.MAILGUN_FROM_ADDRESS || 'MAILGUN_FROM_ADDRESS';
 var toAddress = process.env.MAILGUN_TO_ADDRESS || 'MAILGUN_TO_ADDRESS';
 
 // AWS S3 configuration
-var accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-var secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-var bucketName = process.env.BUCKET_NAME;
+var accessKeyId = process.env.AWS_ACCESS_KEY_ID || "AKIAISJL3JDVJJBCV32A";
+var secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "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";
+var bucketName = process.env.BUCKET_NAME || "nearme-guide";
 
 var filesAdapter = new FSFilesAdapter();
 
@@ -60,11 +62,9 @@ var app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
-
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
-
 app.use(express.static('public'));
 app.use(expressLayouts);
 app.use(cookieParser());
@@ -85,7 +85,7 @@ app.use(function (req, res, next) {
 });
 
 var checkDatabaseConnection = function (req, res, next) {
-  MongoClient.connect(databaseUri, function(error, database) {
+  MongoClient.connect(databaseUri, function (error, database) {
     if (error) {
       return res.status(200).send('Unable to connect to database.');
     } else {
@@ -341,6 +341,6 @@ app.get('/logout', isAdmin, function (req, res) {
 });
 
 var port = process.env.PORT || 1337;
-app.listen(port, function() {
-    console.log('Parse server running on port ' + port + '.');
+app.listen(port, function () {
+  console.log('Parse server running on port ' + port + '.');
 });
