@@ -246,6 +246,14 @@
             this.set('address', value);
         }
     });
+   Object.defineProperty(Place.prototype, 'radius', {
+     get: function () {
+       return this.get('radius');
+     },
+     set: function (value) {
+       this.set('radius', value);
+     }
+   });
 
     Object.defineProperty(Place.prototype, 'image', {
         get: function () {
