@@ -13,7 +13,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 // Parse configuration
 var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev';
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://734f868f.ngrok.io/parse';
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://734f868f.ngrok.io/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
 // var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
 var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
 var appId = process.env.APP_ID || 'myAppId';
