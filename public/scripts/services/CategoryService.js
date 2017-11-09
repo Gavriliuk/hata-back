@@ -110,17 +110,46 @@
 
     });
 
-    Object.defineProperty(Category.prototype, 'title',
+    Object.defineProperty(Category.prototype, 'title_ru',
     {
       get: function () {
-        return this.get('title');
+        return this.get('title_ru');
       },
       set: function (val) {
-        this.set('title', val);
+        this.set('title_ru', val);
       }
     });
 
-    Object.defineProperty(Category.prototype, 'image',
+             Object.defineProperty(Category.prototype, 'title_en',
+                 {
+                     get: function () {
+                         return this.get('title_en');
+                     },
+                     set: function (val) {
+                         this.set('title_en', val);
+                     }
+                 });
+
+     Object.defineProperty(Category.prototype, 'information_ru',
+         {
+             get: function () {
+                 return this.get('information_ru');
+             },
+             set: function (val) {
+                 this.set('information_ru', val);
+             }
+         });
+     Object.defineProperty(Category.prototype, 'information_en',
+         {
+             get: function () {
+                 return this.get('information_en');
+             },
+             set: function (val) {
+                 this.set('information_en', val);
+             }
+         });
+
+     Object.defineProperty(Category.prototype, 'image',
     {
       get: function () {
         return this.get('image');

@@ -15,7 +15,8 @@
 	      <tr md-row>
 	      	<th md-column></th>
           <th md-column>Icon</th>
-	        <th md-column>Title</th>
+	           <th md-column>Title: ru</th>
+			   <th md-column>Title: en</th>
           <th md-column md-order-by="order">Order</th>
 	        <th md-column></th>
 	      </tr>
@@ -29,8 +30,9 @@
           <td md-cell>
 	      		<img width="32" height="32" ng-src="/images/placeholder.png"
               actual-src="{{ category.icon.url() }}" />
-	      	</td>
-	        <td md-cell>{{:: category.title }}</td>
+	      </td>
+					<td md-cell>{{:: category.title_ru }}</td>
+					<td md-cell>{{:: category.title_en }}</td>
 	        <td md-cell>{{:: category.order }}</td>
 	        <td md-cell>
 				<md-menu>

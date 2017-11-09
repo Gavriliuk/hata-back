@@ -202,23 +202,41 @@
       }
     });
 
-    Object.defineProperty(Place.prototype, 'title', {
+    Object.defineProperty(Place.prototype, 'title_ru', {
         get: function () {
-            return this.get('title');
+            return this.get('title_ru');
         },
         set: function (value) {
-            this.set('title', value);
+            this.set('title_ru', value);
         }
     });
 
-    Object.defineProperty(Place.prototype, 'description', {
+             Object.defineProperty(Place.prototype, 'title_en', {
+                 get: function () {
+                     return this.get('title_en');
+                 },
+                 set: function (value) {
+                     this.set('title_en', value);
+                 }
+             });
+
+    Object.defineProperty(Place.prototype, 'description_ru', {
         get: function () {
-            return this.get('description');
+            return this.get('description_ru');
         },
         set: function (value) {
-            this.set('description', value);
+            this.set('description_ru', value);
         }
     });
+
+             Object.defineProperty(Place.prototype, 'description_en', {
+                 get: function () {
+                     return this.get('description_en');
+                 },
+                 set: function (value) {
+                     this.set('description_en', value);
+                 }
+             });
 
     Object.defineProperty(Place.prototype, 'phone', {
         get: function () {
@@ -238,14 +256,24 @@
         }
     });
 
-    Object.defineProperty(Place.prototype, 'address', {
+    Object.defineProperty(Place.prototype, 'address_ru', {
         get: function () {
-            return this.get('address');
+            return this.get('address_ru');
         },
         set: function (value) {
-            this.set('address', value);
+            this.set('address_ru', value);
         }
     });
+
+             Object.defineProperty(Place.prototype, 'address_en', {
+                 get: function () {
+                     return this.get('address_en');
+                 },
+                 set: function (value) {
+                     this.set('address_en', value);
+                 }
+             });
+
    Object.defineProperty(Place.prototype, 'radius', {
      get: function () {
        return this.get('radius');
@@ -291,14 +319,23 @@
         }
     });
 
-   Object.defineProperty(Place.prototype, 'audio', {
+   Object.defineProperty(Place.prototype, 'audio_ru', {
         get: function () {
-            return this.get('audio');
+            return this.get('audio_ru');
         },
         set: function (value) {
-            this.set('audio', value);
+            this.set('audio_ru', value);
         }
     });
+
+             Object.defineProperty(Place.prototype, 'audio_en', {
+                 get: function () {
+                     return this.get('audio_en');
+                 },
+                 set: function (value) {
+                     this.set('audio_en', value);
+                 }
+             });
 
     Object.defineProperty(Place.prototype, 'imageThumb', {
         get: function () {
