@@ -120,15 +120,15 @@
       }
     });
 
-             Object.defineProperty(Category.prototype, 'title_en',
-                 {
-                     get: function () {
-                         return this.get('title_en');
-                     },
-                     set: function (val) {
-                         this.set('title_en', val);
-                     }
-                 });
+    Object.defineProperty(Category.prototype, 'title_en',
+      {
+        get: function () {
+            return this.get('title_en');
+        },
+        set: function (val) {
+            this.set('title_en', val);
+        }
+    });
 
      Object.defineProperty(Category.prototype, 'information_ru',
          {
@@ -149,8 +149,48 @@
              }
          });
 
-     Object.defineProperty(Category.prototype, 'image',
+         Object.defineProperty(Category.prototype, 'start_route',
+         {
+             get: function () {
+                 return this.get('start_route');
+             },
+             set: function (val) {
+                 this.set('start_route', val);
+             }
+         });
+
+    Object.defineProperty(Category.prototype, 'waypoints',
+         {
+             get: function () {
+                 return this.get('waypoints');
+             },
+             set: function (val) {
+                 this.set('waypoints', val);
+             }
+    });
+         
+    Object.defineProperty(Category.prototype, 'end_route',
+         {
+             get: function () {
+                 return this.get('end_route');
+             },
+             set: function (val) {
+                 this.set('end_route', val);
+             }
+    });
+    
+    Object.defineProperty(Category.prototype, 'center_map',
     {
+        get: function () {
+            return this.get('center_map');
+        },
+        set: function (val) {
+            this.set('center_map', val);
+        }
+});
+
+    Object.defineProperty(Category.prototype, 'image',
+      {
       get: function () {
         return this.get('image');
       },

@@ -95,11 +95,11 @@
                            ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ru()">
                 </md-input-container>
 
-                            <md-input-container class="md-block">
-                                <label>Address: en</label>
-                                <input type="text" name="address_en" ng-model="place.address_en"
-                                       ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
-                            </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Address: en</label>
+                    <input type="text" name="address_en" ng-model="place.address_en"
+                        ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
+                </md-input-container>
 
                 <md-input-container>
                     <ng-map class="map" scrollwheel="false"
