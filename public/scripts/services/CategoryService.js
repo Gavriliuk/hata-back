@@ -149,15 +149,15 @@
              }
          });
 
-         Object.defineProperty(Category.prototype, 'start_route',
-         {
-             get: function () {
-                 return this.get('start_route');
-             },
-             set: function (val) {
-                 this.set('start_route', val);
-             }
-         });
+         // Object.defineProperty(Category.prototype, 'start_route',
+         // {
+         //     get: function () {
+         //         return this.get('start_route');
+         //     },
+         //     set: function (val) {
+         //         this.set('start_route', val);
+         //     }
+         // });
 
     Object.defineProperty(Category.prototype, 'waypoints',
          {
@@ -169,15 +169,15 @@
              }
     });
          
-    Object.defineProperty(Category.prototype, 'end_route',
-         {
-             get: function () {
-                 return this.get('end_route');
-             },
-             set: function (val) {
-                 this.set('end_route', val);
-             }
-    });
+    // Object.defineProperty(Category.prototype, 'end_route',
+    //      {
+    //          get: function () {
+    //              return this.get('end_route');
+    //          },
+    //          set: function (val) {
+    //              this.set('end_route', val);
+    //          }
+    // });
     
     Object.defineProperty(Category.prototype, 'center_map',
     {

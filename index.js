@@ -24,8 +24,8 @@ var MongoClient = require('mongodb').MongoClient;
 // var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
 
 //-----------Coordinats My for ngrok ---------
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
-var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://21dcc6b1.ngrok.io/parse';
+var serverUrl = process.env.SERVER_URL || 'http://21dcc6b1.ngrok.io/parse';
 
 
 
