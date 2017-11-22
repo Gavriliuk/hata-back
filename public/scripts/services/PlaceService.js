@@ -210,6 +210,14 @@
             this.set('title_ru', value);
         }
     });
+     Object.defineProperty(Place.prototype, 'title_ro', {
+         get: function () {
+             return this.get('title_ro');
+         },
+         set: function (value) {
+             this.set('title_ro', value);
+         }
+     });
 
              Object.defineProperty(Place.prototype, 'title_en', {
                  get: function () {
@@ -228,7 +236,14 @@
             this.set('description_ru', value);
         }
     });
-
+     Object.defineProperty(Place.prototype, 'description_ro', {
+         get: function () {
+             return this.get('description_ro');
+         },
+         set: function (value) {
+             this.set('description_ro', value);
+         }
+     });
              Object.defineProperty(Place.prototype, 'description_en', {
                  get: function () {
                      return this.get('description_en');
@@ -264,7 +279,14 @@
             this.set('address_ru', value);
         }
     });
-
+     Object.defineProperty(Place.prototype, 'address_ro', {
+         get: function () {
+             return this.get('address_ro');
+         },
+         set: function (value) {
+             this.set('address_ro', value);
+         }
+     });
              Object.defineProperty(Place.prototype, 'address_en', {
                  get: function () {
                      return this.get('address_en');
@@ -319,6 +341,15 @@
         }
     });
 
+     Object.defineProperty(Place.prototype, 'audio_en', {
+         get: function () {
+             return this.get('audio_en');
+         },
+         set: function (value) {
+             this.set('audio_en', value);
+         }
+     });
+
    Object.defineProperty(Place.prototype, 'audio_ru', {
         get: function () {
             return this.get('audio_ru');
@@ -327,15 +358,14 @@
             this.set('audio_ru', value);
         }
     });
-
-             Object.defineProperty(Place.prototype, 'audio_en', {
-                 get: function () {
-                     return this.get('audio_en');
-                 },
-                 set: function (value) {
-                     this.set('audio_en', value);
-                 }
-             });
+     Object.defineProperty(Place.prototype, 'audio_ro', {
+         get: function () {
+             return this.get('audio_ro');
+         },
+         set: function (value) {
+             this.set('audio_ro', value);
+         }
+     });
 
     Object.defineProperty(Place.prototype, 'imageThumb', {
         get: function () {

@@ -15,6 +15,7 @@ angular.module('nearPlaceApp')
       status: null,
       // category: null,
       category_ru: null,
+      category_ro: null,
         category_en: null,
       date: null
     };
@@ -184,6 +185,7 @@ angular.module('nearPlaceApp')
   $scope.imageThreeFilename = '';
   $scope.imageFourFilename = '';
   $scope.audioFilename_ru = '';
+  $scope.audioFilename_ro = '';
   $scope.audioFilename_en = '';
   $scope.input = {};
 
@@ -193,6 +195,7 @@ angular.module('nearPlaceApp')
   $scope.isImageThreeUploading = false;
   $scope.isImageFourUploading = false;
   $scope.isAudioUploading_ru = false;
+  $scope.isAudioUploading_ro = false;
   $scope.isAudioUploading_en = false;
 
   if (place) {
@@ -217,10 +220,12 @@ angular.module('nearPlaceApp')
     if ($scope.place.audio) {
       $scope.audioFilename_ru = $scope.place.audio_ru.name();
     }
-
-          if ($scope.place.audio_en) {
-              $scope.audioFilename_en = $scope.place.audio_en.name();
-          }
+    if ($scope.place.audio) {
+       $scope.audioFilename_ro = $scope.place.audio_ro.name();
+    }
+    if ($scope.place.audio_en) {
+        $scope.audioFilename_en = $scope.place.audio_en.name();
+    }
 
     $scope.input.latitude = place.location.latitude;
     $scope.input.longitude = place.location.longitude;
@@ -265,6 +270,30 @@ angular.module('nearPlaceApp')
       }
     });
   }
+
+    $scope.onAddressChanged_ro = function () {
+        GeoCoder.geocode({ address: $scope.place.address_ro }).then(function (result) {
+
+            if (map) {
+
+                var location = result[0].geometry.location;
+                location = new google.maps.LatLng(location.lat(), location.lng());
+
+                map.setCenter(location);
+                map.setZoom(15);
+
+                marker.setPosition(location);
+
+                $scope.place.location = new Parse.GeoPoint({
+                    latitude: location.lat(),
+                    longitude: location.lng()
+                });
+
+                $scope.input.latitude = location.lat();
+                $scope.input.longitude = location.lng();
+            }
+        });
+    }
 
     $scope.onAddressChanged_en = function () {
         GeoCoder.geocode({ address: $scope.place.address_en }).then(function (result) {
@@ -468,7 +497,7 @@ angular.module('nearPlaceApp')
 
           $scope.place.audio_ru = savedFile;
           $scope.isAudioUploading_ru = false;
-          showSimpleToast('Audio ru uploaded');
+          showSimpleToast('Audio RU uploaded');
         },
         function (error) {
           $scope.isAudioUploading_ru = false;
@@ -477,11 +506,37 @@ angular.module('nearPlaceApp')
     } else {
       if (invalidFile) {
         if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Audio ru too big. Max ' + invalidFile.$errorParam);
+          showSimpleToast('Audio RU too big. Max ' + invalidFile.$errorParam);
         }
       }
     }
   };
+
+    $scope.uploadAudio_ro = function (file, invalidFile) {
+
+        if (file) {
+
+            $scope.isAudioUploading_ro = true;
+            $scope.audioFilename_ro = file.name;
+
+            File.uploadAudio_ro(file).then(function (savedFile) {
+
+                    $scope.place.audio_ro = savedFile;
+                    $scope.isAudioUploading_ro = false;
+                    showSimpleToast('Audio RO uploaded');
+                },
+                function (error) {
+                    $scope.isAudioUploading_ro = false;
+                    showSimpleToast(error.message);
+                });
+        } else {
+            if (invalidFile) {
+                if (invalidFile.$error === 'maxSize') {
+                    showSimpleToast('Audio RO too big. Max ' + invalidFile.$errorParam);
+                }
+            }
+        }
+    };
 
           $scope.uploadAudio_en = function (file, invalidFile) {
 
@@ -494,7 +549,7 @@ angular.module('nearPlaceApp')
 
                           $scope.place.audio_en = savedFile;
                           $scope.isAudioUploading_en = false;
-                          showSimpleToast('Audio en uploaded');
+                          showSimpleToast('Audio EN uploaded');
                       },
                       function (error) {
                           $scope.isAudioUploading_en = false;
@@ -503,7 +558,7 @@ angular.module('nearPlaceApp')
               } else {
                   if (invalidFile) {
                       if (invalidFile.$error === 'maxSize') {
-                          showSimpleToast('Audio en too big. Max ' + invalidFile.$errorParam);
+                          showSimpleToast('Audio EN too big. Max ' + invalidFile.$errorParam);
                       }
                   }
               }

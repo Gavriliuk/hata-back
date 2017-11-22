@@ -13,14 +13,21 @@
       <md-content layout="column" layout-padding>
 
         <md-input-container>
-          <label>Title: ru</label>
+          <label>Title: RU</label>
           <input required name="title_ru" ng-model="objCategory.title_ru">
           <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
-            <div ng-message="required">Title ru required</div>
+            <div ng-message="required">Title RU required</div>
           </div>
         </md-input-container>
         <md-input-container>
-          <label>Title: en</label>
+          <label>Title: RO</label>
+          <input required name="title_ro" ng-model="objCategory.title_ro">
+          <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title RO required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Title: EN</label>
           <input required name="title_en" ng-model="objCategory.title_en">
           <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
             <div ng-message="required">Title en required</div>
@@ -28,17 +35,24 @@
         </md-input-container>
 
         <md-input-container>
-          <label>Information: ru</label>
+          <label>Information: RU</label>
           <input required name="information_ru" ng-model="objCategory.information_ru">
           <div ng-messages="form.information_ru.$error" ng-show="form.$submitted">
-            <div ng-message="required">Information ru required</div>
+            <div ng-message="required">Information RU required</div>
           </div>
         </md-input-container>
         <md-input-container>
-          <label>Information: en</label>
+          <label>Information: RO</label>
+          <input required name="information_ro" ng-model="objCategory.information_ro">
+          <div ng-messages="form.information_ro.$error" ng-show="form.$submitted">
+            <div ng-message="required">Information RO required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Information: EN</label>
           <input required name="information_en" ng-model="objCategory.information_en">
           <div ng-messages="form.information_en.$error" ng-show="form.$submitted">
-            <div ng-message="required">Information en required</div>
+            <div ng-message="required">Information EN required</div>
           </div>
         </md-input-container>
 

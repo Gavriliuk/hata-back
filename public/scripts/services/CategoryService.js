@@ -111,15 +111,23 @@
     });
 
     Object.defineProperty(Category.prototype, 'title_ru',
-    {
-      get: function () {
-        return this.get('title_ru');
-      },
-      set: function (val) {
-        this.set('title_ru', val);
-      }
-    });
-
+        {
+          get: function () {
+            return this.get('title_ru');
+          },
+          set: function (val) {
+            this.set('title_ru', val);
+          }
+        });
+    Object.defineProperty(Category.prototype, 'title_ro',
+         {
+             get: function () {
+                 return this.get('title_ro');
+             },
+             set: function (val) {
+                 this.set('title_ro', val);
+             }
+         });
     Object.defineProperty(Category.prototype, 'title_en',
       {
         get: function () {
@@ -137,6 +145,15 @@
              },
              set: function (val) {
                  this.set('information_ru', val);
+             }
+         });
+     Object.defineProperty(Category.prototype, 'information_ro',
+         {
+             get: function () {
+                 return this.get('information_ro');
+             },
+             set: function (val) {
+                 this.set('information_ro', val);
              }
          });
      Object.defineProperty(Category.prototype, 'information_en',
