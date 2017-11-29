@@ -28,6 +28,7 @@ node_modules
 
 # Bower dependencies
 public/bower_components
+.idea
 
 files
 
