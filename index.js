@@ -12,11 +12,23 @@ var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
 
 // Parse configuration
-var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev';
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://734f868f.ngrok.io/parse';
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
-var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
+ var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev';
+
+//-----------Coordinats My for localhost ---------
+//  var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
+//  var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
+
+
+//-----------Coordinats for Server Valentin---------
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
+// var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
+
+//-----------Coordinats My for ngrok ---------
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
+var serverUrl = process.env.SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
+
+
+
 var appId = process.env.APP_ID || 'myAppId';
 var masterKey = process.env.MASTER_KEY || 'myMasterKey';
 var appName = process.env.APP_NAME || 'My App Name';
@@ -36,7 +48,7 @@ var filesAdapter = new FSFilesAdapter();
 
 if (accessKeyId && secretAccessKey && bucketName) {
   filesAdapter = new S3Adapter(
-    accessKeyId, secretAccessKey, bucketName, { directAccess: true });
+    accessKeyId, secretAccessKey, bucketName, { directAccess: true, baseUrl:"http://nearme-guide.s3.amazonaws.com" });
 }
 
 var api = new ParseServer({

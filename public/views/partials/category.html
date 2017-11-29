@@ -13,10 +13,46 @@
       <md-content layout="column" layout-padding>
 
         <md-input-container>
-          <label>Title</label>
-          <input required name="title" ng-model="objCategory.title">
-          <div ng-messages="form.title.$error" ng-show="form.$submitted">
-            <div ng-message="required">Title required</div>
+          <label>Title: RU</label>
+          <input required name="title_ru" ng-model="objCategory.title_ru">
+          <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title RU required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Title: RO</label>
+          <input required name="title_ro" ng-model="objCategory.title_ro">
+          <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title RO required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Title: EN</label>
+          <input required name="title_en" ng-model="objCategory.title_en">
+          <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title en required</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container>
+          <label>Information: RU</label>
+          <input required name="information_ru" ng-model="objCategory.information_ru">
+          <div ng-messages="form.information_ru.$error" ng-show="form.$submitted">
+            <div ng-message="required">Information RU required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Information: RO</label>
+          <input required name="information_ro" ng-model="objCategory.information_ro">
+          <div ng-messages="form.information_ro.$error" ng-show="form.$submitted">
+            <div ng-message="required">Information RO required</div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Information: EN</label>
+          <input required name="information_en" ng-model="objCategory.information_en">
+          <div ng-messages="form.information_en.$error" ng-show="form.$submitted">
+            <div ng-message="required">Information EN required</div>
           </div>
         </md-input-container>
 
@@ -26,6 +62,38 @@
             ng-model="objCategory.order" required>
           <div ng-messages="form.order.$error" ng-show="form.$submitted">
             <div ng-message="required">Order required</div>
+          </div>
+        </md-input-container>
+
+        <!--<md-input-container>-->
+          <!--<label>Coordinates START route (origin) :</label>-->
+          <!--<input required name="start_route" ng-model="objCategory.start_route">-->
+          <!--<div ng-messages="form.start_route.$error" ng-show="form.$submitted">-->
+            <!--<div ng-message="required">Coordinates START required</div>-->
+          <!--</div>-->
+        <!--</md-input-container>-->
+
+        <md-input-container>
+          <label>Coordinates WAYPOINTS route (between coordinates '/' and without spaces) :</label>
+          <input required name="waypoints" ng-model="objCategory.waypoints">
+          <div ng-messages="form.waypoints.$error" ng-show="form.$submitted">
+            <div ng-message="required">Coordinates WAYPOINTS required</div>
+          </div>
+        </md-input-container>
+
+        <!--<md-input-container>-->
+          <!--<label>Coordinates END route (destination) :</label>-->
+          <!--<input required name="end_route" ng-model="objCategory.end_route">-->
+          <!--<div ng-messages="form.end_route.$error" ng-show="form.$submitted">-->
+            <!--<div ng-message="required">Coordinates END required</div>-->
+          <!--</div>-->
+        <!--</md-input-container>-->
+
+        <md-input-container>
+          <label>Coordinates CENTER MAP route :</label>
+          <input required name="center_map" ng-model="objCategory.center_map">
+          <div ng-messages="form.center_map.$error" ng-show="form.$submitted">
+            <div ng-message="required">Coordinates Center Map required</div>
           </div>
         </md-input-container>
 

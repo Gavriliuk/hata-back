@@ -18,7 +18,7 @@
 							</md-option>
 							<md-option ng-value="category" value="{{ category }}"
 								ng-repeat="category in categories">
-								{{ category.title }}
+								{{ category.title_ru }}/{{category.title_ro}}/{{category.title_en}}
 							</md-option>
 						</md-select>
 					</md-input-container>
@@ -61,8 +61,12 @@
 	    <thead md-head>
 	      <tr md-row>
 	      	<th md-column></th>
-	        <th md-column>Title</th>
-	        <th md-column>Category</th>
+	        <th md-column>Title: RU</th>
+			  <th md-column>Title: RO</th>
+			  <th md-column>Title: EN</th>
+	        <th md-column>Category: RU</th>
+	        <th md-column>Category: RO</th>
+			  <th md-column>Category: EN</th>
 	        <th md-column>Status</th>
 					<th md-column>Expires At</th>
 					<th md-column>Created At</th>
@@ -75,8 +79,12 @@
 	      		<img class="img-thumb img-circle" ng-src="/images/placeholder.png"
 						actual-src="{{ place.imageThumb.url() }}" />
 	      	</td>
-	      	<td md-cell>{{:: place.title }}</td>
-	        <td md-cell>{{:: place.category.get('title') }}</td>
+	      	<td md-cell>{{:: place.title_ru }}</td>
+	      	<td md-cell>{{:: place.title_ro }}</td>
+			<td md-cell>{{:: place.title_en }}</td>
+	        <td md-cell>{{:: place.category.get('title_ru') }}</td>
+	        <td md-cell>{{:: place.category.get('title_ro') }}</td>
+	        <td md-cell>{{:: place.category.get('title_en') }}</td>
 					<td md-cell>
 						<span class="label"
 						  ng-class="{ 'green': place.getStatus() === 'Approved',

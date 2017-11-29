@@ -13,7 +13,10 @@ angular.module('nearPlaceApp')
       page: 1,
       total: 0,
       status: null,
-      category: null,
+      // category: null,
+      category_ru: null,
+      category_ro: null,
+        category_en: null,
       date: null
     };
 
@@ -174,13 +177,16 @@ angular.module('nearPlaceApp')
 
   $scope.categories = [];
   $scope.place = {};
+  // $scope.place.category = null;
   $scope.place.category = null;
   $scope.place.website = 'http://';
   $scope.imageOneFilename = '';
   $scope.imageTwoFilename = '';
   $scope.imageThreeFilename = '';
   $scope.imageFourFilename = '';
-  $scope.audioFilename = '';
+  $scope.audioFilename_ru = '';
+  $scope.audioFilename_ro = '';
+  $scope.audioFilename_en = '';
   $scope.input = {};
 
   $scope.isCreating = true;
@@ -188,7 +194,9 @@ angular.module('nearPlaceApp')
   $scope.isImageTwoUploading = false;
   $scope.isImageThreeUploading = false;
   $scope.isImageFourUploading = false;
-  $scope.isAudioUploading = false;
+  $scope.isAudioUploading_ru = false;
+  $scope.isAudioUploading_ro = false;
+  $scope.isAudioUploading_en = false;
 
   if (place) {
 
@@ -210,7 +218,13 @@ angular.module('nearPlaceApp')
     }
 
     if ($scope.place.audio) {
-      $scope.audioFilename = $scope.place.audio.name();
+      $scope.audioFilename_ru = $scope.place.audio_ru.name();
+    }
+    if ($scope.place.audio) {
+       $scope.audioFilename_ro = $scope.place.audio_ro.name();
+    }
+    if ($scope.place.audio_en) {
+        $scope.audioFilename_en = $scope.place.audio_en.name();
     }
 
     $scope.input.latitude = place.location.latitude;
@@ -233,8 +247,8 @@ angular.module('nearPlaceApp')
     );
   };
 
-  $scope.onAddressChanged = function () {
-    GeoCoder.geocode({ address: $scope.place.address }).then(function (result) {
+  $scope.onAddressChanged_ru = function () {
+    GeoCoder.geocode({ address: $scope.place.address_ru }).then(function (result) {
 
       if (map) {
 
@@ -256,6 +270,54 @@ angular.module('nearPlaceApp')
       }
     });
   }
+
+    $scope.onAddressChanged_ro = function () {
+        GeoCoder.geocode({ address: $scope.place.address_ro }).then(function (result) {
+
+            if (map) {
+
+                var location = result[0].geometry.location;
+                location = new google.maps.LatLng(location.lat(), location.lng());
+
+                map.setCenter(location);
+                map.setZoom(15);
+
+                marker.setPosition(location);
+
+                $scope.place.location = new Parse.GeoPoint({
+                    latitude: location.lat(),
+                    longitude: location.lng()
+                });
+
+                $scope.input.latitude = location.lat();
+                $scope.input.longitude = location.lng();
+            }
+        });
+    }
+
+    $scope.onAddressChanged_en = function () {
+        GeoCoder.geocode({ address: $scope.place.address_en }).then(function (result) {
+
+            if (map) {
+
+                var location = result[0].geometry.location;
+                location = new google.maps.LatLng(location.lat(), location.lng());
+
+                map.setCenter(location);
+                map.setZoom(15);
+
+                marker.setPosition(location);
+
+                $scope.place.location = new Parse.GeoPoint({
+                    latitude: location.lat(),
+                    longitude: location.lng()
+                });
+
+                $scope.input.latitude = location.lat();
+                $scope.input.longitude = location.lng();
+            }
+        });
+    }
 
   NgMap.getMap().then(function (objMap) {
 
@@ -424,31 +486,83 @@ angular.module('nearPlaceApp')
     }
   };
 
-  $scope.uploadAudio = function (file, invalidFile) {
+  $scope.uploadAudio_ru = function (file, invalidFile) {
 
     if (file) {
 
-      $scope.isAudioUploading = true;
-      $scope.audioFilename = file.name;
+      $scope.isAudioUploading_ru = true;
+      $scope.audioFilename_ru = file.name;
 
-      File.uploadAudio(file).then(function (savedFile) {
+      File.uploadAudio_ru(file).then(function (savedFile) {
 
-          $scope.place.audio = savedFile;
-          $scope.isAudioUploading = false;
-          showSimpleToast('Audio uploaded');
+          $scope.place.audio_ru = savedFile;
+          $scope.isAudioUploading_ru = false;
+          showSimpleToast('Audio RU uploaded');
         },
         function (error) {
-          $scope.isAudioUploading = false;
+          $scope.isAudioUploading_ru = false;
           showSimpleToast(error.message);
         });
     } else {
       if (invalidFile) {
         if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Audio too big. Max ' + invalidFile.$errorParam);
+          showSimpleToast('Audio RU too big. Max ' + invalidFile.$errorParam);
         }
       }
     }
   };
+
+    $scope.uploadAudio_ro = function (file, invalidFile) {
+
+        if (file) {
+
+            $scope.isAudioUploading_ro = true;
+            $scope.audioFilename_ro = file.name;
+
+            File.uploadAudio_ro(file).then(function (savedFile) {
+
+                    $scope.place.audio_ro = savedFile;
+                    $scope.isAudioUploading_ro = false;
+                    showSimpleToast('Audio RO uploaded');
+                },
+                function (error) {
+                    $scope.isAudioUploading_ro = false;
+                    showSimpleToast(error.message);
+                });
+        } else {
+            if (invalidFile) {
+                if (invalidFile.$error === 'maxSize') {
+                    showSimpleToast('Audio RO too big. Max ' + invalidFile.$errorParam);
+                }
+            }
+        }
+    };
+
+          $scope.uploadAudio_en = function (file, invalidFile) {
+
+              if (file) {
+
+                  $scope.isAudioUploading_en = true;
+                  $scope.audioFilename_en = file.name;
+
+                  File.uploadAudio_en(file).then(function (savedFile) {
+
+                          $scope.place.audio_en = savedFile;
+                          $scope.isAudioUploading_en = false;
+                          showSimpleToast('Audio EN uploaded');
+                      },
+                      function (error) {
+                          $scope.isAudioUploading_en = false;
+                          showSimpleToast(error.message);
+                      });
+              } else {
+                  if (invalidFile) {
+                      if (invalidFile.$error === 'maxSize') {
+                          showSimpleToast('Audio EN too big. Max ' + invalidFile.$errorParam);
+                      }
+                  }
+              }
+          };
 
   $scope.hide = function () {
     $mdDialog.cancel();

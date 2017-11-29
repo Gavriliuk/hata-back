@@ -110,18 +110,104 @@
 
     });
 
-    Object.defineProperty(Category.prototype, 'title',
-    {
-      get: function () {
-        return this.get('title');
-      },
-      set: function (val) {
-        this.set('title', val);
-      }
+    Object.defineProperty(Category.prototype, 'title_ru',
+        {
+          get: function () {
+            return this.get('title_ru');
+          },
+          set: function (val) {
+            this.set('title_ru', val);
+          }
+        });
+    Object.defineProperty(Category.prototype, 'title_ro',
+         {
+             get: function () {
+                 return this.get('title_ro');
+             },
+             set: function (val) {
+                 this.set('title_ro', val);
+             }
+         });
+    Object.defineProperty(Category.prototype, 'title_en',
+      {
+        get: function () {
+            return this.get('title_en');
+        },
+        set: function (val) {
+            this.set('title_en', val);
+        }
     });
 
-    Object.defineProperty(Category.prototype, 'image',
+     Object.defineProperty(Category.prototype, 'information_ru',
+         {
+             get: function () {
+                 return this.get('information_ru');
+             },
+             set: function (val) {
+                 this.set('information_ru', val);
+             }
+         });
+     Object.defineProperty(Category.prototype, 'information_ro',
+         {
+             get: function () {
+                 return this.get('information_ro');
+             },
+             set: function (val) {
+                 this.set('information_ro', val);
+             }
+         });
+     Object.defineProperty(Category.prototype, 'information_en',
+         {
+             get: function () {
+                 return this.get('information_en');
+             },
+             set: function (val) {
+                 this.set('information_en', val);
+             }
+         });
+
+         // Object.defineProperty(Category.prototype, 'start_route',
+         // {
+         //     get: function () {
+         //         return this.get('start_route');
+         //     },
+         //     set: function (val) {
+         //         this.set('start_route', val);
+         //     }
+         // });
+
+    Object.defineProperty(Category.prototype, 'waypoints',
+         {
+             get: function () {
+                 return this.get('waypoints');
+             },
+             set: function (val) {
+                 this.set('waypoints', val);
+             }
+    });
+         
+    // Object.defineProperty(Category.prototype, 'end_route',
+    //      {
+    //          get: function () {
+    //              return this.get('end_route');
+    //          },
+    //          set: function (val) {
+    //              this.set('end_route', val);
+    //          }
+    // });
+    
+    Object.defineProperty(Category.prototype, 'center_map',
     {
+        get: function () {
+            return this.get('center_map');
+        },
+        set: function (val) {
+            this.set('center_map', val);
+        }
+});
+
+    Object.defineProperty(Category.prototype, 'image',
+      {
       get: function () {
         return this.get('image');
       },

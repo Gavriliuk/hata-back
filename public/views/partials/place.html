@@ -12,12 +12,38 @@
         <md-dialog-content>
             <md-content layout="column" layout-padding>
                 <md-input-container class="md-block">
-                    <label>Category</label>
+                    <label>Category: RU</label>
                     <md-select name="category" required ng-model="place.category"
                                ng-model-options="{ trackBy: '$value.id' }">
                         <md-option ng-value="category"
                                    ng-repeat="category in categories track by category.id">
-                            {{ category.title }}
+                            {{ category.title_ru }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Category required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Category: RO</label>
+                    <md-select name="category" required ng-model="place.category"
+                               ng-model-options="{ trackBy: '$value.id' }">
+                        <md-option ng-value="category"
+                                   ng-repeat="category in categories track by category.id">
+                            {{ category.title_ro }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Category required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Category: EN</label>
+                    <md-select name="category" required ng-model="place.category"
+                               ng-model-options="{ trackBy: '$value.id' }">
+                        <md-option ng-value="category"
+                                   ng-repeat="category in categories track by category.id">
+                            {{ category.title_en }}
                         </md-option>
                     </md-select>
                     <div ng-messages="form.category.$error" ng-show="form.$submitted">
@@ -26,22 +52,60 @@
                 </md-input-container>
 
                 <md-input-container class="md-block">
-                    <label>Title</label>
-                    <input type="text" required name="title" ng-model="place.title">
-                    <div ng-messages="form.title.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Title required</div>
+                    <label>Title: RU</label>
+                    <input type="text" required name="title_ru" ng-model="place.title_ru">
+                    <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title RU required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title: RO</label>
+                    <input type="text" required name="title_ro" ng-model="place.title_ro">
+                    <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title RO required</div>
+                    </div>
+                </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Title: EN</label>
+                                <input type="text" required name="title_en" ng-model="place.title_en">
+                                <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+                                    <div ng-message="required">Title EN required</div>
+                                </div>
+                            </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description: RU</label>
+                    <textarea name="description_ru"
+                              ng-maxlength="600" ng-model="place.description_ru"
+                              columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RU required</div>
+                        <div ng-message="maxlength">Description RU too large</div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block">
-                    <label>Description</label>
-                    <textarea name="description"
-                              ng-maxlength="600" ng-model="place.description"
+                    <label>Description: RO</label>
+                    <textarea name="description_ro"
+                              ng-maxlength="600" ng-model="place.description_ro"
                               columns="2" md-maxlength="600">
-          </textarea>
-                    <div ng-messages="form.description.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Description required</div>
-                        <div ng-message="maxlength">Description too large</div>
+                    </textarea>
+                    <div ng-messages="form.description_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RO required</div>
+                        <div ng-message="maxlength">Description RO too large</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description: EN</label>
+                    <textarea name="description_en"
+                              ng-maxlength="600" ng-model="place.description_en"
+                              columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_en.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description EN required</div>
+                        <div ng-message="maxlength">Description EN too large</div>
                     </div>
                 </md-input-container>
 
@@ -56,9 +120,19 @@
                 </md-input-container>
 
                 <md-input-container class="md-block">
-                    <label>Address</label>
-                    <input type="text" name="address" ng-model="place.address"
-                           ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged()">
+                    <label>Address: RU</label>
+                    <input type="text" name="address_ru" ng-model="place.address_ru"
+                           ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ru()">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Address: RO</label>
+                    <input type="text" name="address_ro" ng-model="place.address_ro"
+                           ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ro()">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Address: EN</label>
+                    <input type="text" name="address_en" ng-model="place.address_en"
+                        ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
                 </md-input-container>
 
                 <md-input-container>
@@ -163,20 +237,56 @@
                 </div>
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
-                        <label>Upload Audio</label>
-                        <input type="text" ng-model="audioFilename" disabled>
+                        <label>Upload Audio: RU</label>
+                        <input type="text" ng-model="audioFilename_ru" disabled>
                     </md-input-container>
                     <ng-md-icon icon="headset" class="photo-camera"
-                                ng-class="{ 'photo-active': place.audio.url() }"
-                                ngf-select="uploadAudio($file, $invalidFile)" ngf-max-size="4MB"
+                                ng-class="{ 'photo-active': place.audio_ru.url() }"
+                                ngf-select="uploadAudio_ru($file, $invalidFile)" ngf-max-size="4MB"
                                 ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
-                            Add Audio
+                            Add Audio: RU
                         </md-tooltip>
                     </ng-md-icon>
                     <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isAudioUploading">
+                                          ng-if="isAudioUploading_ru">
                     </md-progress-circular>
+                </div>
+
+                <div layout="row" layout-align="start center">
+                    <md-input-container md-no-float>
+                        <label>Upload Audio: RO</label>
+                        <input type="text" ng-model="audioFilename_ro" disabled>
+                    </md-input-container>
+                    <ng-md-icon icon="headset" class="photo-camera"
+                                ng-class="{ 'photo-active': place.audio_ro.url() }"
+                                ngf-select="uploadAudio_ro($file, $invalidFile)" ngf-max-size="4MB"
+                                ngf-pattern="'audio/*'" accept="audio/*">
+                        <md-tooltip>
+                            Add Audio: RO
+                        </md-tooltip>
+                    </ng-md-icon>
+                    <md-progress-circular class="md-primary" md-diameter="30"
+                                          ng-if="isAudioUploading_ro">
+                    </md-progress-circular>
+                </div>
+
+                <div layout="row" layout-align="start center">
+                     <md-input-container md-no-float>
+                          <label>Upload Audio: EN</label>
+                          <input type="text" ng-model="audioFilename_en" disabled>
+                     </md-input-container>
+                     <ng-md-icon icon="headset" class="photo-camera"
+                                 ng-class="{ 'photo-active': place.audio_en.url() }"
+                                 ngf-select="uploadAudio_en($file, $invalidFile)" ngf-max-size="4MB"
+                                 ngf-pattern="'audio/*'" accept="audio/*">
+                         <md-tooltip>
+                              Add Audio: EN
+                         </md-tooltip>
+                     </ng-md-icon>
+                     <md-progress-circular class="md-primary" md-diameter="30"
+                                           ng-if="isAudioUploading_en">
+                     </md-progress-circular>
                 </div>
             </md-content>
         </md-dialog-content>
