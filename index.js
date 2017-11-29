@@ -20,12 +20,12 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 //-----------Coordinats for Server Valentin---------
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
-// var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
+var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
 
 //-----------Coordinats My for ngrok ---------
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
-var serverUrl = process.env.SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
+// var serverUrl = process.env.SERVER_URL || 'http://f5f58ce8.ngrok.io/parse';
 
 
 
