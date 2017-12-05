@@ -24,9 +24,8 @@ var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:13
 var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
 
 //-----------Coordinats My for ngrok ---------
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://727f9fc2.ngrok.io/parse';
-// var serverUrl = process.env.SERVER_URL || 'http://727f9fc2.ngrok.io/parse';
-
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://9e1658bd.ngrok.io/parse';
+// var serverUrl = process.env.SERVER_URL || 'http://9e1658bd.ngrok.io/parse';
 
 
 var appId = process.env.APP_ID || 'myAppId';
