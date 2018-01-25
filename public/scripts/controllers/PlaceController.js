@@ -177,7 +177,6 @@ angular.module('nearPlaceApp')
 
   $scope.categories = [];
   $scope.place = {};
-  // $scope.place.category = null;
   $scope.place.category = null;
   $scope.place.website = 'http://';
   $scope.imageOneFilename = '';
@@ -217,10 +216,10 @@ angular.module('nearPlaceApp')
       $scope.imageFourFilename = $scope.place.imageFour.name();
     }
 
-    if ($scope.place.audio) {
+    if ($scope.place.audio_ru) {
       $scope.audioFilename_ru = $scope.place.audio_ru.name();
     }
-    if ($scope.place.audio) {
+    if ($scope.place.audio_ro) {
        $scope.audioFilename_ro = $scope.place.audio_ro.name();
     }
     if ($scope.place.audio_en) {
@@ -579,7 +578,7 @@ angular.module('nearPlaceApp')
     } else if (!$scope.place.image) {
       showSimpleToast('Upload at least the first image');
     } else if (!$scope.place.location) {
-      showSimpleToast('Ubication is required')
+      showSimpleToast('Ubication is required');
     }
     else {
 

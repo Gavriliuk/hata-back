@@ -253,23 +253,23 @@
                  }
              });
 
-    Object.defineProperty(Place.prototype, 'phone', {
-        get: function () {
-            return this.get('phone');
-        },
-        set: function (value) {
-            this.set('phone', value);
-        }
-    });
-
-    Object.defineProperty(Place.prototype, 'website', {
-        get: function () {
-            return this.get('website');
-        },
-        set: function (value) {
-            this.set('website', value);
-        }
-    });
+    // Object.defineProperty(Place.prototype, 'phone', {
+    //     get: function () {
+    //         return this.get('phone');
+    //     },
+    //     set: function (value) {
+    //         this.set('phone', value);
+    //     }
+    // });
+    //
+    // Object.defineProperty(Place.prototype, 'website', {
+    //     get: function () {
+    //         return this.get('website');
+    //     },
+    //     set: function (value) {
+    //         this.set('website', value);
+    //     }
+    // });
 
     Object.defineProperty(Place.prototype, 'address_ru', {
         get: function () {
