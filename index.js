@@ -61,6 +61,7 @@ var api = new ParseServer({
   verifyUserEmails: false,
   publicServerURL: publicServerUrl,
   appName: appName,
+  maxUploadSize: '50mb',
   emailAdapter: {
     module: 'parse-server-simple-mailgun-adapter',
     options: {
@@ -184,9 +185,7 @@ var isAdmin = function (req, res, next) {
 }
 
 var isNotAuthenticated = function (req, res, next) {
-
   if (!req.session.token) return next();
-
   Parse.Cloud.httpRequest({
     url: serverUrl + '/users/me',
     headers: {
