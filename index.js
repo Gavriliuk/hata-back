@@ -12,20 +12,20 @@ var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
 
 // Parse configuration
- var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev';
+ var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev-dromos';
 
 //-----------Coordinats My for localhost ---------
 //  var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
 //  var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
 
 
-//-----------Coordinats for Server Valentin---------
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://188.166.101.46:1337/parse';
-var serverUrl = process.env.SERVER_URL || 'http://188.166.101.46:1337/parse';
+//-----------Coordinats for Server InnApp DO---------
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://46.101.144.21:1337/parse';
+var serverUrl = process.env.SERVER_URL || 'http://46.101.144.21:1337/parse';
 
 //-----------Coordinats My for ngrok ---------
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://9e1658bd.ngrok.io/parse';
-// var serverUrl = process.env.SERVER_URL || 'http://9e1658bd.ngrok.io/parse';
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://5f5ef972.ngrok.io/parse';
+// var serverUrl = process.env.SERVER_URL || 'http://5f5ef972.ngrok.io/parse';
 
 
 var appId = process.env.APP_ID || 'myAppId';
@@ -39,9 +39,9 @@ var fromAddress = process.env.MAILGUN_FROM_ADDRESS || 'MAILGUN_FROM_ADDRESS';
 var toAddress = process.env.MAILGUN_TO_ADDRESS || 'MAILGUN_TO_ADDRESS';
 
 // AWS S3 configuration
-var accessKeyId = process.env.AWS_ACCESS_KEY_ID || "AKIAISJL3JDVJJBCV32A";
-var secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "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";
-var bucketName = process.env.BUCKET_NAME || "nearme-guide";
+var accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+var secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+var bucketName = process.env.BUCKET_NAME;
 
 var filesAdapter = new FSFilesAdapter();
 
