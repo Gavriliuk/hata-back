@@ -65,32 +65,32 @@
           </div>
         </md-input-container>
 
-        <!--<md-input-container>-->
-          <!--<label>Coordinates START route (origin) :</label>-->
-          <!--<input required name="start_route" ng-model="objCategory.start_route">-->
-          <!--<div ng-messages="form.start_route.$error" ng-show="form.$submitted">-->
-            <!--<div ng-message="required">Coordinates START required</div>-->
-          <!--</div>-->
-        <!--</md-input-container>-->
+        <md-input-container>
+          <label>Coordinates START route (origin) without spaces between coordinates :</label>
+          <input required name="start_route" ng-model="objCategory.start_route">
+          <div ng-messages="form.start_route.$error" ng-show="form.$submitted">
+            <div ng-message="required">Coordinates START required</div>
+          </div>
+        </md-input-container>
 
         <md-input-container>
-          <label>Coordinates WAYPOINTS route (between coordinates '/' and without spaces) :</label>
+          <label>Coordinates WAYPOINTS route (between coordinates '/' and without spaces!) :</label>
           <input required name="waypoints" ng-model="objCategory.waypoints">
           <div ng-messages="form.waypoints.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates WAYPOINTS required</div>
           </div>
         </md-input-container>
 
-        <!--<md-input-container>-->
-          <!--<label>Coordinates END route (destination) :</label>-->
-          <!--<input required name="end_route" ng-model="objCategory.end_route">-->
-          <!--<div ng-messages="form.end_route.$error" ng-show="form.$submitted">-->
-            <!--<div ng-message="required">Coordinates END required</div>-->
-          <!--</div>-->
-        <!--</md-input-container>-->
+        <md-input-container>
+          <label>Coordinates END route (destination) without spaces between coordinates :</label>
+          <input required name="end_route" ng-model="objCategory.end_route">
+          <div ng-messages="form.end_route.$error" ng-show="form.$submitted">
+            <div ng-message="required">Coordinates END required</div>
+          </div>
+        </md-input-container>
 
         <md-input-container>
-          <label>Coordinates CENTER MAP route :</label>
+          <label>Coordinates CENTER MAP route (without spaces between coordinates!):</label>
           <input required name="center_map" ng-model="objCategory.center_map">
           <div ng-messages="form.center_map.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates Center Map required</div>
