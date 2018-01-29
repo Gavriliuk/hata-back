@@ -20,12 +20,12 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 //-----------Coordinats for Server InnApp DO---------
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://950b663a.ngrok.io/parse';
-var serverUrl = process.env.SERVER_URL || 'https://950b663a.ngrok.io/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://2574402e.ngrok.io/parse';
+var serverUrl = process.env.SERVER_URL || 'https://2574402e.ngrok.io/parse';
 
-//-----------Coordinats My for ngrok ---------
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://5f5ef972.ngrok.io/parse';
-// var serverUrl = process.env.SERVER_URL || 'http://5f5ef972.ngrok.io/parse';
+//-----------Coordinats URL server ---------
+// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://46.101.144.21:1337/parse';
+// var serverUrl = process.env.SERVER_URL || 'http://46.101.144.21:1337/parse';
 
 
 var appId = process.env.APP_ID || 'myAppId';
