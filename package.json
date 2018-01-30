@@ -31,7 +31,9 @@
     "winston": "2.3.0"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "MONGO_URL=mongodb://localhost:27017/dev-dromos node index.js",
+    "start-cms-test": "MONGO_URL=mongodb://admin:mapi123!@localhost:27017/dev-dromos?authSource=admin PUBLIC_SERVER_URL=https://perussi.serveo.net/parse SERVER_URL=https://perussi.serveo.net/parse node ./index.js",
+    "start-cms-prod": "",
     "postinstall": "bower install"
   },
   "engines": {
