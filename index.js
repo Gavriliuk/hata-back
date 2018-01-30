@@ -12,7 +12,8 @@ var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
 
 // Parse configuration
- var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev-dromos';
+//  var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev-dromos';
+ var databaseUri = process.env.MONGO_URL || 'mongodb://admin:mapi123!@localhost:27017/dev-dromos?authSource=admin';
 
 //-----------Coordinats My for localhost ---------
 //  var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
