@@ -379,6 +379,33 @@ angular.module('nearPlaceApp')
     }
   }
 
+  $scope.uploadImage = function (file, invalidFile) {
+
+    if (file) {
+
+      $scope.isImageUploading = true;
+      $scope.imageFilename = file.name;
+
+      File.upload(file).then(function (savedFile) {
+
+          $scope.place.images = savedFile;
+          $scope.isImageUploading = false;
+          showSimpleToast('Image uploaded');
+        },
+        function (error) {
+          $scope.isImageUploading = false;
+          showSimpleToast(error.message);
+        });
+
+    } else {
+      if (invalidFile) {
+        if (invalidFile.$error === 'maxSize') {
+          showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+        }
+      }
+    }
+  };
+
   $scope.uploadImageOne = function (file, invalidFile) {
 
     if (file) {

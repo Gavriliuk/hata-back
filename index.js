@@ -2,6 +2,7 @@ require('newrelic');
 var express = require('express');
 // var range = require('express-range');
 var ParseServer = require('parse-server').ParseServer;
+var ParseDashboard = require('parse-dashboard');
 var S3Adapter = require('parse-server').S3Adapter;
 var FSFilesAdapter = require('parse-server-fs-adapter');
 var expressLayouts = require('express-ejs-layouts');
@@ -10,43 +11,30 @@ var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
+const config = require('./env.json')[process.env.NODE_ENV || 'dev'];
+
 
 // Parse configuration
-//  var databaseUri = process.env.MONGO_URL || 'mongodb://localhost:27017/dev-dromos';
- var databaseUri = process.env.MONGO_URL || 'mongodb://admin:mapi123!@localhost:27017/dev-dromos?authSource=admin';
-
-//-----------Coordinats My for localhost ---------
-//  var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
-//  var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
-
+ var databaseUri = config.MONGO_URL;
 
 //-----------Coordinats for Server InnApp DO---------
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://perussi.serveo.net/parse';
-var serverUrl = process.env.SERVER_URL || 'https://perussi.serveo.net/parse';
+var publicServerUrl = config.PUBLIC_SERVER_URL;
+var serverUrl = config.SERVER_URL;
 
-//-----------Coordinats URL server ---------
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://46.101.144.21:1337/parse';
-// var serverUrl = process.env.SERVER_URL || 'http://46.101.144.21:1337/parse';
-
-// var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://bzfraisnes.localtunnel.me/parse';
-// var serverUrl = process.env.SERVER_URL || 'https://bzfraisnes.localtunnel.me/parse';
-
-
-
-var appId = process.env.APP_ID || 'myAppId';
-var masterKey = process.env.MASTER_KEY || 'myMasterKey';
-var appName = process.env.APP_NAME || 'My App Name';
+var appId = config.APP_ID;
+var masterKey = config.MASTER_KEY;
+var appName = config.APP_NAME;
 
 // Mailgun configuration
-var apiKey = process.env.MAILGUN_API_KEY || 'MAILGUN_API_KEY';
-var domain = process.env.MAILGUN_DOMAIN || 'MAILGUN_DOMAIN';
-var fromAddress = process.env.MAILGUN_FROM_ADDRESS || 'MAILGUN_FROM_ADDRESS';
-var toAddress = process.env.MAILGUN_TO_ADDRESS || 'MAILGUN_TO_ADDRESS';
+var apiKey = config.MAILGUN_API_KEY;
+var domain = config.MAILGUN_DOMAIN;
+var fromAddress = config.MAILGUN_FROM_ADDRESS;
+var toAddress = config.MAILGUN_TO_ADDRESS;
 
 // AWS S3 configuration
-var accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-var secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-var bucketName = process.env.BUCKET_NAME;
+var accessKeyId = config.AWS_ACCESS_KEY_ID;
+var secretAccessKey = config.AWS_SECRET_ACCESS_KEY;
+var bucketName = config.BUCKET_NAME;
 
 var filesAdapter = new FSFilesAdapter();
 
@@ -57,7 +45,7 @@ if (accessKeyId && secretAccessKey && bucketName) {
 
 var api = new ParseServer({
   databaseURI: databaseUri,
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+  cloud: config.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey,
   serverURL: serverUrl,
@@ -76,13 +64,26 @@ var api = new ParseServer({
   }
 });
 
+var dashboard = new ParseDashboard({
+  "apps": [
+    {
+      "serverURL": "http://localhost:1337/parse",
+      "appId": "dromos-cms",
+      "masterKey": "dromos-cms-123!",
+      "appName": "Dromos CMS"
+    }
+  ]
+});
+
 var app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 // Serve the Parse API on the /parse URL prefix
-var mountPath = process.env.PARSE_MOUNT || '/parse';
+var mountPath = config.PARSE_MOUNT ;
+var dashboardPath = config.DASHBOARD_MOUNT;
 app.use(mountPath, api);
+app.use(dashboardPath, dashboard);
 app.use(express.static('public'));
 app.use(expressLayouts);
 app.use(cookieParser());
@@ -356,7 +357,7 @@ app.get('/logout', isAdmin, function (req, res) {
   res.redirect('/login');
 });
 
-var port = process.env.PORT || 1337;
+var port = config.PORT;
 app.listen(port, function () {
   console.log('Parse server running on port ' + port + '.');
 });

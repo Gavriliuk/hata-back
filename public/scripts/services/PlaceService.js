@@ -305,6 +305,19 @@
     }
   });
 
+   Object.defineProperty(Place.prototype, 'images',
+     {
+       get: function () {
+         return this.get('images');
+       },
+       set: function (val) {
+         var images=this.get('images')||[];
+         images.push(val);
+         this.set('images', images);
+       }
+     });
+
+
     Object.defineProperty(Place.prototype, 'image', {
         get: function () {
             return this.get('image');

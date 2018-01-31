@@ -25,14 +25,15 @@
     "mongodb": "2.2.28",
     "newrelic": "1.38.2",
     "parse": "1.9.2",
+    "parse-dashboard": "^1.1.2",
     "parse-server": "2.4.2",
     "parse-server-fs-adapter": "1.0.1",
     "parse-server-simple-mailgun-adapter": "1.0.0",
     "winston": "2.3.0"
   },
   "scripts": {
-    "start": "MONGO_URL=mongodb://localhost:27017/dev-dromos node index.js",
-    "start-cms-test": "MONGO_URL=mongodb://admin:mapi123!@localhost:27017/dev-dromos?authSource=admin PUBLIC_SERVER_URL=https://perussi.serveo.net/parse SERVER_URL=https://perussi.serveo.net/parse node ./index.js",
+    "start": "NODE_ENV=dev node index.js",
+    "start-cms-test": "NODE_ENV=test node ./index.js",
     "start-cms-prod": "",
     "postinstall": "bower install"
   },
