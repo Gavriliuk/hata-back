@@ -311,48 +311,61 @@
          return this.get('images');
        },
        set: function (val) {
-         var images=this.get('images')||[];
-         images.push(val);
-         this.set('images', images);
+         this.set('images', val);
        }
      });
+     // Object.defineProperty(Place.prototype, 'image', {
+     //     get: function () {
+     //         return this.get('image');
+     //     },
+     //     set: function (value) {
+     //         this.set('image', value);
+     //     }
+     // });
+
+     // Object.defineProperty(Place.prototype, 'audios',
+     //     {
+     //         get: function () {
+     //             return this.get('audios');
+     //         },
+     //         set: function (val) {
+     //             var audios=this.get('audios')||{};
+     //             audios.push(val);
+     //             this.set('audios', audios);
+     //         }
+     //     });
 
 
-    Object.defineProperty(Place.prototype, 'image', {
-        get: function () {
-            return this.get('image');
-        },
-        set: function (value) {
-            this.set('image', value);
-        }
-    });
 
-    Object.defineProperty(Place.prototype, 'imageTwo', {
-        get: function () {
-            return this.get('imageTwo');
-        },
-        set: function (value) {
-            this.set('imageTwo', value);
-        }
-    });
 
-    Object.defineProperty(Place.prototype, 'imageThree', {
-        get: function () {
-            return this.get('imageThree');
-        },
-        set: function (value) {
-            this.set('imageThree', value);
-        }
-    });
+    // Object.defineProperty(Place.prototype, 'imageTwo', {
+    //     get: function () {
+    //         return this.get('imageTwo');
+    //     },
+    //     set: function (value) {
+    //         this.set('imageTwo', value);
+    //     }
+    // });
+    //
+    // Object.defineProperty(Place.prototype, 'imageThree', {
+    //     get: function () {
+    //         return this.get('imageThree');
+    //     },
+    //     set: function (value) {
+    //         this.set('imageThree', value);
+    //     }
+    // });
+    //
+    // Object.defineProperty(Place.prototype, 'imageFour', {
+    //     get: function () {
+    //         return this.get('imageFour');
+    //     },
+    //     set: function (value) {
+    //         this.set('imageFour', value);
+    //     }
+    // });
 
-    Object.defineProperty(Place.prototype, 'imageFour', {
-        get: function () {
-            return this.get('imageFour');
-        },
-        set: function (value) {
-            this.set('imageFour', value);
-        }
-    });
+
 
      Object.defineProperty(Place.prototype, 'audio_en', {
          get: function () {

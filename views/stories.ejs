@@ -1,0 +1,54 @@
+<md-content ng-controller="StoryCtrl">
+    <md-table-container>
+        <table md-table md-progress="promise">
+            <thead md-head md-order="query.year" md-trigger="onOrderChange">
+            <tr md-row>
+                <th md-column md-order-by="year">Year</th>
+                <th md-column>Edit</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="story in stories">
+                <td md-cell>{{:: story.year }}</td>
+                <td md-cell>
+                    <md-menu>
+                        <md-button aria-label="Open menu" class="md-icon-button"
+                                   ng-click="openMenu($mdOpenMenu, $event)">
+                            <ng-md-icon md-menu-origin icon="more_vert"
+                                        layout="row" layout-align="start center">
+                            </ng-md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+
+                            <md-menu-item>
+                                <md-button aria-label="Edit story"
+                                           ng-click="onEditStory($event, story)">
+                                    Edit
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-item>
+                                <md-button aria-label="Delete story"
+                                           ng-click="onDestroyStory($event, story)">
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
+
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-options="rowOptions" md-limit="query.limit"
+                         md-page="query.page" md-total="{{query.total}}"
+                         md-on-paginate="onPaginationChange">
+    </md-table-pagination>
+    <md-button class="md-fab md-primary md-fab-bottom-right"
+               aria-label="New story" ng-click="onNewStory($event)">
+        <ng-md-icon class="icon-add" icon="add"
+                    layout="column" layout-align="center center">
+        </ng-md-icon>
+    </md-button>
+</md-content>

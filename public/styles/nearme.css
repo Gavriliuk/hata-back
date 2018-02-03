@@ -179,3 +179,10 @@ table.md-table td.md-cell {
 .label.red {
   background-color: #E57373;
 }
+.placeImg {
+    float: left;
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin-right: 5px;
+}

@@ -177,22 +177,23 @@ angular.module('nearPlaceApp')
 
   $scope.categories = [];
   $scope.place = {};
+    $scope.place.images=[];
   $scope.place.category = null;
   $scope.place.website = 'http://';
-  $scope.imageOneFilename = '';
-  $scope.imageTwoFilename = '';
-  $scope.imageThreeFilename = '';
-  $scope.imageFourFilename = '';
+  $scope.imageFilename = '';
+  // $scope.imageTwoFilename = '';
+  // $scope.imageThreeFilename = '';
+  // $scope.imageFourFilename = '';
   $scope.audioFilename_ru = '';
   $scope.audioFilename_ro = '';
   $scope.audioFilename_en = '';
   $scope.input = {};
 
   $scope.isCreating = true;
-  $scope.isImageOneUploading = false;
-  $scope.isImageTwoUploading = false;
-  $scope.isImageThreeUploading = false;
-  $scope.isImageFourUploading = false;
+  $scope.isImageUploading = false;
+  // $scope.isImageTwoUploading = false;
+  // $scope.isImageThreeUploading = false;
+  // $scope.isImageFourUploading = false;
   $scope.isAudioUploading_ru = false;
   $scope.isAudioUploading_ro = false;
   $scope.isAudioUploading_en = false;
@@ -200,21 +201,14 @@ angular.module('nearPlaceApp')
   if (place) {
 
     $scope.place = place;
-    if ($scope.place.image) {
-      $scope.imageOneFilename = $scope.place.image.name();
-    }
+    // TODO
+    // if ($scope.place.image) {
+    //   $scope.imageFilename = $scope.place.image.name();
+    // }
 
-    if ($scope.place.imageTwo) {
-      $scope.imageTwoFilename = $scope.place.imageTwo.name();
-    }
-
-    if ($scope.place.imageThree) {
-      $scope.imageThreeFilename = $scope.place.imageThree.name();
-    }
-
-    if ($scope.place.imageFour) {
-      $scope.imageFourFilename = $scope.place.imageFour.name();
-    }
+    // if ($scope.place.imageTwo) {
+    //   $scope.imageTwoFilename = $scope.place.imageTwo.name();
+    // }
 
     if ($scope.place.audio_ru) {
       $scope.audioFilename_ru = $scope.place.audio_ru.name();
@@ -268,7 +262,7 @@ angular.module('nearPlaceApp')
         $scope.input.longitude = location.lng();
       }
     });
-  }
+  };
 
     $scope.onAddressChanged_ro = function () {
         GeoCoder.geocode({ address: $scope.place.address_ro }).then(function (result) {
@@ -292,7 +286,7 @@ angular.module('nearPlaceApp')
                 $scope.input.longitude = location.lng();
             }
         });
-    }
+    };
 
     $scope.onAddressChanged_en = function () {
         GeoCoder.geocode({ address: $scope.place.address_en }).then(function (result) {
@@ -316,7 +310,7 @@ angular.module('nearPlaceApp')
                 $scope.input.longitude = location.lng();
             }
         });
-    }
+    };
 
   NgMap.getMap().then(function (objMap) {
 
@@ -377,9 +371,9 @@ angular.module('nearPlaceApp')
 
       map.setZoom(12);
     }
-  }
+  };
 
-  $scope.uploadImage = function (file, invalidFile) {
+  $scope.uploadImageFile = function (file, invalidFile) {
 
     if (file) {
 
@@ -388,7 +382,7 @@ angular.module('nearPlaceApp')
 
       File.upload(file).then(function (savedFile) {
 
-          $scope.place.images = savedFile;
+          $scope.place.images.push(savedFile);
           $scope.isImageUploading = false;
           showSimpleToast('Image uploaded');
         },
@@ -406,137 +400,58 @@ angular.module('nearPlaceApp')
     }
   };
 
-  $scope.uploadImageOne = function (file, invalidFile) {
+    // $scope.uploadImageFile = function (file, invalidFile) {
+    //
+    //   if (file) {
+    //
+    // $scope.isImageUploading = true;
+    // $scope.imageFilename = file.name;
+    //
+    // File.upload(file).then(function (savedFile) {
+    //
+    //     $scope.place.image = (savedFile);
+    //     $scope.isImageUploading = false;
+    //     showSimpleToast('Image uploaded');
+    //   },
+    //   function (error) {
+    //     $scope.isImageUploading = false;
+    //     showSimpleToast(error.message);
+    //   });
+    //
+    //   } else {
+    //     if (invalidFile) {
+    //       if (invalidFile.$error === 'maxSize') {
+    //         showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+    //       }
+    //     }
+    //   }
+    // };
 
-    if (file) {
+    $scope.uploadAudio_ru = function (file, invalidFile) {
 
-      $scope.isImageOneUploading = true;
-      $scope.imageOneFilename = file.name;
+        if (file) {
 
-      File.upload(file).then(function (savedFile) {
+            $scope.isAudioUploading_ru = true;
+            $scope.audioFilename_ru = file.name;
 
-          $scope.place.image = savedFile;
-          $scope.isImageOneUploading = false;
-          showSimpleToast('Image uploaded');
-        },
-        function (error) {
-          $scope.isImageOneUploading = false;
-          showSimpleToast(error.message);
-        });
+            File.uploadAudio(file).then(function (savedFile) {
 
-    } else {
-      if (invalidFile) {
-        if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+                    $scope.place.audio_ru = savedFile;
+                    $scope.isAudioUploading_ru = false;
+                    showSimpleToast('Audio RU uploaded');
+                },
+                function (error) {
+                    $scope.isAudioUploading_ru = false;
+                    showSimpleToast(error.message);
+                });
+        } else {
+            if (invalidFile) {
+                if (invalidFile.$error === 'maxSize') {
+                    showSimpleToast('Audio too big. Max ' + invalidFile.$errorParam);
+                }
+            }
         }
-      }
-    }
-  };
-
-  $scope.uploadImageTwo = function (file, invalidFile) {
-
-    if (file) {
-
-      $scope.isImageTwoUploading = true;
-      $scope.imageTwoFilename = file.name;
-
-      File.upload(file).then(function (savedFile) {
-
-          $scope.place.imageTwo = savedFile;
-          $scope.isImageTwoUploading = false;
-          showSimpleToast('Image uploaded');
-        },
-        function (error) {
-          $scope.isImageTwoUploading = false;
-          showSimpleToast(error.message);
-        });
-
-    } else {
-      if (invalidFile) {
-        if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
-        }
-      }
-    }
-  }
-
-  $scope.uploadImageThree = function (file, invalidFile) {
-
-    if (file) {
-
-      $scope.isImageThreeUploading = true;
-      $scope.imageThreeFilename = file.name;
-
-      File.upload(file).then(function (savedFile) {
-
-          $scope.place.imageThree = savedFile;
-          $scope.isImageThreeUploading = false;
-          showSimpleToast('Image uploaded');
-        },
-        function (error) {
-          $scope.isImageThreeUploading = false;
-          showSimpleToast(error.message);
-        });
-    } else {
-      if (invalidFile) {
-        if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
-        }
-      }
-    }
-  }
-
-  $scope.uploadImageFour = function (file, invalidFile) {
-
-    if (file) {
-
-      $scope.isImageFourUploading = true;
-      $scope.imageFourFilename = file.name;
-
-      File.upload(file).then(function (savedFile) {
-
-          $scope.place.imageFour = savedFile;
-          $scope.isImageFourUploading = false;
-          showSimpleToast('Image uploaded');
-        },
-        function (error) {
-          $scope.isImageFourUploading = false;
-          showSimpleToast(error.message);
-        });
-    } else {
-      if (invalidFile) {
-        if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
-        }
-      }
-    }
-  };
-
-  $scope.uploadAudio_ru = function (file, invalidFile) {
-
-    if (file) {
-
-      $scope.isAudioUploading_ru = true;
-      $scope.audioFilename_ru = file.name;
-
-      File.uploadAudio_ru(file).then(function (savedFile) {
-
-          $scope.place.audio_ru = savedFile;
-          $scope.isAudioUploading_ru = false;
-          showSimpleToast('Audio RU uploaded');
-        },
-        function (error) {
-          $scope.isAudioUploading_ru = false;
-          showSimpleToast(error.message);
-        });
-    } else {
-      if (invalidFile) {
-        if (invalidFile.$error === 'maxSize') {
-          showSimpleToast('Audio RU too big. Max ' + invalidFile.$errorParam);
-        }
-      }
-    }
-  };
+    };
 
     $scope.uploadAudio_ro = function (file, invalidFile) {
 
@@ -545,7 +460,7 @@ angular.module('nearPlaceApp')
             $scope.isAudioUploading_ro = true;
             $scope.audioFilename_ro = file.name;
 
-            File.uploadAudio_ro(file).then(function (savedFile) {
+            File.uploadAudio(file).then(function (savedFile) {
 
                     $scope.place.audio_ro = savedFile;
                     $scope.isAudioUploading_ro = false;
@@ -563,32 +478,58 @@ angular.module('nearPlaceApp')
             }
         }
     };
+    $scope.uploadAudio_en = function (file, invalidFile) {
 
-          $scope.uploadAudio_en = function (file, invalidFile) {
+        if (file) {
 
-              if (file) {
+            $scope.isAudioUploading_en = true;
+            $scope.audioFilename_en = file.name;
 
-                  $scope.isAudioUploading_en = true;
-                  $scope.audioFilename_en = file.name;
+            File.uploadAudio(file).then(function (savedFile) {
 
-                  File.uploadAudio_en(file).then(function (savedFile) {
+                    $scope.place.audio_en = savedFile;
+                    $scope.isAudioUploading_ro = false;
+                    showSimpleToast('Audio EN uploaded');
+                },
+                function (error) {
+                    $scope.isAudioUploading_en = false;
+                    showSimpleToast(error.message);
+                });
+        } else {
+            if (invalidFile) {
+                if (invalidFile.$error === 'maxSize') {
+                    showSimpleToast('Audio RO too big. Max ' + invalidFile.$errorParam);
+                }
+            }
+        }
+    };
 
-                          $scope.place.audio_en = savedFile;
-                          $scope.isAudioUploading_en = false;
-                          showSimpleToast('Audio EN uploaded');
-                      },
-                      function (error) {
-                          $scope.isAudioUploading_en = false;
-                          showSimpleToast(error.message);
-                      });
-              } else {
-                  if (invalidFile) {
-                      if (invalidFile.$error === 'maxSize') {
-                          showSimpleToast('Audio EN too big. Max ' + invalidFile.$errorParam);
-                      }
-                  }
-              }
-          };
+  // $scope.uploadImageOne = function (file, invalidFile) {
+  //
+  //   if (file) {
+  //
+      // $scope.isImageOneUploading = true;
+      // $scope.imageOneFilename = file.name;
+      //
+      // File.upload(file).then(function (savedFile) {
+      //
+      //     $scope.place.image = savedFile;
+      //     $scope.isImageOneUploading = false;
+      //     showSimpleToast('Image uploaded');
+      //   },
+      //   function (error) {
+      //     $scope.isImageOneUploading = false;
+      //     showSimpleToast(error.message);
+      //   });
+
+  //   } else {
+  //     if (invalidFile) {
+  //       if (invalidFile.$error === 'maxSize') {
+  //         showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+  //       }
+  //     }
+  //   }
+  // };
 
   $scope.hide = function () {
     $mdDialog.cancel();
@@ -602,12 +543,13 @@ angular.module('nearPlaceApp')
 
     if (!isFormValid) {
       showSimpleToast('Please correct all highlighted errors and try again');
-    } else if (!$scope.place.image) {
-      showSimpleToast('Upload at least the first image');
-    } else if (!$scope.place.location) {
-      showSimpleToast('Ubication is required');
     }
-    else {
+    else if (!$scope.place.images) {
+      showSimpleToast('Upload at least the first image');
+    }
+    else if (!$scope.place.location) {
+      showSimpleToast('Ubication is required');
+    } else {
 
       $scope.isSavingPlace = true;
 

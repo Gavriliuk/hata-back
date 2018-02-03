@@ -44,6 +44,15 @@
             </div>
             <div class="inset">Categories</div>
           </md-list-item>
+
+            <md-list-item md-no-ink href="/dashboard/stories">
+                <div class="inset">
+                    <ng-md-icon icon="label" layout="column"
+                                layout-align="start center"></ng-md-icon>
+                </div>
+                <div class="inset">Story</div>
+            </md-list-item>
+
           <md-list-item md-no-ink href="/dashboard/users">
             <div class="inset">
               <ng-md-icon icon="people" layout="column"
@@ -142,6 +151,8 @@
     <script src="/scripts/services/ReviewService.js"></script>
     <script src="/scripts/services/PlaceService.js"></script>
     <script src="/scripts/controllers/CategoryController.js"></script>
+    <script src="/scripts/controllers/StoryController.js"></script>
+    <script src="/scripts/services/StoryService.js"></script>
     <script src="/scripts/services/CategoryService.js"></script>
     <script src="/scripts/controllers/UserController.js"></script>
     <script src="/scripts/services/UserService.js"></script>

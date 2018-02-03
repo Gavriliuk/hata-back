@@ -24,32 +24,6 @@
                         <div ng-message="required">Category required</div>
                     </div>
                 </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Category: RO</label>
-                    <md-select name="category" required ng-model="place.category"
-                               ng-model-options="{ trackBy: '$value.id' }">
-                        <md-option ng-value="category"
-                                   ng-repeat="category in categories track by category.id">
-                            {{ category.title_ro }}
-                        </md-option>
-                    </md-select>
-                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Category required</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Category: EN</label>
-                    <md-select name="category" required ng-model="place.category"
-                               ng-model-options="{ trackBy: '$value.id' }">
-                        <md-option ng-value="category"
-                                   ng-repeat="category in categories track by category.id">
-                            {{ category.title_en }}
-                        </md-option>
-                    </md-select>
-                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Category required</div>
-                    </div>
-                </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Title: RU</label>
@@ -65,13 +39,13 @@
                         <div ng-message="required">Title RO required</div>
                     </div>
                 </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Title: EN</label>
-                                <input type="text" required name="title_en" ng-model="place.title_en">
-                                <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
-                                    <div ng-message="required">Title EN required</div>
-                                </div>
-                            </md-input-container>
+                <md-input-container class="md-block">
+                     <label>Title: EN</label>
+                          <input type="text" required name="title_en" ng-model="place.title_en">
+                          <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+                              <div ng-message="required">Title EN required</div>
+                          </div>
+                 </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Description: RU</label>
@@ -166,78 +140,76 @@
                     <input type="text" name="radius" ng-model="place.radius">
                 </md-input-container>
 
-                <div ng-repeat="img in place.images">
-                    <img class="img-thumb"
-                         actual-src="{{ img.url() }}"/>
+
+
+
+                <md-input-container class="layout-row">
+                    <span ng-repeat="img in place.images">
+                        <img class="img-thumb placeImg" actual-src="{{ img.url() }}"/>
+                    </span>
+                </md-input-container>
+
+                <div class="hint">
+                    The image's dimensions should be min 800x600 px
                 </div>
 
                 <div layout="row" layout-align="start center">
+                    <ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
                     <md-input-container md-no-float>
                         <label>Upload image</label>
+                        <input type="text" ng-model="imageFilename" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="photo_camera" class="photo-camera"
-                                ngf-select="uploadImage($file, $invalidFile)" ngf-max-size="2MB"
+                    <ng-md-icon icon="add_circle" class="photo-camera"
+                                ng-class="{ 'photo-active': place.images.url() }"
+                                ngf-select="uploadImageFile($file, $invalidFile)" ngf-max-size="2MB"
                                 ngf-pattern="'image/*'" accept="image/*">
                         <md-tooltip>
                             Add image
                         </md-tooltip>
                     </ng-md-icon>
                     <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isImageOneUploading">
+                                          ng-if="isImageUploading">
                     </md-progress-circular>
                 </div>
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload image</label>
-                        <input type="text" ng-model="imageTwoFilename" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="photo_camera" class="photo-camera"
-                                ng-class="{ 'photo-active': place.imageTwo.url() }"
-                                ngf-select="uploadImageTwo($file, $invalidFile)" ngf-max-size="2MB"
-                                ngf-pattern="'image/*'" accept="image/*">
-                        <md-tooltip>
-                            Add image
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isImageTwoUploading">
-                    </md-progress-circular>
-                </div>
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload image</label>
-                        <input type="text" ng-model="imageThreeFilename" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="photo_camera" class="photo-camera"
-                                ng-class="{ 'photo-active': place.imageThree.url() }"
-                                ngf-select="uploadImageThree($file, $invalidFile)"
-                                ngf-max-size="2MB"
-                                ngf-pattern="'image/*'" accept="image/*">
-                        <md-tooltip>
-                            Add image
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isImageThreeUploading">
-                    </md-progress-circular>
-                </div>
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload image</label>
-                        <input type="text" ng-model="imageFourFilename" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="photo_camera" class="photo-camera"
-                                ng-class="{ 'photo-active': place.imageFour.url() }"
-                                ngf-select="uploadImageFour($file, $invalidFile)" ngf-max-size="2MB"
-                                ngf-pattern="'image/*'" accept="image/*">
-                        <md-tooltip>
-                            Add image
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isImageFourUploading">
-                    </md-progress-circular>
-                </div>
+
+                <!--<div layout="row" layout-align="start center">-->
+                    <!--<md-input-container md-no-float>-->
+                        <!--<label>Upload image</label>-->
+                        <!--<input type="text" ng-model="imageTwoFilename" disabled>-->
+                    <!--</md-input-container>-->
+                    <!--<ng-md-icon icon="photo_camera" class="photo-camera"-->
+                                <!--ng-class="{ 'photo-active': place.imageTwo.url() }"-->
+                                <!--ngf-select="uploadImageTwo($file, $invalidFile)" ngf-max-size="2MB"-->
+                                <!--ngf-pattern="'image/*'" accept="image/*">-->
+                        <!--<md-tooltip>-->
+                            <!--Add image-->
+                        <!--</md-tooltip>-->
+                    <!--</ng-md-icon>-->
+                    <!--<md-progress-circular class="md-primary" md-diameter="30"-->
+                                          <!--ng-if="isImageTwoUploading">-->
+                    <!--</md-progress-circular>-->
+                <!--</div>-->
+
+                <!--<div layout="row" layout-align="start center">-->
+                    <!--<ng-md-icon icon="headset" class="photo-camera"></ng-md-icon>-->
+                    <!--<md-input-container md-no-float>-->
+                        <!--<label>Upload Audio: RU</label>-->
+                        <!--<input type="text" ng-model="audioFilename" disabled>-->
+                    <!--</md-input-container>-->
+                    <!--<ng-md-icon icon="add_circle" class="photo-camera"-->
+                                <!--ng-class="{ 'photo-active': place.audio.url() }"-->
+                                <!--ngf-select="uploadAudio_ru($file, $invalidFile)" ngf-max-size="50MB"-->
+                                <!--ngf-pattern="'audio/*'" accept="audio/*">-->
+                        <!--<md-tooltip>-->
+                            <!--Add Audio: RU-->
+                        <!--</md-tooltip>-->
+                    <!--</ng-md-icon>-->
+                    <!--<md-progress-circular class="md-primary" md-diameter="30"-->
+                                          <!--ng-if="isAudioUploading">-->
+                    <!--</md-progress-circular>-->
+                <!--</div>-->
+
+
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
                         <label>Upload Audio: RU</label>
