@@ -186,3 +186,6 @@ table.md-table td.md-cell {
     height: 80px;
     margin-right: 5px;
 }
+.marginLabel{
+    padding-bottom: 25px !important;
+}

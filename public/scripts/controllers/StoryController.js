@@ -114,7 +114,10 @@ angular.module('nearPlaceApp')
     function($scope, $mdDialog, $mdToast, Story, File, story) {
         $scope.isCreating = false;
         $scope.isUploading = false;
-        $scope.audioFilename = '';
+        $scope.audioFilename = {};
+        $scope.audioFilename.language_ru = '';
+        $scope.audioFilename.language_ro = '';
+        $scope.audioFilename.language_en = '';
         $scope.isAudioUploading = false;
         $scope.objStory = {};
         $scope.objStory.audios_ru = [];
@@ -157,7 +160,7 @@ angular.module('nearPlaceApp')
             if (file) {
 
                 $scope.isAudioUploading = true;
-                $scope.audioFilename = file.name;
+                $scope.audioFilename['language_'+lang] = file.name;
 
                 File.uploadAudio(file).then(function (savedFile) {
                         $scope.objStory['audios_'+lang].push(savedFile);
