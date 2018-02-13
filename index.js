@@ -84,6 +84,8 @@ app.set('views', 'views');
 // Serve the Parse API on the /parse URL prefix
 var mountPath = config.PARSE_MOUNT ;
 var dashboardPath = config.DASHBOARD_MOUNT;
+app.use(sendSeekable);
+
 app.use(mountPath, api);
 app.use(dashboardPath, dashboard);
 app.use(express.static('public'));
@@ -91,7 +93,6 @@ app.use(expressLayouts);
 app.use(cookieParser());
 app.use(methodOverride());
 
-app.use(sendSeekable);
 
 app.use(cookieSession({
   name: 'nearme.sess',
