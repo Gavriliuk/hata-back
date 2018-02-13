@@ -15,6 +15,10 @@ const config = require('./env.json')[process.env.NODE_ENV || 'dev'];
 
 const sendSeekable = require('send-seekable');
 
+// function addSeekable(req, res, next){
+//   res.sendSeekable(res.body);
+//   next();
+// }
 
 // Parse configuration
  var databaseUri = config.MONGO_URL;
@@ -85,7 +89,7 @@ app.set('views', 'views');
 var mountPath = config.PARSE_MOUNT ;
 var dashboardPath = config.DASHBOARD_MOUNT;
 app.use(sendSeekable);
-
+// app.use(addSeekable);
 app.use(mountPath, api);
 app.use(dashboardPath, dashboard);
 app.use(express.static('public'));
