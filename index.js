@@ -13,6 +13,8 @@ var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
 const config = require('./env.json')[process.env.NODE_ENV || 'dev'];
 
+const sendSeekable = require('send-seekable');
+
 
 // Parse configuration
  var databaseUri = config.MONGO_URL;
@@ -88,6 +90,8 @@ app.use(express.static('public'));
 app.use(expressLayouts);
 app.use(cookieParser());
 app.use(methodOverride());
+
+app.use(sendSeekable);
 
 app.use(cookieSession({
   name: 'nearme.sess',
