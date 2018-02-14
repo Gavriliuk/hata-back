@@ -13,13 +13,6 @@ var cookieSession = require('cookie-session');
 var MongoClient = require('mongodb').MongoClient;
 const config = require('./env.json')[process.env.NODE_ENV || 'dev'];
 
-const sendSeekable = require('send-seekable');
-
-// function addSeekable(req, res, next){
-//   res.sendSeekable(res.body);
-//   next();
-// }
-
 // Parse configuration
  var databaseUri = config.MONGO_URL;
 
@@ -88,8 +81,6 @@ app.set('views', 'views');
 // Serve the Parse API on the /parse URL prefix
 var mountPath = config.PARSE_MOUNT ;
 var dashboardPath = config.DASHBOARD_MOUNT;
-app.use(sendSeekable);
-// app.use(addSeekable);
 app.use(mountPath, api);
 app.use(dashboardPath, dashboard);
 app.use(express.static('public'));
