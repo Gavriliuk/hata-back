@@ -13,7 +13,7 @@
         <md-dialog-content>
             <md-content layout="column" layout-padding>
                 <md-input-container class="md-block">
-                    <label>Category: RU</label>
+                    <label>Route</label>
                     <md-select name="category" required ng-model="place.category"
                                ng-model-options="{ trackBy: '$value.id' }">
                         <md-option ng-value="category"
@@ -22,10 +22,20 @@
                         </md-option>
                     </md-select>
                     <div ng-messages="form.category.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Category required</div>
+                        <div ng-message="required">Route required</div>
                     </div>
                 </md-input-container>
 
+                <md-input-container class="md-block">
+                    <label>Start Period</label>
+                    <md-datepicker ng-model="place.startPeriod" md-current-view="year">
+                    </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>End Period</label>
+                    <md-datepicker ng-model="place.endPeriod" md-current-view="year">
+                    </md-datepicker>
+                </md-input-container>
                 <md-input-container class="md-block">
                     <label>Title: RU</label>
                     <input type="text" required name="title_ru" ng-model="place.title_ru">
@@ -173,42 +183,6 @@
                     </md-progress-circular>
                 </div>
 
-                <!--<div layout="row" layout-align="start center">-->
-                    <!--<md-input-container md-no-float>-->
-                        <!--<label>Upload image</label>-->
-                        <!--<input type="text" ng-model="imageTwoFilename" disabled>-->
-                    <!--</md-input-container>-->
-                    <!--<ng-md-icon icon="photo_camera" class="photo-camera"-->
-                                <!--ng-class="{ 'photo-active': place.imageTwo.url() }"-->
-                                <!--ngf-select="uploadImageTwo($file, $invalidFile)" ngf-max-size="2MB"-->
-                                <!--ngf-pattern="'image/*'" accept="image/*">-->
-                        <!--<md-tooltip>-->
-                            <!--Add image-->
-                        <!--</md-tooltip>-->
-                    <!--</ng-md-icon>-->
-                    <!--<md-progress-circular class="md-primary" md-diameter="30"-->
-                                          <!--ng-if="isImageTwoUploading">-->
-                    <!--</md-progress-circular>-->
-                <!--</div>-->
-
-                <!--<div layout="row" layout-align="start center">-->
-                    <!--<ng-md-icon icon="headset" class="photo-camera"></ng-md-icon>-->
-                    <!--<md-input-container md-no-float>-->
-                        <!--<label>Upload Audio: RU</label>-->
-                        <!--<input type="text" ng-model="audioFilename" disabled>-->
-                    <!--</md-input-container>-->
-                    <!--<ng-md-icon icon="add_circle" class="photo-camera"-->
-                                <!--ng-class="{ 'photo-active': place.audio.url() }"-->
-                                <!--ngf-select="uploadAudio_ru($file, $invalidFile)" ngf-max-size="50MB"-->
-                                <!--ngf-pattern="'audio/*'" accept="audio/*">-->
-                        <!--<md-tooltip>-->
-                            <!--Add Audio: RU-->
-                        <!--</md-tooltip>-->
-                    <!--</ng-md-icon>-->
-                    <!--<md-progress-circular class="md-primary" md-diameter="30"-->
-                                          <!--ng-if="isAudioUploading">-->
-                    <!--</md-progress-circular>-->
-                <!--</div>-->
 
 
                 <div layout="row" layout-align="start center">
@@ -228,6 +202,11 @@
                                           ng-if="isAudioUploading_ru">
                     </md-progress-circular>
                 </div>
+                <div layout="row" ng-if="place.audio_ru.url()">
+                    <audio controls>
+                        <source src="{{place.audio_ru.url() }}" type="audio/mpeg">
+                    </audio>
+                </div>
 
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
@@ -246,6 +225,11 @@
                                           ng-if="isAudioUploading_ro">
                     </md-progress-circular>
                 </div>
+                <div layout="row" ng-if="place.audio_ro.url()">
+                    <audio controls>
+                        <source src="{{place.audio_ro.url() }}" type="audio/mpeg">
+                    </audio>
+                </div>
 
                 <div layout="row" layout-align="start center">
                      <md-input-container md-no-float>
@@ -263,6 +247,11 @@
                      <md-progress-circular class="md-primary" md-diameter="30"
                                            ng-if="isAudioUploading_en">
                      </md-progress-circular>
+                </div>
+                <div layout="row" ng-if="place.audio_en.url()">
+                    <audio controls>
+                        <source src="{{place.audio_en.url() }}" type="audio/mpeg">
+                    </audio>
                 </div>
             </md-content>
         </md-dialog-content>

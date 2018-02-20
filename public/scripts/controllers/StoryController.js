@@ -178,23 +178,23 @@ angular.module('nearPlaceApp')
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-
-        $scope.uploadStoryAudio = function (file, invalidFile,lang) {
+        $scope.uploadAudio = function (file, invalidFile,lang) {
 
             if (file) {
 
                 $scope.isAudioUploading = true;
-                $scope.audioFilename['language_'+lang] = file.name;
+                $scope.audioFilename = file.name;
 
                 File.uploadAudio(file).then(function (savedFile) {
-                        $scope.objStory['audios_'+lang].push(savedFile);
-                        $scope.isAudioUploading = false;
-                        showToast('Audio uploaded');
-                    },
-                    function (error) {
-                        $scope.isAudioUploading = false;
-                        showToast(error.message);
-                    });
+
+                      $scope.objStory['audio_'+lang] = savedFile;
+                      $scope.isAudioUploading = false;
+                      showToast('Audio uploaded');
+                  },
+                  function (error) {
+                      $scope.isAudioUploading = false;
+                      showToast(error.message);
+                  });
             } else {
                 if (invalidFile) {
                     if (invalidFile.$error === 'maxSize') {
@@ -203,6 +203,30 @@ angular.module('nearPlaceApp')
                 }
             }
         };
+        // $scope.uploadStoryAudio = function (file, invalidFile,lang) {
+        //
+        //     if (file) {
+        //
+        //         $scope.isAudioUploading = true;
+        //         $scope.audioFilename['language_'+lang] = file.name;
+        //
+        //         File.uploadAudio(file).then(function (savedFile) {
+        //                 $scope.objStory['audios_'+lang].push(savedFile);
+        //                 $scope.isAudioUploading = false;
+        //                 showToast('Audio uploaded');
+        //             },
+        //             function (error) {
+        //                 $scope.isAudioUploading = false;
+        //                 showToast(error.message);
+        //             });
+        //     } else {
+        //         if (invalidFile) {
+        //             if (invalidFile.$error === 'maxSize') {
+        //                 showToast('Audio too big. Max ' + invalidFile.$errorParam);
+        //             }
+        //         }
+        //     }
+        // };
 
         $scope.onSaveStory = function (isFormValid) {
 
@@ -210,8 +234,8 @@ angular.module('nearPlaceApp')
                 showToast('Please correct all highlighted errors and try again');
                 return;
 
-            } else if (!$scope.objStory.audios_ru || !$scope.objStory.audios_ro || !$scope.objStory.audios_en) {
-                showToast('Upload an audios');
+            } else if (!$scope.objStory.audio_ru) {
+                showToast('Upload an ru audio');
             } else {
 
                 $scope.isSavingStory = true;
@@ -232,8 +256,8 @@ angular.module('nearPlaceApp')
 
             if(!isFormValid) {
                 showToast('Please correct all highlighted errors and try again');
-            } else if(!$scope.objStory.audios_ru || !$scope.objStory.audios_ro || !$scope.objStory.audios_en) {
-                showToast('Upload an audios');
+            } else if(!$scope.objStory.audio_ru) {
+                showToast('Upload an ru audios');
             } else {
 
                 $scope.isSavingStory = true;

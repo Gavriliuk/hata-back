@@ -92,6 +92,13 @@
         query.lessThanOrEqualTo('createdAt', end.toDate());
       }
 
+      if (params.period && params.period !== null) {
+        var start = moment(params.period.start).startOf('day');
+        var end = moment(params.period.end).endOf('day');
+        query.greaterThanOrEqualTo('startPeriod', start.toDate());
+        query.lessThanOrEqualTo('endPeriod', end.toDate());
+      }
+
       if (params.status && params.status !== null) {
 
         if (params.status === 'pending') {
@@ -428,6 +435,24 @@
           this.set('expiresAt', value);
       }
     });
+
+   Object.defineProperty(Place.prototype, 'startPeriod', {
+     get: function () {
+       return this.get('startPeriod');
+     },
+     set: function (value) {
+       this.set('startPeriod', value);
+     }
+   });
+
+   Object.defineProperty(Place.prototype, 'endPeriod', {
+     get: function () {
+       return this.get('endPeriod');
+     },
+     set: function (value) {
+       this.set('endPeriod', value);
+     }
+   });
 
  	return Place;
 

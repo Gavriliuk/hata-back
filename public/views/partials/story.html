@@ -6,23 +6,24 @@
                 <h2 ng-show="isCreating">New story</h2>
                 <h2 ng-show="!isCreating">Edit {{::objStory.title }}</h2>
                 <span flex></span>
-                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()"
+                            aria-label="Close dialog"></ng-md-icon>
             </div>
         </md-toolbar>
 
         <md-dialog-content>
             <md-content layout="column" layout-padding>
                 <md-input-container>
-                    <label class="marginLabel">Year</label>
-                    <input type="number" name="year" min="0"
-                           ng-model="objStory.year" required>
-                    <div ng-messages="form.year.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Year required</div>
+                    <label class="marginLabel">Name</label>
+                    <input type="string" name="name" min="0"
+                           ng-model="objStory.name" required>
+                    <div ng-messages="form.name.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Name required</div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block">
-                    <label>Category: RU</label>
+                    <label>Route</label>
                     <md-select name="category" required ng-model="objStory.category"
                                ng-model-options="{ trackBy: '$value.id' }">
                         <md-option ng-value="category"
@@ -31,97 +32,90 @@
                         </md-option>
                     </md-select>
                     <div ng-messages="form.category.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Category required</div>
+                        <div ng-message="required">Route required</div>
                     </div>
                 </md-input-container>
-
-                <md-input-container layout="column">
-                    <span class="marginLabel">
-                     <label>RU Audio:</label>
-                    </span>
-                    <span ng-repeat="audio in objStory.audios_ru">
-                        <audio controls>
-                         <source src="{{ audio.url() }}" type="audio/mpeg">
-                        </audio>
-                    </span>
+                <md-input-container class="md-block">
+                    <label>Start Period</label>
+                    <md-datepicker ng-model="objStory.startPeriod" md-current-view="year">
+                    </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>End Period</label>
+                    <md-datepicker ng-model="objStory.endPeriod" md-current-view="year">
+                    </md-datepicker>
                 </md-input-container>
 
                 <div layout="row" layout-align="start center">
-                    <ng-md-icon icon="headset" class="photo-camera"></ng-md-icon>
                     <md-input-container md-no-float>
-                        <label>Name added RU Audio:</label>
-                        <input type="text" ng-model="audioFilename.language_ru" disabled>
+                        <label>Upload Audio: RU</label>
+                        <input type="text" ng-model="audioFilename_ru" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="add_circle" class="photo-camera"
-                                ngf-select="uploadStoryAudio($file, $invalidFile,'ru')" ngf-max-size="50MB"
+
+                    <ng-md-icon icon="headset" class="photo-camera"
+                                ng-class="{ 'photo-active': objStory.audio_ru.url() }"
+                                ngf-select="uploadAudio($file, $invalidFile,'ru')"
+                                ngf-max-size="50MB"
                                 ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
-                            Add RU Audio:
+                            Add Audio: RU
                         </md-tooltip>
                     </ng-md-icon>
                     <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isUploading">
+                                          ng-if="isAudioUploading">
                     </md-progress-circular>
                 </div>
-
-                <md-input-container layout="column">
-                   <span class="marginLabel">
-                     <label>RO Audio:</label>
-                    </span>
-                    <span ng-repeat="audio in objStory.audios_ro">
-                        <audio controls>
-                         <source src="{{ audio.url() }}" type="audio/mpeg">
-                        </audio>
-                    </span>
-                </md-input-container>
-
+                <div layout="row" ng-if="objStory.audio_ru.url()">
+                    <audio controls>
+                        <source src="{{objStory.audio_ru.url() }}" type="audio/mpeg">
+                    </audio>
+                </div>
                 <div layout="row" layout-align="start center">
-                    <ng-md-icon icon="headset" class="photo-camera"></ng-md-icon>
                     <md-input-container md-no-float>
-                        <label>Name added RO Audio:</label>
-                        <input type="text" ng-model="audioFilename.language_ro" disabled>
+                        <label>Upload Audio: RO</label>
+                        <input type="text" ng-model="audioFilename_ro" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="add_circle" class="photo-camera"
-                                ngf-select="uploadStoryAudio($file, $invalidFile,'ro')" ngf-max-size="50MB"
+                    <ng-md-icon icon="headset" class="photo-camera"
+                                ng-class="{ 'photo-active': objStory.audio_ro.url() }"
+                                ngf-select="uploadAudio($file, $invalidFile,'ro')"
+                                ngf-max-size="50MB"
                                 ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
-                            Add RO Audio:
+                            Add Audio: RO
                         </md-tooltip>
                     </ng-md-icon>
                     <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isUploading">
+                                          ng-if="isAudioUploading">
                     </md-progress-circular>
                 </div>
-
-                <md-input-container layout="column">
-                    <span class="marginLabel">
-                     <label>EN Audio:</label>
-                    </span>
-                    <span ng-repeat="audio in objStory.audios_en">
-                        <audio controls>
-                         <source src="{{ audio.url() }}" type="audio/mpeg">
-                        </audio>
-                    </span>
-                </md-input-container>
-
-                <div layout="row" layout-align="start center">
-                    <ng-md-icon icon="headset" class="photo-camera"></ng-md-icon>
-                    <md-input-container md-no-float>
-                        <label>Name added EN Audio:</label>
-                        <input type="text" ng-model="audioFilename.language_en" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="add_circle" class="photo-camera"
-                                    ngf-select="uploadStoryAudio($file, $invalidFile,'en')" ngf-max-size="50MB"
-                                    ngf-pattern="'audio/*'" accept="audio/*">
-                            <md-tooltip>
-                                Add EN Audio:
-                            </md-tooltip>
-                        </ng-md-icon>
-                        <md-progress-circular class="md-primary" md-diameter="30"
-                                              ng-if="isUploading">
-                        </md-progress-circular>
+                <div layout="row" ng-if="objStory.audio_ro.url()">
+                    <audio controls>
+                        <source src="{{objStory.audio_ro.url() }}" type="audio/mpeg">
+                    </audio>
                 </div>
-
+                <div layout="row" layout-align="start center">
+                    <md-input-container md-no-float>
+                        <label>Upload Audio: EN</label>
+                        <input type="text" ng-model="audioFilename_en" disabled>
+                    </md-input-container>
+                    <ng-md-icon icon="headset" class="photo-camera"
+                                ng-class="{ 'photo-active': objStory.audio_en.url() }"
+                                ngf-select="uploadAudio($file, $invalidFile,'en')"
+                                ngf-max-size="50MB"
+                                ngf-pattern="'audio/*'" accept="audio/*">
+                        <md-tooltip>
+                            Add Audio: EN
+                        </md-tooltip>
+                    </ng-md-icon>
+                    <md-progress-circular class="md-primary" md-diameter="30"
+                                          ng-if="isAudioUploading">
+                    </md-progress-circular>
+                </div>
+                <div layout="row" ng-if="objStory.audio_en.url()">
+                    <audio controls>
+                        <source src="{{objStory.audio_en.url() }}" type="audio/mpeg">
+                    </audio>
+                </div>
             </md-content>
         </md-dialog-content>
 

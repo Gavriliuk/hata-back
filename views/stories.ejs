@@ -3,15 +3,17 @@
         <table md-table md-progress="promise">
             <thead md-head md-order="query.year" md-trigger="onOrderChange">
             <tr md-row>
-                <th md-column md-order-by="year">Year</th>
-                <th md-column>Category: RU</th>
+                <th md-column md-order-by="name">Name</th>
+                <th md-column>Route</th>
+                <th md-column>Period</th>
                 <th md-column>Edit</th>
             </tr>
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="story in stories">
-                <td md-cell>{{:: story.year }}</td>
+                <td md-cell>{{:: story.name }}</td>
                 <td md-cell>{{:: story.category.get('title_ru') }}</td>
+                <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
                 <td md-cell>
                     <md-menu>
                         <md-button aria-label="Open menu" class="md-icon-button"
