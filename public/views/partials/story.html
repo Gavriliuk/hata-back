@@ -21,6 +21,20 @@
                     </div>
                 </md-input-container>
 
+                <md-input-container class="md-block">
+                    <label>Category: RU</label>
+                    <md-select name="category" required ng-model="objStory.category"
+                               ng-model-options="{ trackBy: '$value.id' }">
+                        <md-option ng-value="category"
+                                   ng-repeat="category in categories track by category.id">
+                            {{ category.title_ru }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Category required</div>
+                    </div>
+                </md-input-container>
+
                 <md-input-container layout="column">
                     <span class="marginLabel">
                      <label>RU Audio:</label>

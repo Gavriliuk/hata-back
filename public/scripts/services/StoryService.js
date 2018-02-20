@@ -63,6 +63,10 @@ angular.module('nearPlaceApp')
                     query.contains('canonical', params.filter);
                 }
 
+                if (params.category && params.category !== null) {
+                    query.equalTo('category', params.category);
+                }
+
                 query.count({
                     success: function (count) {
                         defer.resolve(count);
@@ -86,6 +90,10 @@ angular.module('nearPlaceApp')
                     query.contains('canonical', params.filter);
                 }
 
+                if (params.category && params.category!== null) {
+                    query.equalTo('category', params.category);
+                }
+
                 if (params.order === 'year') {
                     query.ascending('year');
                 } else if (params.order === '-year') {
@@ -93,7 +101,7 @@ angular.module('nearPlaceApp')
                 } else {
                     query.ascending('year');
                 }
-
+                query.include('category');
                 query.limit(params.limit);
                 query.skip((params.page * params.limit) - params.limit);
                 query.find({
@@ -107,6 +115,15 @@ angular.module('nearPlaceApp')
                 return defer.promise;
             },
 
+        });
+
+        Object.defineProperty(Story.prototype, 'category', {
+            get: function () {
+                return this.get('category');
+            },
+            set: function (value) {
+                this.set('category', value);
+            }
         });
 
         Object.defineProperty(Story.prototype, 'year',

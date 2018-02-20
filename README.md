@@ -138,3 +138,5 @@ Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
 ```
 
 You can change the server URL in all of the open-source SDKs, but we're releasing new builds which provide initialization time configuration of this property.
+ssh -R erepo:80:localhost:1337 serveo.net
+"SERVER_URL": "https://erepo.serveo.net/parse"

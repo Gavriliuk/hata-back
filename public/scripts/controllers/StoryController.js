@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nearPlaceApp')
-    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth) {
+    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth, Category) {
 
         // Pagination options.
         $scope.rowOptions = [10, 20, 40];
@@ -10,7 +10,10 @@ angular.module('nearPlaceApp')
             filter: '',
             limit: 40,
             page: 1,
-            total: 0
+            total: 0,
+            category_ru: null,
+            category_ro: null,
+            category_en: null,
         };
 
         $scope.stories = [];
@@ -47,6 +50,20 @@ angular.module('nearPlaceApp')
             $scope.query.limit = limit;
             loadStories();
         };
+
+        var loadCategories = function () {
+            var params = {
+                page: 1, limit: 1000, filter: '', order: 'title'
+            }
+
+            Auth.ensureLoggedIn().then(function () {
+                Category.all(params).then(function (categories) {
+                    $scope.categories = categories;
+                });
+            });
+        }
+
+        loadCategories();
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
@@ -111,7 +128,8 @@ angular.module('nearPlaceApp')
         };
 
     }).controller('DialogStoryController',
-    function($scope, $mdDialog, $mdToast, Story, File, story) {
+    function($scope, $mdDialog, $mdToast, Story, File, story,Category) {
+        $scope.categories = [];
         $scope.isCreating = false;
         $scope.isUploading = false;
         $scope.audioFilename = {};
@@ -120,6 +138,7 @@ angular.module('nearPlaceApp')
         $scope.audioFilename.language_en = '';
         $scope.isAudioUploading = false;
         $scope.objStory = {};
+        $scope.objStory.category = null;
         $scope.objStory.audios_ru = [];
         $scope.objStory.audios_ro = [];
         $scope.objStory.audios_en = [];
@@ -137,6 +156,11 @@ angular.module('nearPlaceApp')
             // $scope.objStory.audios_ru = [];
             $scope.isCreating = true;
         }
+
+        Category.all({ page: 1, limit: 1000, filter: '' })
+            .then(function (categories) {
+                $scope.categories = categories;
+            });
 
         var showToast = function (message) {
             $mdToast.show(

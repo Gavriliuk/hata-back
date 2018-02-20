@@ -68,7 +68,7 @@
  			loadCategories();
       loadCount();
  		});
- 	}
+ 	};
 
  	$scope.onEditCategory = function (ev, category) {
 
@@ -85,7 +85,7 @@
  		.then(function(answer) {
  			loadCategories();
  		});
- 	}
+ 	};
 
  	$scope.onDestroyCategory = function(ev, category) {
 
@@ -106,17 +106,15 @@
  			});
 
  		});
-
-
- 	}
+ 	};
 
 }).controller('DialogCategoryController',
 function($scope, $mdDialog, $mdToast, Category, File, category) {
 
-	$scope.isCreating = false;
-	$scope.isUploading = false;
+  $scope.isCreating = false;
+  $scope.isUploading = false;
   $scope.isUploadingIcon = false;
-	$scope.imageFilename = '';
+  $scope.imageFilename = '';
   $scope.iconFilename = '';
 
 	if (category) {
@@ -136,7 +134,7 @@ function($scope, $mdDialog, $mdToast, Category, File, category) {
 		$scope.isCreating = true;
 	}
 
-	var showToast = function (message) {
+    var showToast = function (message) {
 		$mdToast.show(
 			$mdToast.simple()
 			.content(message)
@@ -245,6 +243,6 @@ function($scope, $mdDialog, $mdToast, Category, File, category) {
         $scope.isSavingCategory = false;
 			});
 		}
-	}
+	};
 
 });

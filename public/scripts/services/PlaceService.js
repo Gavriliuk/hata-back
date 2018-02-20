@@ -113,7 +113,7 @@
         }
       }
 
- 			query.include('category')
+ 			query.include('category');
       query.descending('createdAt');
       query.limit(params.limit);
  			query.skip((params.page * params.limit) - params.limit);
