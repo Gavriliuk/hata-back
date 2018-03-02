@@ -184,8 +184,13 @@ table.md-table td.md-cell {
     display: block;
     width: 80px;
     height: 80px;
-    margin-right: 5px;
+    margin: -11px;
 }
 .marginLabel{
     padding-bottom: 25px;
+}
+.imgClearPlace{
+    position:relative;
+    bottom: 13px;
+    right: 9px;
 }

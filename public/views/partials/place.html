@@ -151,39 +151,37 @@
                     <input type="text" name="radius" ng-model="place.radius">
                 </md-input-container>
 
-
-
-
-                <md-input-container class="layout-row">
-                    <span ng-repeat="img in place.images">
-                        <img class="img-thumb placeImg" actual-src="{{ img.url() }}"/>
-                    </span>
-                </md-input-container>
+                <div layout="column">
+                    <md-input-container class="layout-row">
+                        <div ng-repeat="img in place.images">
+                            <img class="img-thumb placeImg" actual-src="{{ img.url() }}"/>
+                            <!--<ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="DeleteFileImg(img)"></ng-md-icon>-->
+                            <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteImage(img)"></ng-md-icon>
+                        </div>
+                    </md-input-container>
+                    <div layout="row" layout-align="start center">
+                        <ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
+                        <md-input-container md-no-float>
+                            <label>Upload image</label>
+                            <input type="text" ng-model="imageFilename" disabled>
+                        </md-input-container>
+                        <ng-md-icon icon="add_circle" class="photo-camera"
+                                    ng-class="{ 'photo-active': place.images.url() }"
+                                    ngf-select="uploadImageFile($file, $invalidFile)" ngf-max-size="2MB"
+                                    ngf-pattern="'image/*'" accept="image/*">
+                            <md-tooltip>
+                                Add image
+                            </md-tooltip>
+                        </ng-md-icon>
+                        <md-progress-circular class="md-primary" md-diameter="30"
+                                              ng-if="isImageUploading">
+                        </md-progress-circular>
+                    </div>
+                </div>
 
                 <div class="hint">
                     The image's dimensions should be min 800x600 px
                 </div>
-
-                <div layout="row" layout-align="start center">
-                    <ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
-                    <md-input-container md-no-float>
-                        <label>Upload image</label>
-                        <input type="text" ng-model="imageFilename" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="add_circle" class="photo-camera"
-                                ng-class="{ 'photo-active': place.images.url() }"
-                                ngf-select="uploadImageFile($file, $invalidFile)" ngf-max-size="2MB"
-                                ngf-pattern="'image/*'" accept="image/*">
-                        <md-tooltip>
-                            Add image
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isImageUploading">
-                    </md-progress-circular>
-                </div>
-
-
 
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>

@@ -321,6 +321,25 @@
          this.set('images', val);
        }
      });
+
+   Object.defineProperty(Place.prototype, 'original_images',
+     {
+       get: function () {
+         return this.get('original_images');
+       },
+       set: function (val) {
+         this.set('original_images', val);
+       }
+     });
+   Object.defineProperty(Place.prototype, 'deletedImages',
+     {
+       get: function () {
+         return this.get('deletedImages');
+       },
+       set: function (value) {
+         this.set('deletedImages', value);
+       }
+     });
      // Object.defineProperty(Place.prototype, 'image', {
      //     get: function () {
      //         return this.get('image');

@@ -1,8 +1,17 @@
 var Image = require('../helpers/image');
+var fs = require('fs');
 
 function saveImage(base64) {
     var parseFile = new Parse.File('image.jpg', {base64: base64});
     return parseFile.save();
+}
+
+var filePath = './files/';
+
+function deleteFSFile( fileName ) {
+    if(fs.existsSync(filePath + fileName)){
+        fs.unlinkSync(filePath + fileName);
+    }
 }
 
 Parse.Cloud.define('getUserStats', function (req, res) {
@@ -406,6 +415,18 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
     if (!place.get('images')) {
         return res.error('Upload the first image');
     }
+    // if (place.dirty('deletedImages') && place.get('deletedImages')) {
+ // ----------iteracia po deletedImages--------
+ //       for (var i = 0; i < place.get('deletedImages').length; i++){
+ //           var deletedImage = place.get('deletedImages')[i];
+ //           console.log("deletedImage: ",deletedImage)
+ //           deleteFSFile(deletedImage.image.name());
+ //           // deleteFSFile(deletedImage.image.name());
+ //           // deleteFSFile(place.get('original_images')[deletedImage.index].name());
+ //           place.set('deletedImages', []);
+ //       }
+
+    // }
 
     if (place.dirty('title') && place.get('title')) {
         place.set('canonical', place.get('title').toLowerCase());
@@ -422,16 +443,14 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
 
         for (var i = 0; i < place.get('images').length; i++) {
             var url = place.get('images')[i].url();
-
+            // deleteFSFile(place.get('images')[i].name());
             var promise = Image.resize(url, 800, 510).then(function (base64) {
                 return saveImage(base64);
             }).then(function (savedFile) {
                  resizedImages.push(savedFile);
-                // console.log("resizedAudios:",resizedAudios);
             });
 
             promises.push(promise);
-
             if (i === 0) {
                 var promiseThumb = Image.resize(url, 160, 160).then(function (base64) {
                     return saveImage(base64);
@@ -444,6 +463,7 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
     }
 
     Parse.Promise.when(promises).then(function (result) {
+        place.set('original_images', place.get('images'));
         place.set('images', resizedImages);
         res.success();
     }, function (error) {

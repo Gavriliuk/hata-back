@@ -177,7 +177,8 @@ angular.module('nearPlaceApp')
 
   $scope.categories = [];
   $scope.place = {};
-    $scope.place.images=[];
+  $scope.place.images = [];
+    $scope.place.deletedImages=[];
   $scope.place.category = null;
   $scope.place.website = 'http://';
   $scope.imageFilename = '';
@@ -553,7 +554,7 @@ angular.module('nearPlaceApp')
 
       $scope.isSavingPlace = true;
 
-      Place.create($scope.place).then(function (place) {
+      Place.create($scope.place).then(function (success) {
           showSimpleToast('Place saved');
           $mdDialog.hide();
           $scope.isSavingPlace = false;
@@ -562,6 +563,19 @@ angular.module('nearPlaceApp')
           showSimpleToast(error.message);
           $scope.isSavingPlace = false;
         });
+    }
+  };
+
+  $scope.onDeleteImage = function (ev) {
+    $scope.isSavingPlace = true;
+    for(var i=0; i<$scope.place.images.length; i++){
+        if($scope.place.images[i].$$hashKey === ev.$$hashKey){
+            // $scope.place.deletedImages.push($scope.place.images[i]);
+            // $scope.place.deletedImages.push({image:$scope.place.images[i],index:i});
+            $scope.place.images.splice(i, 1);
+            showSimpleToast('Place deleted.');
+            $scope.isSavingPlace = false;
+        }
     }
   };
 
@@ -579,7 +593,7 @@ angular.module('nearPlaceApp')
           $scope.isSavingPlace = false;
         },
         function (error) {
-          showSimpleToast(error.message);
+          showSimpleToast('Error. Place not updated.',error.message);
           $scope.isSavingPlace = false;
         });
 
