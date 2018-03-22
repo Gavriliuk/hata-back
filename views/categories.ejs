@@ -19,11 +19,12 @@
 			   <!--<th md-column>Title: RO</th>-->
 			   <!--<th md-column>Title: EN</th>-->
           <th md-column md-order-by="order">Order</th>
+          <th md-column>View</th>
 	        <th md-column></th>
 	      </tr>
 	    </thead>
-	    <tbody md-body>
-	      <tr md-row ng-repeat="category in categories">
+	    <tbody md-body ng-repeat="category in categories">
+	      <tr md-row>
 	      	<td md-cell>
 	      		<img class="img-thumb img-circle" ng-src="/images/placeholder.png"
               actual-src="{{ category.imageThumb.url() }}"/>
@@ -32,12 +33,16 @@
 	      		<img width="32" height="32" ng-src="/images/placeholder.png"
               actual-src="{{ category.icon.url() }}" />
 	      </td>
-					<td md-cell>{{:: category.title_ru }}</td>
+		  <td md-cell>{{:: category.title_ru }}</td>
 					<!--<td md-cell>{{:: category.title_ro }}</td>-->
 					<!--<td md-cell>{{:: category.title_en }}</td>-->
 	        <td md-cell>{{:: category.order }}</td>
+			  <td md-cell>
+				  <a class="colorHref" href="/dashboard/category/{{category.id}}">View</a>
+			  </td>
+
 	        <td md-cell>
-				<md-menu>
+			   <md-menu>
 			      <md-button aria-label="Open menu" class="md-icon-button"
 			        ng-click="openMenu($mdOpenMenu, $event)">
 			        <ng-md-icon md-menu-origin icon="more_vert"
@@ -61,7 +66,7 @@
 			        </md-menu-item>
 
 			      </md-menu-content>
-			    </md-menu>
+			   </md-menu>
 	        </td>
 	      </tr>
 	    </tbody>

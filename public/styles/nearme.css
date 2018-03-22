@@ -141,6 +141,11 @@ table.md-table td.md-cell {
 	height: 80px;
   margin: 5px 0;
 }
+.img-catRelation {
+	width: 30px;
+	height: 30px;
+  margin: 5px 0;
+}
 
 .img-circle {
   border-radius: 50%;
@@ -193,4 +198,33 @@ table.md-table td.md-cell {
     position:relative;
     bottom: 13px;
     right: 9px;
+}
+.toolBarCategory{
+    background-color: #FFF176;
+    text-color: #333 !important;
+}
+.categoryTitle{
+    text-color: #333 !important;
+}
+.toolBarCategoryRelation{
+    background-color:gray;
+}
+.categRelationPlace{
+    background-color:#3c3a3a;
+}
+.img-categRelationPlace {
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+}
+.colorHref{
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: inline-block;
+    line-height: 1.5em;
+    text-align: center;
+    min-width: 80px;
+    color: #fff;
+    background-color: #aed581;
+    text-decoration: none;
 }

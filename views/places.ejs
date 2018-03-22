@@ -62,7 +62,7 @@
             <tr md-row>
                 <th md-column></th>
                 <th md-column>Title</th>
-                <th md-column>Route</th>
+                <!--<th md-column>Route</th>-->
                 <th md-column>Period</th>
                 <th md-column>Status</th>
                 <th md-column>Created At</th>
@@ -76,7 +76,7 @@
                          actual-src="{{ place.imageThumb.url() }}"/>
                 </td>
                 <td md-cell>{{:: place.title_ru }}</td>
-                <td md-cell>{{:: place.category.get('title_ru') }}</td>
+                <!--<td md-cell>{{:: place.category.get('title_ru') }}</td>-->
                 <td md-cell>{{:: place.startPeriod | date:'y'}} - {{:: place.endPeriod | date:'y'}}</td>
                 <td md-cell>
 						<span class="label"

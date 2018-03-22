@@ -309,6 +309,10 @@ app.get('/dashboard/categories', isAdmin, function (req, res) {
   res.render('categories');
 });
 
+app.get('/dashboard/category/:id', isAdmin, function (req, res) {
+  res.render('category',{ id: req.params.id});
+});
+
 app.get('/dashboard/stories', isAdmin, function (req, res) {
     res.render('stories');
 });

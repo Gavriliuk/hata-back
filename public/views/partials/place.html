@@ -1,4 +1,3 @@
-<!--TODO remove images-->
 <md-dialog flex="100" flex-gt-xs="40" aria-label="Place Dialog">
     <form name="form" role="form" novalidate>
         <md-toolbar>
@@ -12,19 +11,25 @@
         </md-toolbar>
         <md-dialog-content>
             <md-content layout="column" layout-padding>
-                <md-input-container class="md-block">
-                    <label>Route</label>
-                    <md-select name="category" required ng-model="place.category"
-                               ng-model-options="{ trackBy: '$value.id' }">
-                        <md-option ng-value="category"
-                                   ng-repeat="category in categories track by category.id">
-                            {{ category.title_ru }}
-                        </md-option>
-                    </md-select>
-                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Route required</div>
-                    </div>
-                </md-input-container>
+                <!--<md-input-container class="md-block">-->
+                    <!--<label>Route</label>-->
+                    <!--<md-select name="category" required ng-model="place.category"-->
+                               <!--ng-model-options="{ trackBy: '$value.id' }">-->
+                        <!--<md-option ng-value="category"-->
+                                   <!--ng-repeat="category in categories track by category.id">-->
+                            <!--{{ category.title_ru }}-->
+                        <!--</md-option>-->
+                    <!--</md-select>-->
+<!--Add checkBox-->
+                    <!--<md-list-item ng-repeat="category in categories">-->
+                        <!--<p> {{ category.title_ru }} </p>-->
+                        <!--<md-checkbox class="md-secondary" ng-model="category.selected"></md-checkbox>-->
+                    <!--</md-list-item>-->
+<!--Add checkBox-->
+                    <!--<div ng-messages="form.category.$error" ng-show="form.$submitted">-->
+                        <!--<div ng-message="required">Route required</div>-->
+                    <!--</div>-->
+                <!--</md-input-container>-->
 
                 <md-input-container class="md-block">
                     <label>Start Period</label>

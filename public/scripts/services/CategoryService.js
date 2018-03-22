@@ -34,6 +34,54 @@
 
         return defer.promise;
       },
+        save: function (category) {
+            var defer = $q.defer();
+
+            if (category.places && category.places.length !== 0) {
+                var relation = category.relation('placesRelation');
+                for(var i = 0; i<category.places.length; i++){
+                    relation.add(category.places[i]);
+                    delete category.places[i];
+                }
+            }
+            category.save(null, {
+                success: function (obj) {
+                    defer.resolve(obj);
+                }, error: function (obj, error) {
+                    defer.reject(error);
+                }
+            });
+            return defer.promise;
+        },
+
+        get: function (categoryId) {
+            var defer = $q.defer();
+
+            var category = new Category();
+            var query = new Parse.Query(category);
+            query.get(categoryId,{
+                success: function (obj) {
+                    defer.resolve(obj);
+                }, error: function (obj, error) {
+                    defer.reject(error);
+                }
+            });
+
+            return defer.promise;
+        },
+
+        find: function (places) {
+            var defer = $q.defer();
+
+            places.find({
+                success: function (obj) {
+                    defer.resolve(obj);
+                }, error: function (obj, error) {
+                    defer.reject(error);
+                }
+            });
+            return defer.promise;
+        },
 
       destroy: function (categoryId) {
 
@@ -52,6 +100,41 @@
 
         return defer.promise;
       },
+
+        destroyPlace: function (placeObj) {
+            var defer = $q.defer();
+            var category = placeObj.category;
+            var place = placeObj.place;
+            var relation = category.relation("placesRelation");
+            var query = relation.query();
+            query.find({
+                success: function(follower) {
+
+                    for (var i = 0; i < follower.length; i++) {
+                        if(follower[i].id === place.id){
+                            relation.remove(follower[i]);
+                            category.save();
+                            // follower[i].destroy({
+                            //     success: function(follower){
+                            //         console.log("success!!!!");
+                            //         defer.resolve(follower);
+                            //     }
+                            // });
+                        }
+                    }
+                }, error: function (follower, error) {
+                    defer.reject(error);
+                }
+            });
+            // place.destroy({
+            //     success: function (obj) {
+            //         defer.resolve(obj);
+            //     }, error: function (obj, error) {
+            //         defer.reject(error);
+            //     }
+            // });
+            // return defer.promise;
+        },
 
       count: function (params) {
 
@@ -109,6 +192,16 @@
       },
 
     });
+
+     Object.defineProperty(Category.prototype, 'placesRelation',
+         {
+                get: function () {
+                    return this.get('placesRelation');
+                },
+                set: function (val) {
+                    this.set('placesRelation', val);
+                }
+        });
 
     Object.defineProperty(Category.prototype, 'title_ru',
         {

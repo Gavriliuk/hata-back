@@ -1,8 +1,7 @@
 'use strict';
 
  angular.module('nearPlaceApp')
- .controller('CategoryCtrl', function ($scope, $mdDialog, Category, Auth) {
-
+ .controller('CategoryCtrl', function ($scope, $mdDialog, Category,Place, Auth) {
  	// Pagination options.
  	$scope.rowOptions = [10, 20, 40];
 
@@ -107,9 +106,14 @@
 
  		});
  	};
+})
 
-}).controller('DialogCategoryController',
-function($scope, $mdDialog, $mdToast, Category, File, category) {
+.controller('DialogCategoryController',
+function($scope, $mdDialog, $mdToast, Category,Place, File, category) {
+    $scope.placesAll = [];
+    $scope.objCategory = {};
+    $scope.objCategory.places = [];
+    $scope.objCategory.placesRelation = {};
 
   $scope.isCreating = false;
   $scope.isUploading = false;
@@ -129,10 +133,13 @@ function($scope, $mdDialog, $mdToast, Category, File, category) {
 		$scope.objCategory = category;
 
 	} else {
-
 		$scope.objCategory = {};
 		$scope.isCreating = true;
 	}
+    Place.all({ page: 1, limit: 1000, filter: '' })
+        .then(function (places) {
+            $scope.placesAll = places;
+    });
 
     var showToast = function (message) {
 		$mdToast.show(

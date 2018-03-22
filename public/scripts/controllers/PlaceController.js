@@ -13,10 +13,9 @@ angular.module('nearPlaceApp')
       page: 1,
       total: 0,
       status: null,
-      // category: null,
       category_ru: null,
       category_ro: null,
-        category_en: null,
+      category_en: null,
       date: null
     };
 
@@ -50,21 +49,21 @@ angular.module('nearPlaceApp')
     }
 
     loadCount();
-
-    var loadCategories = function () {
-      var params = {
-        page: 1, limit: 1000, filter: '', order: 'title'
-      }
-
-      Auth.ensureLoggedIn().then(function () {
-        Category.all(params).then(function (categories) {
-          $scope.categories = categories;
-        });
-      });
-    }
-
-    loadCategories();
-
+// //----Save All Category Relation-----
+    // var loadCategories = function () {
+    //   var params = {
+    //     page: 1, limit: 1000, filter: '', order: 'title'
+    //   }
+    //
+    //   Auth.ensureLoggedIn().then(function () {
+    //     Category.all(params).then(function (categories) {
+    //       $scope.categories = categories;
+    //     });
+    //   });
+    // }
+    //
+    // loadCategories();
+// //----Save All Category Relation-----
     $scope.onQueryChange = function () {
       $scope.query.page = 1;
       $scope.query.total = 0;
@@ -120,6 +119,7 @@ angular.module('nearPlaceApp')
     }
 
     $scope.onUpdatePlace = function (ev, place) {
+        // console.log("\n$scope.categories",$scope.categories);
 
       var objPlace = angular.copy(place);
 
@@ -179,7 +179,8 @@ angular.module('nearPlaceApp')
   $scope.place = {};
   $scope.place.images = [];
     $scope.place.deletedImages=[];
-  $scope.place.category = null;
+  // $scope.place.category = [];
+    // $scope.place.categorAll = {};
   $scope.place.website = 'http://';
   $scope.imageFilename = '';
   // $scope.imageTwoFilename = '';
@@ -552,8 +553,15 @@ angular.module('nearPlaceApp')
       showSimpleToast('Ubication is required');
     } else {
 
-      $scope.isSavingPlace = true;
-
+// //----Save All Category Relation-----
+//     $scope.isSavingPlace = true;
+//         $scope.categories.forEach(function(cat){
+//             if(cat.selected){
+//                 $scope.place.category.push(cat);
+// // TODO iterirovati cherez for
+//             }
+//         });
+// //----Save All Category Relation-----
       Place.create($scope.place).then(function (success) {
           showSimpleToast('Place saved');
           $mdDialog.hide();
@@ -580,7 +588,7 @@ angular.module('nearPlaceApp')
   };
 
   $scope.onUpdatePlace = function (isFormValid) {
-
+// console.log("\n$scope.categories",$scope.categories);
     if (!isFormValid) {
       showSimpleToast('Please correct all highlighted errors and try again');
     } else {

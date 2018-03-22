@@ -1,0 +1,54 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog Category">
+    <form name="form" role="form" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="isCreating">Add places for category</h2>
+                <h2 ng-show="!isCreating">Add places for category "{{:: objCategory.title_ru }}"</h2>
+                <span flex></span>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <md-content layout="column">
+                <md-input-container class="md-block">
+                    <table md-table md-progress="promise">
+                        <thead md-head>
+                        <tr md-row class="categRelationPlace">
+                            <th md-column>Image</th>
+                            <th md-column>Title</th>
+                            <th md-column>Period</th>
+                            <th name="Actions">
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row ng-repeat="place in placesAll">
+                            <td md-cell>
+                                <img class="img-catRelation img-circle" ng-src="/images/placeholder.png"
+                                     actual-src="{{ place.imageThumb.url() }}"/>
+                            </td>
+                            <td md-cell>{{:: place.title_ru }}</td>
+                            <td md-cell>{{:: place.startPeriod | date:'y'}} - {{:: place.endPeriod | date:'y'}}</td>
+                            <td md-cell>
+                                <md-checkbox class="md-secondary" ng-model="place.selected"></md-checkbox>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </md-input-container>
+            </md-content>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating"
+                       ng-disabled="isSavingCategory"
+                       ng-click="AddPlaceSingleCategory(form.$valid)">
+                {{ !isSavingCategory ? 'Save' : 'Saving...' }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

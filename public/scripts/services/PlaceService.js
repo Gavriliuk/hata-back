@@ -26,7 +26,16 @@
  			var defer = $q.defer();
 
  			var objPlace = new Place();
-      place.user = Parse.User.current();
+            place.user = Parse.User.current();
+
+// //--------------add Relation----------
+//             if (place.category && place.category !== null) {
+//                  var relation = objPlace.relation('categoryAll');
+//
+//                  relation.add(place.category[0]);
+//                  delete place.category;
+//             }
+// // //--------------------------------
 
  			objPlace.save(place, {
  				success: function (success) {
@@ -191,14 +200,25 @@
 
  	});
 
-    Object.defineProperty(Place.prototype, 'category', {
-        get: function () {
-            return this.get('category');
-        },
-        set: function (value) {
-            this.set('category', value);
-        }
-    });
+// //--------------add Relation----------
+//      Object.defineProperty(Place.prototype, 'categoryAll', {
+//          get: function () {
+//              return this.get('categoryAll');
+//          },
+//          set: function (value) {
+//              this.set('categoryAll', value);
+//          }
+//      });
+// //--------------add Relation----------
+
+    // Object.defineProperty(Place.prototype, 'category', {
+    //     get: function () {
+    //         return this.get('category');
+    //     },
+    //     set: function (value) {
+    //         this.set('category', value);
+    //     }
+    // });
 
     Object.defineProperty(Place.prototype, 'user', {
       get: function () {
