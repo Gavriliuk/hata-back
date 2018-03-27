@@ -44,6 +44,15 @@
                     delete category.places[i];
                 }
             }
+            if (category.stories && category.stories.length !== 0) {
+                var relation = category.relation('storiesRelation');
+                for(var i = 0; i<category.stories.length; i++){
+                    relation.add(category.stories[i]);
+                    delete category.stories[i];
+                }
+            }
+
+
             category.save(null, {
                 success: function (obj) {
                     defer.resolve(obj);
@@ -136,6 +145,63 @@
             // return defer.promise;
         },
 
+        destroyStory: function (storyObj) {
+            var defer = $q.defer();
+            var category = storyObj.category;
+            var story = storyObj.story;
+            var relation = category.relation("storiesRelation");
+            var query = relation.query();
+            query.find({
+                success: function(follower) {
+
+                    for (var i = 0; i < follower.length; i++) {
+                        if(follower[i].id === story.id){
+                            relation.remove(follower[i]);
+                            category.save();
+                            // follower[i].destroy({
+                            //     success: function(follower){
+                            //         console.log("success!!!!");
+                            //         defer.resolve(follower);
+                            //     }
+                            // });
+                        }
+                    }
+                }, error: function (follower, error) {
+                    defer.reject(error);
+                }
+            });
+            // place.destroy({
+            //     success: function (obj) {
+            //         defer.resolve(obj);
+            //     }, error: function (obj, error) {
+            //         defer.reject(error);
+            //     }
+            // });
+            // return defer.promise;
+        },
+
+
+        destroy: function (categoryId) {
+
+          var defer = $q.defer();
+
+          var category = new Category();
+          category.id = categoryId;
+
+          category.destroy({
+            success: function (obj) {
+              defer.resolve(obj);
+            }, error: function (obj, error) {
+              defer.reject(error);
+            }
+          });
+
+          return defer.promise;
+        },
+
+
+
+
       count: function (params) {
 
         var defer = $q.defer();
@@ -202,6 +268,28 @@
                     this.set('placesRelation', val);
                 }
         });
+
+        Object.defineProperty(Category.prototype, 'storiesRelation',
+            {
+                   get: function () {
+                       return this.get('storiesRelation');
+                   },
+                   set: function (val) {
+                       this.set('storiesRelation', val);
+                   }
+           });
+
+
+
+
+
+
+
+
+
+
+
+
 
     Object.defineProperty(Category.prototype, 'title_ru',
         {
@@ -278,7 +366,7 @@
                  this.set('waypoints', val);
              }
     });
-         
+
     Object.defineProperty(Category.prototype, 'end_route',
          {
              get: function () {
@@ -288,7 +376,7 @@
                  this.set('end_route', val);
              }
     });
-    
+
     Object.defineProperty(Category.prototype, 'center_map',
     {
         get: function () {

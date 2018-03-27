@@ -608,7 +608,8 @@ angular.module('nearPlaceApp')
     }
   };
 
-}).controller('DialogPlaceExpiresAtController',
+})
+.controller('DialogPlaceExpiresAtController',
   function ($scope, $mdDialog, $mdToast, Place, place) {
 
     $scope.place = place;

@@ -3,6 +3,9 @@
         <table md-table md-progress="promise">
             <thead md-head md-order="query.year" md-trigger="onOrderChange">
             <tr md-row>
+              <md-datepicker ng-model="query.date" ng-change="onQueryChange()"
+                             md-placeholder="Enter date" flex-gt-xs>
+              </md-datepicker>
                 <th md-column md-order-by="name">Name</th>
                 <th md-column>Route</th>
                 <th md-column>Period</th>

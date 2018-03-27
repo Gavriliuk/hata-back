@@ -255,6 +255,9 @@
                  }
              });
 
+
+             
+
     Object.defineProperty(Place.prototype, 'description_ru', {
         get: function () {
             return this.get('description_ru');
