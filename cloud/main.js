@@ -321,45 +321,45 @@ Parse.Cloud.define('saveFacebookPicture', function (req, res) {
     });
 });
 
-Parse.Cloud.beforeSave('Category', function (req, res) {
+Parse.Cloud.beforeSave('Route', function (req, res) {
 
-    var category = req.object;
+    var route = req.object;
     var user = req.user;
 
     if (!user) {
         return res.error('Not Authorized');
     }
 
-    if (!category.get('image')) {
+    if (!route.get('image')) {
         return res.error('The field Image is required.');
     }
 
-    if (!category.existed()) {
+    if (!route.existed()) {
         var acl = new Parse.ACL();
         acl.setPublicReadAccess(true);
         acl.setRoleWriteAccess('Admin', true);
-        category.setACL(acl);
+        route.setACL(acl);
     }
 
-    if (category.dirty('title') && category.get('title')) {
-        category.set('canonical', category.get('title').toLowerCase());
+    if (route.dirty('title') && route.get('title')) {
+        route.set('canonical', route.get('title').toLowerCase());
     }
 
-    if (!category.dirty('image')) {
+    if (!route.dirty('image')) {
         return res.success();
     }
 
-    var imageUrl = category.get('image').url();
+    var imageUrl = route.get('image').url();
 
     Image.resize(imageUrl, 810, 540).then(function (base64) {
         return saveImage(base64);
     }).then(function (savedFile) {
-        category.set('image', savedFile);
+        route.set('image', savedFile);
         return Image.resize(imageUrl, 160, 160);
     }).then(function (base64) {
         return saveImage(base64);
     }).then(function (savedFile) {
-        category.set('imageThumb', savedFile);
+        route.set('imageThumb', savedFile);
         res.success();
     }, function (error) {
         res.error(error.message);

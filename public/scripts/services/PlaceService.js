@@ -1,224 +1,197 @@
 'use strict';
 
- angular.module('nearPlaceApp')
- .factory('Place', function ($q, moment) {
+angular.module('nearPlaceApp')
+  .factory('Place', function ($q, moment) {
 
- 	var Place = Parse.Object.extend('Place', {
+    var Place = Parse.Object.extend('Place', {
 
-    getStatus: function () {
+      getStatus: function () {
 
-      if (moment().toDate() >= this.expiresAt) {
-        return 'Expired';
-      }
-      else if (this.isApproved) {
-        return 'Approved';
-      } else if (this.isApproved === false) {
-        return 'Rejected';
-      } else {
-        return 'Pending';
-      }
-    }
-
-  }, {
-
- 		create: function (place) {
-
- 			var defer = $q.defer();
-
- 			var objPlace = new Place();
-            place.user = Parse.User.current();
-
-// //--------------add Relation----------
-//             if (place.category && place.category !== null) {
-//                  var relation = objPlace.relation('categoryAll');
-//
-//                  relation.add(place.category[0]);
-//                  delete place.category;
-//             }
-// // //--------------------------------
-
- 			objPlace.save(place, {
- 				success: function (success) {
- 					defer.resolve(success);
- 				}, error: function (obj, error) {
- 					defer.reject(error);
- 				}
- 			});
-
- 			return defer.promise;
- 		},
-
- 		update: function (place) {
-
- 			var defer = $q.defer();
-
-    	place.save(null, {
-    		success: function (success) {
-    			defer.resolve(success);
-    		}, error: function (obj, error) {
-    			defer.reject(error);
-    		}
-    	});
-
-    	return defer.promise;
-
- 		},
-
- 		destroy: function (place) {
-
- 			var defer = $q.defer();
-
- 			place.destroy({
- 				success: function (obj) {
- 					defer.resolve(obj);
- 				}, error: function (obj, error) {
- 					defer.reject(error);
- 				}
- 			});
-
- 			return defer.promise;
-
- 		},
-
- 		all: function(params) {
-
- 			var defer = $q.defer();
-
- 			var query = new Parse.Query(this);
-
-      if (params.filter != '') {
-        query.contains('canonical', params.filter);
-      }
-
-      if (params.category && params.category!== null) {
-        query.equalTo('category', params.category);
-      }
-
-      if (params.date && params.date !== null) {
-        var start = moment(params.date).startOf('day');
-        var end = moment(params.date).endOf('day');
-        query.greaterThanOrEqualTo('createdAt', start.toDate());
-        query.lessThanOrEqualTo('createdAt', end.toDate());
-      }
-
-      if (params.period && params.period !== null) {
-        var start = moment(params.period.start).startOf('day');
-        var end = moment(params.period.end).endOf('day');
-        query.greaterThanOrEqualTo('startPeriod', start.toDate());
-        query.lessThanOrEqualTo('endPeriod', end.toDate());
-      }
-
-      if (params.status && params.status !== null) {
-
-        if (params.status === 'pending') {
-          query.doesNotExist('isApproved');
-        } else if (params.status === 'rejected') {
-          query.equalTo('isApproved', false);
-        } else if (params.status === 'approved') {
-          query.equalTo('isApproved', true);
-        } else if (params.status === 'expired') {
-          query.lessThanOrEqualTo('expiresAt', moment().toDate());
-        } else if (params.status === 'expireInTenDays') {
-          var expiresAt = moment().add(10, 'days').toDate();
-          query.lessThanOrEqualTo('expiresAt', expiresAt);
-          query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-        } else if (params.status === 'expireInThirtyDays') {
-          var expiresAt = moment().add(30, 'days').toDate();
-          query.lessThanOrEqualTo('expiresAt', expiresAt);
-          query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+        if (moment().toDate() >= this.expiresAt) {
+          return 'Expired';
+        }
+        else if (this.isApproved) {
+          return 'Approved';
+        } else if (this.isApproved === false) {
+          return 'Rejected';
+        } else {
+          return 'Pending';
         }
       }
 
- 			query.include('category');
-      query.descending('createdAt');
-      query.limit(params.limit);
- 			query.skip((params.page * params.limit) - params.limit);
- 			query.find({
- 				success: function(places) {
- 					defer.resolve(places);
- 				}, error: function(error) {
- 					defer.reject(error);
- 				}
- 			});
+    }, {
 
- 			return defer.promise;
- 		},
+        create: function (place) {
 
-    count: function (params) {
+          var defer = $q.defer();
 
-      var defer = $q.defer();
+          var objPlace = new Place();
+          place.user = Parse.User.current();
 
-      var query = new Parse.Query(this);
 
-      if (params.filter != '') {
-        query.contains('canonical', params.filter);
-      }
+          objPlace.save(place, {
+            success: function (success) {
+              defer.resolve(success);
+            }, error: function (obj, error) {
+              defer.reject(error);
+            }
+          });
 
-      if (params.category && params.category !== null) {
-        query.equalTo('category', params.category);
-      }
+          return defer.promise;
+        },
 
-      if (params.date && params.date !== null) {
-        var start = moment(params.date).startOf('day');
-        var end = moment(params.date).endOf('day');
-        query.greaterThanOrEqualTo('createdAt', start.toDate());
-        query.lessThanOrEqualTo('createdAt', end.toDate());
-      }
+        update: function (place) {
 
-      if (params.status && params.status !== null) {
+          var defer = $q.defer();
 
-        if (params.status === 'pending') {
-          query.doesNotExist('isApproved');
-        } else if (params.status === 'rejected') {
-          query.equalTo('isApproved', false);
-        } else if (params.status === 'approved') {
-          query.equalTo('isApproved', true);
-          query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-        } else if (params.status === 'expired') {
-          query.lessThanOrEqualTo('expiresAt', moment().toDate());
-        } else if (params.status === 'expireInTenDays') {
-          var expiresAt = moment().add(10, 'days').toDate();
-          query.lessThanOrEqualTo('expiresAt', expiresAt);
-          query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-        } else if (params.status === 'expireInThirtyDays') {
-          var expiresAt = moment().add(30, 'days').toDate();
-          query.lessThanOrEqualTo('expiresAt', expiresAt);
-          query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+          place.save(null, {
+            success: function (success) {
+              defer.resolve(success);
+            }, error: function (obj, error) {
+              defer.reject(error);
+            }
+          });
+
+          return defer.promise;
+
+        },
+
+        destroy: function (place) {
+
+          var defer = $q.defer();
+
+          place.destroy({
+            success: function (obj) {
+              defer.resolve(obj);
+            }, error: function (obj, error) {
+              defer.reject(error);
+            }
+          });
+
+          return defer.promise;
+
+        },
+
+        all: function (params) {
+
+          var defer = $q.defer();
+
+          var query = new Parse.Query(this);
+
+          if (params.filter != '') {
+            query.contains('canonical', params.filter);
+          }
+
+          if (params.route && params.route !== null) {
+            query.equalTo('route', params.route);
+          }
+
+          if (params.date && params.date !== null) {
+            var start = moment(params.date).startOf('day');
+            var end = moment(params.date).endOf('day');
+            query.greaterThanOrEqualTo('createdAt', start.toDate());
+            query.lessThanOrEqualTo('createdAt', end.toDate());
+          }
+
+          if (params.period && params.period !== null) {
+            var start = moment(params.period.start).startOf('day');
+            var end = moment(params.period.end).endOf('day');
+            query.greaterThanOrEqualTo('startPeriod', start.toDate());
+            query.lessThanOrEqualTo('endPeriod', end.toDate());
+          }
+
+          if (params.status && params.status !== null) {
+
+            if (params.status === 'pending') {
+              query.doesNotExist('isApproved');
+            } else if (params.status === 'rejected') {
+              query.equalTo('isApproved', false);
+            } else if (params.status === 'approved') {
+              query.equalTo('isApproved', true);
+            } else if (params.status === 'expired') {
+              query.lessThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.status === 'expireInTenDays') {
+              var expiresAt = moment().add(10, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.status === 'expireInThirtyDays') {
+              var expiresAt = moment().add(30, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            }
+          }
+
+          query.include('route');
+          query.descending('createdAt');
+          query.limit(params.limit);
+          query.skip((params.page * params.limit) - params.limit);
+          query.find({
+            success: function (places) {
+              defer.resolve(places);
+            }, error: function (error) {
+              defer.reject(error);
+            }
+          });
+
+          return defer.promise;
+        },
+
+        count: function (params) {
+
+          var defer = $q.defer();
+
+          var query = new Parse.Query(this);
+
+          if (params.filter != '') {
+            query.contains('canonical', params.filter);
+          }
+
+          if (params.route && params.route !== null) {
+            query.equalTo('route', params.route);
+          }
+
+          if (params.date && params.date !== null) {
+            var start = moment(params.date).startOf('day');
+            var end = moment(params.date).endOf('day');
+            query.greaterThanOrEqualTo('createdAt', start.toDate());
+            query.lessThanOrEqualTo('createdAt', end.toDate());
+          }
+
+          if (params.status && params.status !== null) {
+
+            if (params.status === 'pending') {
+              query.doesNotExist('isApproved');
+            } else if (params.status === 'rejected') {
+              query.equalTo('isApproved', false);
+            } else if (params.status === 'approved') {
+              query.equalTo('isApproved', true);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.status === 'expired') {
+              query.lessThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.status === 'expireInTenDays') {
+              var expiresAt = moment().add(10, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.status === 'expireInThirtyDays') {
+              var expiresAt = moment().add(30, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            }
+          }
+
+          query.count({
+            success: function (count) {
+              defer.resolve(count);
+            }, error: function (error) {
+              defer.reject(error);
+            }
+          });
+
+          return defer.promise;
         }
-      }
 
-      query.count({
-        success: function(count) {
-          defer.resolve(count);
-        }, error: function(error) {
-          defer.reject(error);
-        }
       });
 
-      return defer.promise;
-    }
-
- 	});
-
-// //--------------add Relation----------
-//      Object.defineProperty(Place.prototype, 'categoryAll', {
-//          get: function () {
-//              return this.get('categoryAll');
-//          },
-//          set: function (value) {
-//              this.set('categoryAll', value);
-//          }
-//      });
-// //--------------add Relation----------
-
-    // Object.defineProperty(Place.prototype, 'category', {
-    //     get: function () {
-    //         return this.get('category');
-    //     },
-    //     set: function (value) {
-    //         this.set('category', value);
-    //     }
-    // });
 
     Object.defineProperty(Place.prototype, 'user', {
       get: function () {
@@ -230,272 +203,200 @@
     });
 
     Object.defineProperty(Place.prototype, 'title_ru', {
-        get: function () {
-            return this.get('title_ru');
-        },
-        set: function (value) {
-            this.set('title_ru', value);
-        }
+      get: function () {
+        return this.get('title_ru');
+      },
+      set: function (value) {
+        this.set('title_ru', value);
+      }
     });
-     Object.defineProperty(Place.prototype, 'title_ro', {
-         get: function () {
-             return this.get('title_ro');
-         },
-         set: function (value) {
-             this.set('title_ro', value);
-         }
-     });
+    Object.defineProperty(Place.prototype, 'title_ro', {
+      get: function () {
+        return this.get('title_ro');
+      },
+      set: function (value) {
+        this.set('title_ro', value);
+      }
+    });
 
-             Object.defineProperty(Place.prototype, 'title_en', {
-                 get: function () {
-                     return this.get('title_en');
-                 },
-                 set: function (value) {
-                     this.set('title_en', value);
-                 }
-             });
+    Object.defineProperty(Place.prototype, 'title_en', {
+      get: function () {
+        return this.get('title_en');
+      },
+      set: function (value) {
+        this.set('title_en', value);
+      }
+    });
 
-
-             
 
     Object.defineProperty(Place.prototype, 'description_ru', {
-        get: function () {
-            return this.get('description_ru');
-        },
-        set: function (value) {
-            this.set('description_ru', value);
-        }
+      get: function () {
+        return this.get('description_ru');
+      },
+      set: function (value) {
+        this.set('description_ru', value);
+      }
     });
-     Object.defineProperty(Place.prototype, 'description_ro', {
-         get: function () {
-             return this.get('description_ro');
-         },
-         set: function (value) {
-             this.set('description_ro', value);
-         }
-     });
-             Object.defineProperty(Place.prototype, 'description_en', {
-                 get: function () {
-                     return this.get('description_en');
-                 },
-                 set: function (value) {
-                     this.set('description_en', value);
-                 }
-             });
-
-    // Object.defineProperty(Place.prototype, 'phone', {
-    //     get: function () {
-    //         return this.get('phone');
-    //     },
-    //     set: function (value) {
-    //         this.set('phone', value);
-    //     }
-    // });
-    //
-    // Object.defineProperty(Place.prototype, 'website', {
-    //     get: function () {
-    //         return this.get('website');
-    //     },
-    //     set: function (value) {
-    //         this.set('website', value);
-    //     }
-    // });
+    Object.defineProperty(Place.prototype, 'description_ro', {
+      get: function () {
+        return this.get('description_ro');
+      },
+      set: function (value) {
+        this.set('description_ro', value);
+      }
+    });
+    Object.defineProperty(Place.prototype, 'description_en', {
+      get: function () {
+        return this.get('description_en');
+      },
+      set: function (value) {
+        this.set('description_en', value);
+      }
+    });
 
     Object.defineProperty(Place.prototype, 'address_ru', {
+      get: function () {
+        return this.get('address_ru');
+      },
+      set: function (value) {
+        this.set('address_ru', value);
+      }
+    });
+    Object.defineProperty(Place.prototype, 'address_ro', {
+      get: function () {
+        return this.get('address_ro');
+      },
+      set: function (value) {
+        this.set('address_ro', value);
+      }
+    });
+    Object.defineProperty(Place.prototype, 'address_en', {
+      get: function () {
+        return this.get('address_en');
+      },
+      set: function (value) {
+        this.set('address_en', value);
+      }
+    });
+
+    Object.defineProperty(Place.prototype, 'radius', {
+      get: function () {
+        return this.get('radius');
+      },
+      set: function (value) {
+        this.set('radius', value);
+      }
+    });
+
+    Object.defineProperty(Place.prototype, 'images',
+      {
         get: function () {
-            return this.get('address_ru');
+          return this.get('images');
+        },
+        set: function (val) {
+          this.set('images', val);
+        }
+      });
+
+    Object.defineProperty(Place.prototype, 'original_images',
+      {
+        get: function () {
+          return this.get('original_images');
+        },
+        set: function (val) {
+          this.set('original_images', val);
+        }
+      });
+    Object.defineProperty(Place.prototype, 'deletedImages',
+      {
+        get: function () {
+          return this.get('deletedImages');
         },
         set: function (value) {
-            this.set('address_ru', value);
+          this.set('deletedImages', value);
         }
+      });
+
+    Object.defineProperty(Place.prototype, 'audio_en', {
+      get: function () {
+        return this.get('audio_en');
+      },
+      set: function (value) {
+        this.set('audio_en', value);
+      }
     });
-     Object.defineProperty(Place.prototype, 'address_ro', {
-         get: function () {
-             return this.get('address_ro');
-         },
-         set: function (value) {
-             this.set('address_ro', value);
-         }
-     });
-             Object.defineProperty(Place.prototype, 'address_en', {
-                 get: function () {
-                     return this.get('address_en');
-                 },
-                 set: function (value) {
-                     this.set('address_en', value);
-                 }
-             });
 
-   Object.defineProperty(Place.prototype, 'radius', {
-    get: function () {
-      return this.get('radius');
-    },
-    set: function (value) {
-      this.set('radius', value);
-    }
-  });
-
-   Object.defineProperty(Place.prototype, 'images',
-     {
-       get: function () {
-         return this.get('images');
-       },
-       set: function (val) {
-         this.set('images', val);
-       }
-     });
-
-   Object.defineProperty(Place.prototype, 'original_images',
-     {
-       get: function () {
-         return this.get('original_images');
-       },
-       set: function (val) {
-         this.set('original_images', val);
-       }
-     });
-   Object.defineProperty(Place.prototype, 'deletedImages',
-     {
-       get: function () {
-         return this.get('deletedImages');
-       },
-       set: function (value) {
-         this.set('deletedImages', value);
-       }
-     });
-     // Object.defineProperty(Place.prototype, 'image', {
-     //     get: function () {
-     //         return this.get('image');
-     //     },
-     //     set: function (value) {
-     //         this.set('image', value);
-     //     }
-     // });
-
-     // Object.defineProperty(Place.prototype, 'audios',
-     //     {
-     //         get: function () {
-     //             return this.get('audios');
-     //         },
-     //         set: function (val) {
-     //             var audios=this.get('audios')||{};
-     //             audios.push(val);
-     //             this.set('audios', audios);
-     //         }
-     //     });
-
-
-
-
-    // Object.defineProperty(Place.prototype, 'imageTwo', {
-    //     get: function () {
-    //         return this.get('imageTwo');
-    //     },
-    //     set: function (value) {
-    //         this.set('imageTwo', value);
-    //     }
-    // });
-    //
-    // Object.defineProperty(Place.prototype, 'imageThree', {
-    //     get: function () {
-    //         return this.get('imageThree');
-    //     },
-    //     set: function (value) {
-    //         this.set('imageThree', value);
-    //     }
-    // });
-    //
-    // Object.defineProperty(Place.prototype, 'imageFour', {
-    //     get: function () {
-    //         return this.get('imageFour');
-    //     },
-    //     set: function (value) {
-    //         this.set('imageFour', value);
-    //     }
-    // });
-
-
-
-     Object.defineProperty(Place.prototype, 'audio_en', {
-         get: function () {
-             return this.get('audio_en');
-         },
-         set: function (value) {
-             this.set('audio_en', value);
-         }
-     });
-
-   Object.defineProperty(Place.prototype, 'audio_ru', {
-        get: function () {
-            return this.get('audio_ru');
-        },
-        set: function (value) {
-            this.set('audio_ru', value);
-        }
+    Object.defineProperty(Place.prototype, 'audio_ru', {
+      get: function () {
+        return this.get('audio_ru');
+      },
+      set: function (value) {
+        this.set('audio_ru', value);
+      }
     });
-     Object.defineProperty(Place.prototype, 'audio_ro', {
-         get: function () {
-             return this.get('audio_ro');
-         },
-         set: function (value) {
-             this.set('audio_ro', value);
-         }
-     });
+    Object.defineProperty(Place.prototype, 'audio_ro', {
+      get: function () {
+        return this.get('audio_ro');
+      },
+      set: function (value) {
+        this.set('audio_ro', value);
+      }
+    });
 
     Object.defineProperty(Place.prototype, 'imageThumb', {
-        get: function () {
-            return this.get('imageThumb');
-        }
+      get: function () {
+        return this.get('imageThumb');
+      }
     });
 
     Object.defineProperty(Place.prototype, 'location', {
-        get: function () {
-            return this.get('location');
-        },
-        set: function (val) {
-            this.set('location', new Parse.GeoPoint({
-                latitude: val.latitude,
-                longitude: val.longitude
-            }));
-        }
+      get: function () {
+        return this.get('location');
+      },
+      set: function (val) {
+        this.set('location', new Parse.GeoPoint({
+          latitude: val.latitude,
+          longitude: val.longitude
+        }));
+      }
     });
 
     Object.defineProperty(Place.prototype, 'isApproved', {
       get: function () {
-          return this.get('isApproved');
+        return this.get('isApproved');
       },
       set: function (value) {
-          this.set('isApproved', value);
+        this.set('isApproved', value);
       }
     });
 
     Object.defineProperty(Place.prototype, 'expiresAt', {
       get: function () {
-          return this.get('expiresAt');
+        return this.get('expiresAt');
       },
       set: function (value) {
-          this.set('expiresAt', value);
+        this.set('expiresAt', value);
       }
     });
 
-   Object.defineProperty(Place.prototype, 'startPeriod', {
-     get: function () {
-       return this.get('startPeriod');
-     },
-     set: function (value) {
-       this.set('startPeriod', value);
-     }
-   });
+    Object.defineProperty(Place.prototype, 'startPeriod', {
+      get: function () {
+        return this.get('startPeriod');
+      },
+      set: function (value) {
+        this.set('startPeriod', value);
+      }
+    });
 
-   Object.defineProperty(Place.prototype, 'endPeriod', {
-     get: function () {
-       return this.get('endPeriod');
-     },
-     set: function (value) {
-       this.set('endPeriod', value);
-     }
-   });
+    Object.defineProperty(Place.prototype, 'endPeriod', {
+      get: function () {
+        return this.get('endPeriod');
+      },
+      set: function (value) {
+        this.set('endPeriod', value);
+      }
+    });
 
- 	return Place;
+    return Place;
 
- });
+  });

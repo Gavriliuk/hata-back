@@ -1,9 +1,9 @@
-<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog Category">
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog Route">
   <form name="form" role="form" novalidate>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2 ng-show="isCreating">New category</h2>
-        <h2 ng-show="!isCreating">Edit {{::objCategory.title }}</h2>
+        <h2 ng-show="isCreating">New route</h2>
+        <h2 ng-show="!isCreating">Edit {{::objRoute.title }}</h2>
         <span flex></span>
         <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
       </div>
@@ -14,21 +14,21 @@
 
         <md-input-container>
           <label>Title: RU</label>
-          <input required name="title_ru" ng-model="objCategory.title_ru">
+          <input required name="title_ru" ng-model="objRoute.title_ru">
           <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
             <div ng-message="required">Title RU required</div>
           </div>
         </md-input-container>
         <md-input-container>
           <label>Title: RO</label>
-          <input required name="title_ro" ng-model="objCategory.title_ro">
+          <input required name="title_ro" ng-model="objRoute.title_ro">
           <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
             <div ng-message="required">Title RO required</div>
           </div>
         </md-input-container>
         <md-input-container>
           <label>Title: EN</label>
-          <input required name="title_en" ng-model="objCategory.title_en">
+          <input required name="title_en" ng-model="objRoute.title_en">
           <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
             <div ng-message="required">Title en required</div>
           </div>
@@ -36,21 +36,21 @@
 
         <md-input-container>
           <label>Information: RU</label>
-          <input required name="information_ru" ng-model="objCategory.information_ru">
+          <input required name="information_ru" ng-model="objRoute.information_ru">
           <div ng-messages="form.information_ru.$error" ng-show="form.$submitted">
             <div ng-message="required">Information RU required</div>
           </div>
         </md-input-container>
         <md-input-container>
           <label>Information: RO</label>
-          <input required name="information_ro" ng-model="objCategory.information_ro">
+          <input required name="information_ro" ng-model="objRoute.information_ro">
           <div ng-messages="form.information_ro.$error" ng-show="form.$submitted">
             <div ng-message="required">Information RO required</div>
           </div>
         </md-input-container>
         <md-input-container>
           <label>Information: EN</label>
-          <input required name="information_en" ng-model="objCategory.information_en">
+          <input required name="information_en" ng-model="objRoute.information_en">
           <div ng-messages="form.information_en.$error" ng-show="form.$submitted">
             <div ng-message="required">Information EN required</div>
           </div>
@@ -58,8 +58,7 @@
 
         <md-input-container>
           <label>Order</label>
-          <input type="number" name="order" min="0"
-            ng-model="objCategory.order" required>
+          <input type="number" name="order" min="0" ng-model="objRoute.order" required>
           <div ng-messages="form.order.$error" ng-show="form.$submitted">
             <div ng-message="required">Order required</div>
           </div>
@@ -67,7 +66,7 @@
 
         <md-input-container>
           <label>Coordinates START route (origin) without spaces between coordinates :</label>
-          <input required name="start_route" ng-model="objCategory.start_route">
+          <input required name="start_route" ng-model="objRoute.start_route">
           <div ng-messages="form.start_route.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates START required</div>
           </div>
@@ -75,7 +74,7 @@
 
         <md-input-container>
           <label>Coordinates WAYPOINTS route (between coordinates '/' and without spaces!) :</label>
-          <input required name="waypoints" ng-model="objCategory.waypoints">
+          <input required name="waypoints" ng-model="objRoute.waypoints">
           <div ng-messages="form.waypoints.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates WAYPOINTS required</div>
           </div>
@@ -83,7 +82,7 @@
 
         <md-input-container>
           <label>Coordinates END route (destination) without spaces between coordinates :</label>
-          <input required name="end_route" ng-model="objCategory.end_route">
+          <input required name="end_route" ng-model="objRoute.end_route">
           <div ng-messages="form.end_route.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates END required</div>
           </div>
@@ -91,7 +90,7 @@
 
         <md-input-container>
           <label>Coordinates CENTER MAP route (without spaces between coordinates!):</label>
-          <input required name="center_map" ng-model="objCategory.center_map">
+          <input required name="center_map" ng-model="objRoute.center_map">
           <div ng-messages="form.center_map.$error" ng-show="form.$submitted">
             <div ng-message="required">Coordinates Center Map required</div>
           </div>
@@ -102,16 +101,13 @@
             <label>Upload Image</label>
             <input type="text" ng-model="imageFilename" disabled>
           </md-input-container>
-          <ng-md-icon icon="photo_camera" class="photo-camera"
-            ng-class="{ 'photo-active': objCategory.image.url() }"
-            ngf-select="uploadImage($file, $invalidFile)" ngf-max-size="4MB"
-            ngf-pattern="'image/*'" accept="image/*">
+          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.image.url() }" ngf-select="uploadImage($file, $invalidFile)"
+            ngf-max-size="4MB" ngf-pattern="'image/*'" accept="image/*">
             <md-tooltip>
               Add an Image
             </md-tooltip>
           </ng-md-icon>
-          <md-progress-circular class="md-primary" md-diameter="30"
-            ng-if="isUploading">
+          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploading">
           </md-progress-circular>
         </div>
 
@@ -120,17 +116,13 @@
             <label>Upload Icon</label>
             <input type="text" ng-model="iconFilename" disabled>
           </md-input-container>
-          <ng-md-icon icon="photo_camera" class="photo-camera"
-            ng-class="{ 'photo-active': objCategory.icon.url() }"
-            ngf-dimensions="$width === 64 && $height === 64"
-            ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB"
-            ngf-pattern="'image/*'" accept="image/*">
+          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
+            ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
             <md-tooltip>
               Add an Icon
             </md-tooltip>
           </ng-md-icon>
-          <md-progress-circular class="md-primary" md-diameter="30"
-            ng-if="isUploadingIcon">
+          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
           </md-progress-circular>
         </div>
 
@@ -144,17 +136,13 @@
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
-       Cancel
+        Cancel
       </md-button>
-      <md-button type="submit" class="md-raised md-primary" ng-show="isCreating"
-        ng-disabled="isSavingCategory"
-        ng-click="onSaveCategory(form.$valid)">
-        {{ !isSavingCategory ? 'Save' : 'Saving...' }}
+      <md-button type="submit" class="md-raised md-primary" ng-show="isCreating" ng-disabled="isSavingRoute" ng-click="onSaveRoute(form.$valid)">
+        {{ !isSavingRoute ? 'Save' : 'Saving...' }}
       </md-button>
-       <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating"
-         ng-disabled="isSavingCategory"
-         ng-click="onUpdateCategory(form.$valid)">
-        {{ !isSavingCategory ? 'Update' : 'Updating...' }}
+      <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingRoute" ng-click="onUpdateRoute(form.$valid)">
+        {{ !isSavingRoute ? 'Update' : 'Updating...' }}
       </md-button>
     </md-dialog-actions>
   </form>

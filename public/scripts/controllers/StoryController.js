@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nearPlaceApp')
-    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth, Category) {
+    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth, Route) {
 
         // Pagination options.
         $scope.rowOptions = [10, 20, 40];
@@ -11,16 +11,16 @@ angular.module('nearPlaceApp')
             limit: 40,
             page: 1,
             total: 0,
-            category_ru: null,
-            category_ro: null,
-            category_en: null,
+            route_ru: null,
+            route_ro: null,
+            route_en: null,
         };
 
         $scope.stories = [];
 
-        var loadStories = function() {
+        var loadStories = function () {
             Auth.ensureLoggedIn().then(function () {
-                $scope.promise = Story.all($scope.query).then(function(stories) {
+                $scope.promise = Story.all($scope.query).then(function (stories) {
                     $scope.stories = stories;
                 });
             });
@@ -30,7 +30,7 @@ angular.module('nearPlaceApp')
 
         var loadCount = function () {
             Auth.ensureLoggedIn().then(function () {
-                Story.count($scope.query).then(function(total) {
+                Story.count($scope.query).then(function (total) {
                     $scope.query.total = total;
                 });
             });
@@ -51,19 +51,19 @@ angular.module('nearPlaceApp')
             loadStories();
         };
 
-        var loadCategories = function () {
+        var loadRoutes = function () {
             var params = {
                 page: 1, limit: 1000, filter: '', order: 'title'
             }
 
             Auth.ensureLoggedIn().then(function () {
-                Category.all(params).then(function (categories) {
-                    $scope.categories = categories;
+                Route.all(params).then(function (routes) {
+                    $scope.routes = routes;
                 });
             });
         }
 
-        loadCategories();
+        loadRoutes();
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
@@ -81,7 +81,7 @@ angular.module('nearPlaceApp')
                 },
                 clickOutsideToClose: true
             })
-                .then(function(answer) {
+                .then(function (answer) {
                     loadStories();
                     loadCount();
                 });
@@ -99,12 +99,12 @@ angular.module('nearPlaceApp')
                 },
                 clickOutsideToClose: true
             })
-                .then(function(answer) {
+                .then(function (answer) {
                     loadStories();
                 });
         };
 
-        $scope.onDestroyStory= function(ev, story) {
+        $scope.onDestroyStory = function (ev, story) {
 
             var confirm = $mdDialog.confirm()
                 .title('Confirm action')
@@ -113,9 +113,9 @@ angular.module('nearPlaceApp')
                 .cancel('Cancel')
                 .targetEvent(ev);
 
-            $mdDialog.show(confirm).then(function() {
+            $mdDialog.show(confirm).then(function () {
 
-                Story.destroy(story.id).then(function(success) {
+                Story.destroy(story.id).then(function (success) {
                     loadStories();
                     loadCount();
                 }, function (error) {
@@ -123,154 +123,123 @@ angular.module('nearPlaceApp')
                 });
 
             });
-
-
         };
 
     }).controller('DialogStoryController',
-    function($scope, $mdDialog, $mdToast, Story, File, story,Category) {
-        $scope.categories = [];
-        $scope.isCreating = false;
-        $scope.isUploading = false;
-        $scope.audioFilename = {};
-        $scope.audioFilename.language_ru = '';
-        $scope.audioFilename.language_ro = '';
-        $scope.audioFilename.language_en = '';
-        $scope.isAudioUploading = false;
-        $scope.objStory = {};
-        $scope.objStory.category = null;
-        $scope.objStory.audios_ru = [];
-        $scope.objStory.audios_ro = [];
-        $scope.objStory.audios_en = [];
-
-        if (story) {
-
+        function ($scope, $mdDialog, $mdToast, Story, File, story, Route) {
+            $scope.routes = [];
             $scope.isCreating = false;
-            //TODO $scope.audioFilename = story.audios.name();
+            $scope.isUploading = false;
+            $scope.audioFilename = {};
+            $scope.audioFilename.language_ru = '';
+            $scope.audioFilename.language_ro = '';
+            $scope.audioFilename.language_en = '';
+            $scope.isAudioUploading = false;
+            $scope.objStory = {};
+            $scope.objStory.route = null;
+            $scope.objStory.audios_ru = [];
+            $scope.objStory.audios_ro = [];
+            $scope.objStory.audios_en = [];
 
+            if (story) {
 
-            $scope.objStory=story;
-        } else {
-
-            // $scope.objStory = {};
-            // $scope.objStory.audios_ru = [];
-            $scope.isCreating = true;
-        }
-
-        Category.all({ page: 1, limit: 1000, filter: '' })
-            .then(function (categories) {
-                $scope.categories = categories;
-            });
-
-        var showToast = function (message) {
-            $mdToast.show(
-                $mdToast.simple()
-                    .content(message)
-                    .action('OK')
-                    .hideDelay(3000)
-            );
-        };
-
-        $scope.hide = function() {
-            $mdDialog.cancel();
-        };
-
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.uploadAudio = function (file, invalidFile,lang) {
-
-            if (file) {
-
-                $scope.isAudioUploading = true;
-                $scope.audioFilename = file.name;
-
-                File.uploadAudio(file).then(function (savedFile) {
-
-                      $scope.objStory['audio_'+lang] = savedFile;
-                      $scope.isAudioUploading = false;
-                      showToast('Audio uploaded');
-                  },
-                  function (error) {
-                      $scope.isAudioUploading = false;
-                      showToast(error.message);
-                  });
+                $scope.isCreating = false;
+                $scope.objStory = story;
             } else {
-                if (invalidFile) {
-                    if (invalidFile.$error === 'maxSize') {
-                        showToast('Audio too big. Max ' + invalidFile.$errorParam);
+
+                $scope.isCreating = true;
+            }
+
+            Route.all({ page: 1, limit: 1000, filter: '' })
+                .then(function (routes) {
+                    $scope.routes = routes;
+                });
+
+            var showToast = function (message) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(message)
+                        .action('OK')
+                        .hideDelay(3000)
+                );
+            };
+
+            $scope.hide = function () {
+                $mdDialog.cancel();
+            };
+
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.uploadAudio = function (file, invalidFile, lang) {
+
+                if (file) {
+
+                    $scope.isAudioUploading = true;
+                    $scope.audioFilename = file.name;
+
+                    File.uploadAudio(file).then(function (savedFile) {
+
+                        $scope.objStory['audio_' + lang] = savedFile;
+                        $scope.isAudioUploading = false;
+                        showToast('Audio uploaded');
+                    },
+                        function (error) {
+                            $scope.isAudioUploading = false;
+                            showToast(error.message);
+                        });
+                } else {
+                    if (invalidFile) {
+                        if (invalidFile.$error === 'maxSize') {
+                            showToast('Audio too big. Max ' + invalidFile.$errorParam);
+                        }
                     }
                 }
-            }
-        };
-        // $scope.uploadStoryAudio = function (file, invalidFile,lang) {
-        //
-        //     if (file) {
-        //
-        //         $scope.isAudioUploading = true;
-        //         $scope.audioFilename['language_'+lang] = file.name;
-        //
-        //         File.uploadAudio(file).then(function (savedFile) {
-        //                 $scope.objStory['audios_'+lang].push(savedFile);
-        //                 $scope.isAudioUploading = false;
-        //                 showToast('Audio uploaded');
-        //             },
-        //             function (error) {
-        //                 $scope.isAudioUploading = false;
-        //                 showToast(error.message);
-        //             });
-        //     } else {
-        //         if (invalidFile) {
-        //             if (invalidFile.$error === 'maxSize') {
-        //                 showToast('Audio too big. Max ' + invalidFile.$errorParam);
-        //             }
-        //         }
-        //     }
-        // };
+            };
 
-        $scope.onSaveStory = function (isFormValid) {
+            $scope.onSaveStory = function (isFormValid) {
 
-            if(!isFormValid) {
-                showToast('Please correct all highlighted errors and try again');
-                return;
+                if (!isFormValid) {
+                    showToast('Please correct all highlighted errors and try again');
+                    return;
 
-            } else if (!$scope.objStory.audio_ru) {
-                showToast('Upload an ru audio');
-            } else {
+                } else if (!$scope.objStory.audio_ru) {
+                    showToast('Upload an ru audio');
+                } else {
 
-                $scope.isSavingStory = true;
+                    $scope.isSavingStory = true;
 
-                Story.create($scope.objStory).then(function (story) {
-                    showToast('Story saved');
-                    $mdDialog.hide();
-                    $scope.isSavingStory = false;
-                }, function (error) {
-                    showToast(error.message);
-                    $scope.isSavingStory = false;
-                });
-            }
+                    Story.create($scope.objStory).then(function (story) {
+                        showToast('Story saved');
+                        $mdDialog.hide();
+                        $scope.isSavingStory = false;
+                    }, function (error) {
+                        showToast(error.message);
+                        $scope.isSavingStory = false;
+                    });
+                }
 
-        };
+            };
 
-        $scope.onUpdateStory = function (isFormValid) {
+            $scope.onUpdateStory = function (isFormValid) {
 
-            if(!isFormValid) {
-                showToast('Please correct all highlighted errors and try again');
-            } else if(!$scope.objStory.audio_ru) {
-                showToast('Upload an ru audios');
-            } else {
+                if (!isFormValid) {
+                    showToast('Please correct all highlighted errors and try again');
+                } else if (!$scope.objStory.audio_ru) {
+                    showToast('Upload an ru audios');
+                } else {
 
-                $scope.isSavingStory = true;
+                    $scope.isSavingStory = true;
 
-                Story.update($scope.objStory).then(function (story) {
-                    showToast('Story updated');
-                    $mdDialog.hide();
-                    $scope.isSavingStory = false;
-                }, function (error) {
-                    showToast(error.message);
-                    $scope.isSavingStory = false;
-                });
-            }
-        };
+                    Story.update($scope.objStory).then(function (story) {
+                        showToast('Story updated');
+                        $mdDialog.hide();
+                        $scope.isSavingStory = false;
+                    }, function (error) {
+                        showToast(error.message);
+                        $scope.isSavingStory = false;
+                    });
+                }
+            };
 
-    });
+        });

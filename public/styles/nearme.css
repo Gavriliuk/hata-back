@@ -73,9 +73,10 @@ table.md-table td.md-cell {
 
 .md-button.md-fab.md-fab-bottom-right {
 	top: auto;
-  bottom: -5px;
-	left: 50%;
-	position: relative;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
 }
 
 .star-rating {
@@ -198,14 +199,14 @@ table.md-table td.md-cell {
     bottom: 13px;
     right: 9px;
 }
-.toolBarCategory{
+.toolBarRoute{
     background-color: #FFF176;
     text-color: #333 !important;
 }
-.categoryTitle{
+.routeTitle{
     text-color: #333 !important;
 }
-.toolBarCategoryRelation{
+.toolBarRouteRelation{
     background-color:gray;
 }
 .categRelationPlace{

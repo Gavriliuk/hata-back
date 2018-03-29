@@ -305,12 +305,12 @@ app.get('/dashboard/places', isAdmin, function (req, res) {
   res.render('places');
 });
 
-app.get('/dashboard/categories', isAdmin, function (req, res) {
-  res.render('categories');
+app.get('/dashboard/routes', isAdmin, function (req, res) {
+  res.render('routes');
 });
 
-app.get('/dashboard/category/:id', isAdmin, function (req, res) {
-  res.render('category',{ id: req.params.id});
+app.get('/dashboard/route/:id', isAdmin, function (req, res) {
+  res.render('route',{ id: req.params.id});
 });
 
 app.get('/dashboard/stories', isAdmin, function (req, res) {

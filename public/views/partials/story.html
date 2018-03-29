@@ -6,8 +6,7 @@
                 <h2 ng-show="isCreating">New story</h2>
                 <h2 ng-show="!isCreating">Edit {{::objStory.title }}</h2>
                 <span flex></span>
-                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()"
-                            aria-label="Close dialog"></ng-md-icon>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
             </div>
         </md-toolbar>
 
@@ -15,8 +14,7 @@
             <md-content layout="column" layout-padding>
                 <md-input-container>
                     <label class="marginLabel">Name</label>
-                    <input type="string" name="name" min="0"
-                           ng-model="objStory.name" required>
+                    <input type="string" name="name" min="0" ng-model="objStory.name" required>
                     <div ng-messages="form.name.$error" ng-show="form.$submitted">
                         <div ng-message="required">Name required</div>
                     </div>
@@ -24,14 +22,12 @@
 
                 <md-input-container class="md-block">
                     <label>Route</label>
-                    <md-select name="category" required ng-model="objStory.category"
-                               ng-model-options="{ trackBy: '$value.id' }">
-                        <md-option ng-value="category"
-                                   ng-repeat="category in categories track by category.id">
-                            {{ category.title_ru }}
+                    <md-select name="route" required ng-model="objStory.route" ng-model-options="{ trackBy: '$value.id' }">
+                        <md-option ng-value="route" ng-repeat="route in routes track by route.id">
+                            {{ route.title_ru }}
                         </md-option>
                     </md-select>
-                    <div ng-messages="form.category.$error" ng-show="form.$submitted">
+                    <div ng-messages="form.route.$error" ng-show="form.$submitted">
                         <div ng-message="required">Route required</div>
                     </div>
                 </md-input-container>
@@ -52,17 +48,13 @@
                         <input type="text" ng-model="audioFilename_ru" disabled>
                     </md-input-container>
 
-                    <ng-md-icon icon="headset" class="photo-camera"
-                                ng-class="{ 'photo-active': objStory.audio_ru.url() }"
-                                ngf-select="uploadAudio($file, $invalidFile,'ru')"
-                                ngf-max-size="50MB"
-                                ngf-pattern="'audio/*'" accept="audio/*">
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': objStory.audio_ru.url() }" ngf-select="uploadAudio($file, $invalidFile,'ru')"
+                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
                             Add Audio: RU
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isAudioUploading">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="objStory.audio_ru.url()">
@@ -75,17 +67,13 @@
                         <label>Upload Audio: RO</label>
                         <input type="text" ng-model="audioFilename_ro" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera"
-                                ng-class="{ 'photo-active': objStory.audio_ro.url() }"
-                                ngf-select="uploadAudio($file, $invalidFile,'ro')"
-                                ngf-max-size="50MB"
-                                ngf-pattern="'audio/*'" accept="audio/*">
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': objStory.audio_ro.url() }" ngf-select="uploadAudio($file, $invalidFile,'ro')"
+                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
                             Add Audio: RO
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isAudioUploading">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="objStory.audio_ro.url()">
@@ -98,17 +86,13 @@
                         <label>Upload Audio: EN</label>
                         <input type="text" ng-model="audioFilename_en" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera"
-                                ng-class="{ 'photo-active': objStory.audio_en.url() }"
-                                ngf-select="uploadAudio($file, $invalidFile,'en')"
-                                ngf-max-size="50MB"
-                                ngf-pattern="'audio/*'" accept="audio/*">
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': objStory.audio_en.url() }" ngf-select="uploadAudio($file, $invalidFile,'en')"
+                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
                             Add Audio: EN
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30"
-                                          ng-if="isAudioUploading">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="objStory.audio_en.url()">
@@ -124,16 +108,10 @@
             <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
                 Cancel
             </md-button>
-            <md-button type="submit" class="md-raised md-primary"
-                       ng-show="isCreating"
-                       ng-disabled="isSavingStory"
-                       ng-click="onSaveStory(form.$valid)">
+            <md-button type="submit" class="md-raised md-primary" ng-show="isCreating" ng-disabled="isSavingStory" ng-click="onSaveStory(form.$valid)">
                 {{ !isSavingStory ? 'Save' : 'Saving...' }}
             </md-button>
-            <md-button type="submit" class="md-raised md-primary"
-                       ng-show="!isCreating"
-                       ng-disabled="isSavingStory"
-                       ng-click="onUpdateStory(form.$valid)">
+            <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingStory" ng-click="onUpdateStory(form.$valid)">
                 {{ !isSavingStory ? 'Update' : 'Updating...' }}
             </md-button>
         </md-dialog-actions>
