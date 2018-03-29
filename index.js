@@ -1,4 +1,4 @@
-require('newrelic');
+// require('newrelic');
 var express = require('express');
 // var range = require('express-range');
 var ParseServer = require('parse-server').ParseServer;
