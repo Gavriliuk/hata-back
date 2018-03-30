@@ -130,16 +130,16 @@ angular.module('nearPlaceApp')
             $scope.routes = [];
             $scope.isCreating = false;
             $scope.isUploading = false;
+
             $scope.audioFilename = {};
-            $scope.audioFilename.language_ru = '';
-            $scope.audioFilename.language_ro = '';
-            $scope.audioFilename.language_en = '';
-            $scope.isAudioUploading = false;
+            $scope.isAudioUploading = {
+                ru: false,
+                ro: false,
+                en: false
+            };
+
             $scope.objStory = {};
             $scope.objStory.route = null;
-            $scope.objStory.audios_ru = [];
-            $scope.objStory.audios_ro = [];
-            $scope.objStory.audios_en = [];
 
             if (story) {
 
@@ -171,21 +171,24 @@ angular.module('nearPlaceApp')
             $scope.cancel = function () {
                 $mdDialog.cancel();
             };
+
+
+
             $scope.uploadAudio = function (file, invalidFile, lang) {
 
                 if (file) {
 
-                    $scope.isAudioUploading = true;
-                    $scope.audioFilename = file.name;
+                    $scope.isAudioUploading[lang] = true;
+                    $scope.audioFilename[lang] = file.name;
 
                     File.uploadAudio(file).then(function (savedFile) {
 
                         $scope.objStory['audio_' + lang] = savedFile;
-                        $scope.isAudioUploading = false;
+                        $scope.isAudioUploading[lang] = false;
                         showToast('Audio uploaded');
                     },
                         function (error) {
-                            $scope.isAudioUploading = false;
+                            $scope.isAudioUploading[lang] = false;
                             showToast(error.message);
                         });
                 } else {
@@ -219,6 +222,14 @@ angular.module('nearPlaceApp')
                     });
                 }
 
+            };
+            
+            $scope.onDeleteAudio = function (lang) {
+                $scope.isSavingStory = true;
+                $scope.objStory['audio_' + lang] = null;
+
+                showToast('Audio deleted.');
+                $scope.isSavingStory = false;
             };
 
             $scope.onUpdateStory = function (isFormValid) {
