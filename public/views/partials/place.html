@@ -140,61 +140,68 @@
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
                         <label>Upload Audio: RU</label>
-                        <input type="text" ng-model="audioFilename_ru" disabled>
+
+                        <input type="text" ng-model="audioFilename.ru" disabled>
+
                     </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ru.url() }" ngf-select="uploadAudio_ru($file, $invalidFile)"
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ru.url() }" ngf-select="uploadAudio($file, $invalidFile,'ru')"
                         ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+
                         <md-tooltip>
                             Add Audio: RU
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading_ru">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ru">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="place.audio_ru.url()">
                     <audio controls>
                         <source src="{{place.audio_ru.url() }}" type="audio/mpeg">
                     </audio>
+                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ru')"></ng-md-icon>
                 </div>
 
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
                         <label>Upload Audio: RO</label>
-                        <input type="text" ng-model="audioFilename_ro" disabled>
+                        <input type="text" ng-model="audioFilename.ro" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ro.url() }" ngf-select="uploadAudio_ro($file, $invalidFile)"
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ro.url() }" ngf-select="uploadAudio($file, $invalidFile,'ro')"
                         ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+
                         <md-tooltip>
                             Add Audio: RO
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading_ro">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ro">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="place.audio_ro.url()">
                     <audio controls>
                         <source src="{{place.audio_ro.url() }}" type="audio/mpeg">
                     </audio>
+                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ro')"></ng-md-icon>
                 </div>
 
                 <div layout="row" layout-align="start center">
                     <md-input-container md-no-float>
                         <label>Upload Audio: EN</label>
-                        <input type="text" ng-model="audioFilename_en" disabled>
+                        <input type="text" ng-model="audioFilename.en" disabled>
                     </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_en.url() }" ngf-select="uploadAudio_en($file, $invalidFile)"
+                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_en.url() }" ngf-select="uploadAudio($file, $invalidFile,'en')"
                         ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
                         <md-tooltip>
                             Add Audio: EN
                         </md-tooltip>
                     </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading_en">
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.en">
                     </md-progress-circular>
                 </div>
                 <div layout="row" ng-if="place.audio_en.url()">
                     <audio controls>
                         <source src="{{place.audio_en.url() }}" type="audio/mpeg">
                     </audio>
+                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('en')"></ng-md-icon>
                 </div>
             </md-content>
         </md-dialog-content>

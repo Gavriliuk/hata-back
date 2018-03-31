@@ -6,15 +6,15 @@
                     <md-datepicker ng-model="query.date" ng-change="onQueryChange()" md-placeholder="Enter date" flex-gt-xs>
                     </md-datepicker>
                     <th md-column md-order-by="name">Name</th>
-                    <th md-column>Route</th>
+
                     <th md-column>Period</th>
-                    <th md-column>Edit</th>
+
                 </tr>
             </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="story in stories">
                     <td md-cell>{{:: story.name }}</td>
-                    <td md-cell>{{:: story.route.get('title_ru') }}</td>
+
                     <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
                     <td md-cell>
                         <md-menu>
