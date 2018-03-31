@@ -317,6 +317,10 @@ app.get('/dashboard/stories', isAdmin, function (req, res) {
     res.render('stories');
 });
 
+app.get('/dashboard/promocodes', isAdmin, function (req, res) {
+    res.render('promocodes');
+});
+
 app.get('/dashboard/users', isAdmin, function (req, res) {
   res.render('users');
 });

@@ -1,0 +1,68 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Promocode Dialog">
+    <form name="form" role="form" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="isCreating">New entry</h2>
+                <h2 ng-show="!isCreating">{{::promocode.title }}: {{::promocode.id.toUpperCase()}}</h2>
+                <span flex></span>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content layout="column" layout-padding>
+                <md-input-container class="md-block">
+                    <label>Start Period</label>
+                    <md-datepicker ng-model="promocode.startPeriod" md-current-view="year">
+                    </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>End Period</label>
+                    <md-datepicker ng-model="promocode.endPeriod" md-current-view="year">
+                    </md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title</label>
+                    <input type="text" required name="title" ng-model="promocode.title">
+                    <div ng-messages="form.title.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title required</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <textarea name="description" ng-maxlength="600" ng-model="promocode.description" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description required</div>
+                        <div ng-message="maxlength">Description too large</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Sum</label>
+                    <input type="number" required name="sum" ng-model="promocode.sum">
+                    <div ng-messages="form.sum.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Sum Required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" ng-show="isCreating">
+                    <label>How Many</label>
+                    <input type="number" name="many" ng-model="howMany">
+                </md-input-container>
+            </md-content>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onSavePromocode(form.$valid)" ng-disabled="isSavingPromocode"
+                ng-show="isCreating">
+                {{ !isSavingPromocode ? 'Save' : 'Saving...' }}
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onUpdatePromocode(form.$valid)" ng-disabled="isSavingPromocode"
+                ng-show="!isCreating">
+                {{ !isSavingPromocode ? 'Update' : 'Updating...' }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

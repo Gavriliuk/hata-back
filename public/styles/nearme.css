@@ -184,6 +184,9 @@ table.md-table td.md-cell {
 .label.red {
   background-color: #E57373;
 }
+.label.blue {
+  background-color: #00cbff;
+}
 .placeImg {
     float: left;
     display: block;

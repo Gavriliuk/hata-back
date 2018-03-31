@@ -2,14 +2,14 @@ var Image = require('../helpers/image');
 var fs = require('fs');
 
 function saveImage(base64) {
-    var parseFile = new Parse.File('image.jpg', {base64: base64});
+    var parseFile = new Parse.File('image.jpg', { base64: base64 });
     return parseFile.save();
 }
 
 var filePath = './files/';
 
-function deleteFSFile( fileName ) {
-    if(fs.existsSync(filePath + fileName)){
+function deleteFSFile(fileName) {
+    if (fs.existsSync(filePath + fileName)) {
         fs.unlinkSync(filePath + fileName);
     }
 }
@@ -31,9 +31,9 @@ Parse.Cloud.define('getUserStats', function (req, res) {
     var queryFavorite = new Parse.Query('Place');
     queryFavorite.equalTo('likes', user);
 
-    var queryReview = queryReview.count({useMasterKey: true});
-    var queryPlace = queryPlace.count({useMasterKey: true});
-    var queryFavorite = queryFavorite.count({useMasterKey: true});
+    var queryReview = queryReview.count({ useMasterKey: true });
+    var queryPlace = queryPlace.count({ useMasterKey: true });
+    var queryFavorite = queryFavorite.count({ useMasterKey: true });
 
     Parse.Promise.when(queryReview, queryPlace, queryFavorite)
         .then(function (reviews, places, favorites) {
@@ -51,7 +51,7 @@ Parse.Cloud.define('findUserByEmail', function (req, res) {
 
     var query = new Parse.Query(Parse.User);
     query.equalTo('email', req.params.email);
-    query.first({useMasterKey: true}).then(function (results) {
+    query.first({ useMasterKey: true }).then(function (results) {
         res.success(results || {});
     }, function (error) {
         res.error(error.message);
@@ -74,7 +74,7 @@ Parse.Cloud.define('isPlaceStarred', function (req, res) {
     query.equalTo('place', objPlace);
     query.equalTo('user', user);
 
-    query.first({useMasterKey: true}).then(function (review) {
+    query.first({ useMasterKey: true }).then(function (review) {
         var isStarred = review ? true : false;
         res.success(isStarred);
     }, function (error) {
@@ -95,7 +95,7 @@ Parse.Cloud.define('isPlaceLiked', function (req, res) {
     query.equalTo('likes', user);
     query.equalTo('objectId', placeId);
 
-    query.first({useMasterKey: true}).then(function (place) {
+    query.first({ useMasterKey: true }).then(function (place) {
         var isLiked = place ? true : false;
         res.success(isLiked);
     }, function (error) {
@@ -114,7 +114,7 @@ Parse.Cloud.define('likePlace', function (req, res) {
 
     var query = new Parse.Query('Place');
     var objPlace;
-    var response = {action: null};
+    var response = { action: null };
 
     query.get(placeId).then(function (place) {
         objPlace = place;
@@ -136,7 +136,7 @@ Parse.Cloud.define('likePlace', function (req, res) {
             response.action = 'like';
         }
 
-        return objPlace.save(null, {useMasterKey: true});
+        return objPlace.save(null, { useMasterKey: true });
     }).then(function () {
         res.success(response);
     }, function (error) {
@@ -169,12 +169,12 @@ Parse.Cloud.define('getUsers', function (req, res) {
         query.limit(params.limit);
         query.skip((params.page * params.limit) - params.limit);
 
-        var queryUsers = query.find({useMasterKey: true});
-        var queryCount = query.count({useMasterKey: true});
+        var queryUsers = query.find({ useMasterKey: true });
+        var queryCount = query.count({ useMasterKey: true });
 
         return Parse.Promise.when(queryUsers, queryCount);
     }).then(function (users, total) {
-        res.success({users: users, total: total});
+        res.success({ users: users, total: total });
     }, function (error) {
         res.error(error);
     });
@@ -234,7 +234,7 @@ Parse.Cloud.define('updateUser', function (req, res) {
 
         var query = new Parse.Query(Parse.User);
         query.equalTo('objectId', data.id);
-        return query.first({useMasterKey: true});
+        return query.first({ useMasterKey: true });
     }).then(function (objUser) {
 
         objUser.set('name', data.name);
@@ -246,7 +246,7 @@ Parse.Cloud.define('updateUser', function (req, res) {
             objUser.set('password', data.password);
         }
 
-        return objUser.save(null, {useMasterKey: true});
+        return objUser.save(null, { useMasterKey: true });
     }).then(function (success) {
         res.success(success);
     }, function (error) {
@@ -270,14 +270,14 @@ Parse.Cloud.define('destroyUser', function (req, res) {
 
         var query = new Parse.Query(Parse.User);
         query.equalTo('objectId', params.id);
-        return query.first({useMasterKey: true});
+        return query.first({ useMasterKey: true });
     }).then(function (objUser) {
 
         if (!objUser) {
             return res.error('User not found');
         }
 
-        return objUser.destroy({useMasterKey: true});
+        return objUser.destroy({ useMasterKey: true });
     }).then(function (success) {
         res.success(success);
     }, function (error) {
@@ -294,7 +294,7 @@ Parse.Cloud.define('saveFacebookPicture', function (req, res) {
         return;
     }
 
-    user.fetch({sessionToken: user.getSessionToken()}).then(function (objUser) {
+    user.fetch({ sessionToken: user.getSessionToken() }).then(function (objUser) {
 
         var authData = objUser.get('authData');
 
@@ -304,16 +304,16 @@ Parse.Cloud.define('saveFacebookPicture', function (req, res) {
         }
 
         var url = 'https://graph.facebook.com/' + authData.facebook.id + '/picture';
-        return Parse.Cloud.httpRequest({url: url, followRedirects: true, params: {type: 'large'}});
+        return Parse.Cloud.httpRequest({ url: url, followRedirects: true, params: { type: 'large' } });
 
     }).then(function (httpResponse) {
         var buffer = httpResponse.buffer;
         var base64 = buffer.toString('base64');
-        var parseFile = new Parse.File('image.jpg', {base64: base64});
+        var parseFile = new Parse.File('image.jpg', { base64: base64 });
         return parseFile.save();
     }).then(function (savedFile) {
-        user.set({'photo': savedFile});
-        return user.save(null, {sessionToken: user.getSessionToken()});
+        user.set({ 'photo': savedFile });
+        return user.save(null, { sessionToken: user.getSessionToken() });
     }).then(function (success) {
         res.success(success);
     }, function (error) {
@@ -374,7 +374,7 @@ Parse.Cloud.beforeSave('Story', function (req, res) {
         return res.error('Not Authorized');
     }
 
-    if (!story.get('audios_ru')||!story.get('audios_ro')||!story.get('audios_en')) {
+    if (!story.get('audios_ru') || !story.get('audios_ro') || !story.get('audios_en')) {
         return res.error('The field Audios is required.');
     }
 
@@ -416,15 +416,15 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
         return res.error('Upload the first image');
     }
     // if (place.dirty('deletedImages') && place.get('deletedImages')) {
- // ----------iteracia po deletedImages--------
- //       for (var i = 0; i < place.get('deletedImages').length; i++){
- //           var deletedImage = place.get('deletedImages')[i];
- //           console.log("deletedImage: ",deletedImage)
- //           deleteFSFile(deletedImage.image.name());
- //           // deleteFSFile(deletedImage.image.name());
- //           // deleteFSFile(place.get('original_images')[deletedImage.index].name());
- //           place.set('deletedImages', []);
- //       }
+    // ----------iteracia po deletedImages--------
+    //       for (var i = 0; i < place.get('deletedImages').length; i++){
+    //           var deletedImage = place.get('deletedImages')[i];
+    //           console.log("deletedImage: ",deletedImage)
+    //           deleteFSFile(deletedImage.image.name());
+    //           // deleteFSFile(deletedImage.image.name());
+    //           // deleteFSFile(place.get('original_images')[deletedImage.index].name());
+    //           place.set('deletedImages', []);
+    //       }
 
     // }
 
@@ -447,7 +447,7 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
             var promise = Image.resize(url, 800, 510).then(function (base64) {
                 return saveImage(base64);
             }).then(function (savedFile) {
-                 resizedImages.push(savedFile);
+                resizedImages.push(savedFile);
             });
 
             promises.push(promise);
@@ -469,6 +469,28 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
     }, function (error) {
         res.error(error);
     });
+});
+Parse.Cloud.beforeSave('Promocode', function (req, res) {
+    var promocode = req.object;
+    var user = req.user;
+
+    if (req.master) {
+        return res.success();
+    }
+    if (!user) {
+        return res.error('Not Authorized');
+    }
+    if (!promocode.existed()) {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setRoleWriteAccess('Admin', true);
+        acl.setWriteAccess(user, true);
+        promocode.setACL(acl);
+    }
+    if (promocode.dirty('title') && promocode.get('title')) {
+        promocode.set('canonical', promocode.get('title').toLowerCase());
+    }
+    res.success();
 });
 
 Parse.Cloud.beforeSave('Review', function (req, res) {
@@ -552,7 +574,7 @@ Parse.Cloud.afterSave('Review', function (req) {
 
         place.increment('ratingCount');
         place.set('ratingTotal', currentTotalRating + rating);
-        place.save(null, {useMasterKey: true});
+        place.save(null, { useMasterKey: true });
 
     });
 });
@@ -606,7 +628,7 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
                 photo: user.get('photo'),
             });
         }
-        userData.save(null, {useMasterKey: true});
+        userData.save(null, { useMasterKey: true });
     });
 
     if (!user.existed()) {
@@ -614,7 +636,7 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
         var query = new Parse.Query(Parse.Role);
         query.equalTo('name', 'Admin');
         query.equalTo('users', userRequesting);
-        query.first({useMasterKey: true}).then(function (isAdmin) {
+        query.first({ useMasterKey: true }).then(function (isAdmin) {
 
             if (!isAdmin && user.get('roleName') === 'Admin') {
                 return Parse.Promise.error(new Parse.Error(1, 'Not Authorized'));
@@ -624,7 +646,7 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
 
             var innerQuery = new Parse.Query(Parse.Role);
             innerQuery.equalTo('name', roleName);
-            return innerQuery.first({useMasterKey: true});
+            return innerQuery.first({ useMasterKey: true });
         }).then(function (role) {
 
             if (!role) {
@@ -632,7 +654,7 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
             }
 
             role.getUsers().add(user);
-            return role.save(null, {useMasterKey: true});
+            return role.save(null, { useMasterKey: true });
         }).then(function () {
             console.log(success);
         }, function (error) {
