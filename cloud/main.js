@@ -374,9 +374,9 @@ Parse.Cloud.beforeSave('Story', function (req, res) {
         return res.error('Not Authorized');
     }
 
-    if (!story.get('audios_ru') || !story.get('audios_ro') || !story.get('audios_en')) {
-        return res.error('The field Audios is required.');
-    }
+    // if (!story.get('audios_ru') || !story.get('audios_ro') || !story.get('audios_en')) {
+    //     return res.error('The field Audios is required.');
+    // }
 
     if (!story.existed()) {
         var acl = new Parse.ACL();

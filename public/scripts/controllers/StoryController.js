@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nearPlaceApp')
-    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth, Route) {
+    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth) {
 
         // Pagination options.
         $scope.rowOptions = [10, 20, 40];
@@ -11,9 +11,6 @@ angular.module('nearPlaceApp')
             limit: 40,
             page: 1,
             total: 0,
-            route_ru: null,
-            route_ro: null,
-            route_en: null,
         };
 
         $scope.stories = [];
@@ -51,19 +48,7 @@ angular.module('nearPlaceApp')
             loadStories();
         };
 
-        var loadRoutes = function () {
-            var params = {
-                page: 1, limit: 1000, filter: '', order: 'title'
-            }
-
-            Auth.ensureLoggedIn().then(function () {
-                Route.all(params).then(function (routes) {
-                    $scope.routes = routes;
-                });
-            });
-        }
-
-        loadRoutes();
+        
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
@@ -126,8 +111,7 @@ angular.module('nearPlaceApp')
         };
 
     }).controller('DialogStoryController',
-        function ($scope, $mdDialog, $mdToast, Story, File, story, Route) {
-            $scope.routes = [];
+        function ($scope, $mdDialog, $mdToast, Story, File, story) {
             $scope.isCreating = false;
             $scope.isUploading = false;
 
@@ -139,7 +123,6 @@ angular.module('nearPlaceApp')
             };
 
             $scope.objStory = {};
-            $scope.objStory.route = null;
 
             if (story) {
 
@@ -149,11 +132,6 @@ angular.module('nearPlaceApp')
 
                 $scope.isCreating = true;
             }
-
-            Route.all({ page: 1, limit: 1000, filter: '' })
-                .then(function (routes) {
-                    $scope.routes = routes;
-                });
 
             var showToast = function (message) {
                 $mdToast.show(
