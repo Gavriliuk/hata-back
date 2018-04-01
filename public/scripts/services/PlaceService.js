@@ -127,7 +127,16 @@ angular.module('nearPlaceApp')
           query.skip((params.page * params.limit) - params.limit);
           query.find({
             success: function (places) {
-              defer.resolve(places);
+              var placesR = places.map(place => {
+                var placeR = place;
+                var placeRimages = place.images.map(img => {
+                  var imgR = img;
+                  imgR._url = Parse.serverURL + "/files/" + Parse.applicationId + "/" + img._name;
+                  return imgR;
+                })
+                return placeR
+              })
+              defer.resolve(placesR);
             }, error: function (error) {
               defer.reject(error);
             }
