@@ -1,16 +1,34 @@
 <md-content ng-controller="StoryCtrl">
-    <md-table-container>
+
+        <md-table-toolbar>
+                <div layout="row">
+                    <md-content flex-gt-md="65" flex="100" style="overflow: hidden">
+                        <br>
+                        <div layout-gt-sm="row" class="filter-bar">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Search by Title</label>
+                                <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
+                            </md-input-container>
+                    
+                               <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
+                                </md-datepicker>
+                                <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
+                                </md-datepicker>
+                            </div>
+                        </md-content>
+                    </div>
+                            </md-table-toolbar>
+                             <md-table-container>
         <table md-table md-progress="promise">
-            <thead md-head md-order="query.year" md-trigger="onOrderChange">
-                <tr md-row>
-                    <md-datepicker ng-model="query.date" ng-change="onQueryChange()" md-placeholder="Enter date" flex-gt-xs>
-                    </md-datepicker>
-                    <th md-column md-order-by="name">Name</th>
-
-                    <th md-column>Period</th>
-
-                </tr>
-            </thead>
+                <table md-table md-progress="promise">
+                        <thead md-head>
+                            <tr md-row>
+                            
+                                <th md-column>Title</th>
+                                <th md-column>Period</th>
+                                <th name="Actions">
+                            </tr>
+                        </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="story in stories">
                     <td md-cell>{{:: story.name }}</td>

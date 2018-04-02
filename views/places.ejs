@@ -7,19 +7,7 @@
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Search by Title</label>
                         <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>Routes</label>
-                        <md-select ng-model="query.route" ng-change="onQueryChange()">
-                            <md-option value="">
-                                All
-                            </md-option>
-                            <md-option ng-value="route" value="{{ route }}" ng-repeat="route in routes">
-                                {{route.title_en}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
+                    </md-input-container> 
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Status</label>
                         <md-select ng-model="query.status" ng-change="onQueryChange()">
@@ -46,10 +34,14 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-datepicker ng-model="query.date" ng-change="onQueryChange()" md-placeholder="Enter date" flex-gt-xs>
-                    </md-datepicker>
+                 
                 </div>
+                <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
+                    </md-datepicker>
+                    <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
+                    </md-datepicker>
             </md-content>
+
         </div>
     </md-table-toolbar>
 

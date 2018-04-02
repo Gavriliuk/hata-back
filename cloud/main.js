@@ -341,8 +341,8 @@ Parse.Cloud.beforeSave('Route', function (req, res) {
         route.setACL(acl);
     }
 
-    if (route.dirty('title') && route.get('title')) {
-        route.set('canonical', route.get('title').toLowerCase());
+    if ((route.dirty('title_ru') && route.get('title_ru')) || (route.dirty('title_ro') && route.get('title_ro')) || (route.dirty('title_en') && route.get('title_en'))) {
+        route.set('canonical', (route.get('title_ru') + route.get('title_ro') + route.get('title_en')).toLowerCase());
     }
 
     if (!route.dirty('image')) {
@@ -385,8 +385,8 @@ Parse.Cloud.beforeSave('Story', function (req, res) {
         story.setACL(acl);
     }
 
-    if (story.dirty('title') && story.get('title')) {
-        story.set('canonical', story.get('title').toLowerCase());
+    if (story.dirty('name') && story.get('name')) {
+        story.set('canonical', story.get('name').toLowerCase());
     }
     return res.success();
 });
@@ -428,8 +428,8 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
 
     // }
 
-    if (place.dirty('title') && place.get('title')) {
-        place.set('canonical', place.get('title').toLowerCase());
+    if ((place.dirty('title_ru') && place.get('title_ru')) || (place.dirty('title_ro') && place.get('title_ro')) || (place.dirty('title_en') && place.get('title_en'))) {
+        place.set('canonical', (place.get('title_ru') + place.get('title_ro') + place.get('title_en')).toLowerCase());
     }
 
     if (!place.dirty('images')) {

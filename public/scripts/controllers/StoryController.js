@@ -11,6 +11,8 @@ angular.module('nearPlaceApp')
             limit: 40,
             page: 1,
             total: 0,
+            startDate:null,
+            endDate:null
         };
 
         $scope.stories = [];
@@ -31,16 +33,16 @@ angular.module('nearPlaceApp')
                     $scope.query.total = total;
                 });
             });
-        };
+        }
 
         loadCount();
 
-        $scope.onSearch = function () {
+        $scope.onQueryChange = function () {
             $scope.query.page = 1;
             $scope.query.total = 0;
             loadStories();
             loadCount();
-        };
+        }
 
         $scope.onPaginationChange = function (page, limit) {
             $scope.query.page = page;
@@ -53,6 +55,11 @@ angular.module('nearPlaceApp')
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
         };
+        
+        $scope.isDate = function (date) {
+            return angular.isDate(date);
+          }
+    
 
         $scope.onNewStory = function (ev) {
 
