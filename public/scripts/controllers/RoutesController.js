@@ -182,6 +182,27 @@ angular.module('nearPlaceApp')
 				}
 			};
 
+			$scope.onDeleteImage = function () {
+				$scope.isSavingRoute = true;
+				$scope.objRoute.image=null;
+				$scope.imageFilename=null;
+				
+				
+				showToast('Image deleted.');
+				$scope.isSavingRoute = false;
+			};
+
+			$scope.onDeleteIcon = function () {
+				$scope.isSavingRoute = true;
+				$scope.objRoute.icon=null;
+				$scope.iconFilename=null;
+			
+				
+				showToast('Icon deleted.');
+				$scope.isSavingRoute = false;
+			};
+
+
 			$scope.uploadIcon = function (file, invalidFile) {
 
 				if (file) {
@@ -231,6 +252,8 @@ angular.module('nearPlaceApp')
 
 			};
 
+
+
 			$scope.onUpdateRoute = function (isFormValid) {
 
 				if (!isFormValid) {
@@ -240,6 +263,9 @@ angular.module('nearPlaceApp')
 				} else {
 
 					$scope.isSavingRoute = true;
+					 
+					
+					
 
 					Route.update($scope.objRoute).then(function (route) {
 						showToast('Route updated');

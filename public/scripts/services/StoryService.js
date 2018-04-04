@@ -110,21 +110,6 @@ angular.module('nearPlaceApp')
           }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
          query.include('route');
         query.descending('createdAt');
         query.limit(params.limit);

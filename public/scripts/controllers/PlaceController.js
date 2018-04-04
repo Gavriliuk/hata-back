@@ -21,6 +21,7 @@ angular.module('nearPlaceApp')
 
       $scope.places = [];
 
+
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
@@ -49,6 +50,7 @@ angular.module('nearPlaceApp')
       }
 
       loadCount();
+
       $scope.onQueryChange = function () {
         $scope.query.page = 1;
         $scope.query.total = 0;
@@ -181,6 +183,15 @@ angular.module('nearPlaceApp')
 
         $scope.isCreating = false;
         $scope.place = place;
+        $scope.imageFilenames = place.images.map(function (image) {
+         return image.name();
+        });
+
+        $scope.audioFilename.ru = place.audio_ru.name();
+        $scope.audioFilename.ro = place.audio_ro.name();
+        $scope.audioFilename.en = place.audio_en.name();
+
+
       } else {
 
         $scope.isCreating = true;
@@ -431,7 +442,9 @@ angular.module('nearPlaceApp')
             $scope.place.images.splice(i, 1);
             showSimpleToast('Image deleted.');
             $scope.isSavingPlace = false;
-          }
+            $scope.imageFilenames = place.images.map(function (image) {
+              return image.name();
+             });          }
         }
       };
 
@@ -439,6 +452,9 @@ angular.module('nearPlaceApp')
       $scope.onDeleteAudio = function (lang) {
         $scope.isSavingPlace = true;
         $scope.place['audio_' + lang] = null;
+        $scope.audioFilename.ru = null;
+        $scope.audioFilename.ro = null;
+        $scope.audioFilename.en = null;
 
         showSimpleToast('Audio deleted.');
         $scope.isSavingPlace = false;

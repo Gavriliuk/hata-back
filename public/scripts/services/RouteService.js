@@ -359,12 +359,43 @@ angular.module('nearPlaceApp')
                 }
             });
 
+        
+
         Object.defineProperty(Route.prototype, 'imageThumb',
             {
                 get: function () {
                     return this.get('imageThumb');
                 }
             });
+            
+//Schimbari//
+            Object.defineProperty(Route.prototype, 'deletedimage',
+            {
+              get: function () {
+                return this.get('deletedimage');
+              },
+              set: function (value) {
+                this.set('deletedimage', value);
+              }
+            });
+
+//Schimbari//
+
+
+            
+//Schimbari//
+Object.defineProperty(Route.prototype, 'deletedicon',
+{
+  get: function () {
+    return this.get('deletedicon');
+  },
+  set: function (value) {
+    this.set('deletedicon', value);
+  }
+});
+
+//Schimbari//
+
 
         Object.defineProperty(Route.prototype, 'icon',
             {
