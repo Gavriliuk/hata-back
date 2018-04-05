@@ -11,7 +11,10 @@
 
     <md-dialog-content>
       <md-content layout="column" layout-padding>
-
+        <!-- <md-input-container> -->
+          <label>Periods</label>
+          <md-chips ng-model="objRoute.periods" readonly="false" md-removable="true"></md-chips>
+        <!-- </md-input-container> -->
         <md-input-container>
           <label>Title: RU</label>
           <input required name="title_ru" ng-model="objRoute.title_ru">

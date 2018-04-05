@@ -385,6 +385,15 @@ angular.module('nearPlaceApp')
                     this.set('order', val);
                 }
             });
+        Object.defineProperty(Route.prototype, 'periods',
+            {
+                get: function () {
+                    return this.get('periods');
+                },
+                set: function (val) {
+                    this.set('periods', val);
+                }
+            });
 
         return Route;
 

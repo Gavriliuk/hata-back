@@ -113,6 +113,7 @@ angular.module('nearPlaceApp')
 			$scope.placesAll = [];
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
+			$scope.objRoute.periods = [];
 			$scope.objRoute.placesRelation = {};
 
 			$scope.isCreating = false;
@@ -132,8 +133,11 @@ angular.module('nearPlaceApp')
 
 				$scope.objRoute = route;
 
+				if (!$scope.objRoute.periods) {
+					$scope.objRoute.periods = [];
+				}
+
 			} else {
-				$scope.objRoute = {};
 				$scope.isCreating = true;
 			}
 			Place.all({ page: 1, limit: 1000, filter: '' })
