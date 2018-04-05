@@ -11,6 +11,8 @@ angular.module('nearPlaceApp')
             limit: 40,
             page: 1,
             total: 0,
+            startDate:null,
+            endDate:null
         };
 
         $scope.stories = [];
@@ -31,30 +33,20 @@ angular.module('nearPlaceApp')
                     $scope.query.total = total;
                 });
             });
-        };
+        }
 
         loadCount();
-
-        $scope.onSearch = function () {
+        
+        $scope.onQueryChange = function () {
             $scope.query.page = 1;
             $scope.query.total = 0;
             loadStories();
             loadCount();
-        };
+        }
 
-        $scope.onPaginationChange = function (page, limit) {
-            $scope.query.page = page;
-            $scope.query.limit = limit;
-            loadStories();
-        };
+       
 
-        
-
-        $scope.openMenu = function ($mdOpenMenu, ev) {
-            $mdOpenMenu(ev);
-        };
-
-        $scope.onNewStory = function (ev) {
+        $scope.onCreateStory = function (ev) {
 
             $mdDialog.show({
                 controller: 'DialogStoryController',
@@ -71,6 +63,24 @@ angular.module('nearPlaceApp')
                     loadCount();
                 });
         };
+    
+
+        $scope.onPaginationChange = function (page, limit) {
+            $scope.query.page = page;
+            $scope.query.limit = limit;
+            loadStories();
+        };
+
+        
+
+        $scope.openMenu = function ($mdOpenMenu, ev) {
+            $mdOpenMenu(ev);
+        };
+        
+        $scope.isDate = function (date) {
+            return angular.isDate(date);
+          }
+    
 
         $scope.onEditStory = function (ev, story) {
 
@@ -128,7 +138,11 @@ angular.module('nearPlaceApp')
 
                 $scope.isCreating = false;
                 $scope.objStory = story;
-            } else {
+                $scope.audioFilename.ru = story.audio_ru.name();
+                $scope.audioFilename.ro = story.audio_ro.name();
+                $scope.audioFilename.en = story.audio_en.name();
+            }
+             else {
 
                 $scope.isCreating = true;
             }
@@ -205,9 +219,11 @@ angular.module('nearPlaceApp')
             $scope.onDeleteAudio = function (lang) {
                 $scope.isSavingStory = true;
                 $scope.objStory['audio_' + lang] = null;
-
+                $scope.audioFilename[lang]=null;
                 showToast('Audio deleted.');
                 $scope.isSavingStory = false;
+                
+            
             };
 
             $scope.onUpdateStory = function (isFormValid) {
@@ -215,7 +231,7 @@ angular.module('nearPlaceApp')
                 if (!isFormValid) {
                     showToast('Please correct all highlighted errors and try again');
                 } else if (!$scope.objStory.audio_ru) {
-                    showToast('Upload an ru audios');
+                    showToast('Upload an ru audio');
                 } else {
 
                     $scope.isSavingStory = true;

@@ -23,6 +23,7 @@ angular.module('nearPlaceApp')
 
         create: function (place) {
 
+          
           var defer = $q.defer();
 
           var objPlace = new Place();
@@ -85,12 +86,14 @@ angular.module('nearPlaceApp')
           if (params.route && params.route !== null) {
             query.equalTo('route', params.route);
           }
-
-          if (params.date && params.date !== null) {
-            var start = moment(params.date).startOf('day');
-            var end = moment(params.date).endOf('day');
-            query.greaterThanOrEqualTo('createdAt', start.toDate());
-            query.lessThanOrEqualTo('createdAt', end.toDate());
+//schimbari//
+          if (params.startDate && params.startDate !== null) {
+            var start = moment(params.startDate).startOf('day');
+            query.greaterThanOrEqualTo('startPeriod', start.toDate());
+          }
+          if (params.endDate && params.endDate !== null) {
+            var end = moment(params.endDate).endOf('day');
+            query.lessThanOrEqualTo('endPeriod', end.toDate());
           }
 
           if (params.period && params.period !== null) {
@@ -145,6 +148,9 @@ angular.module('nearPlaceApp')
           return defer.promise;
         },
 
+
+
+
         count: function (params) {
 
           var defer = $q.defer();
@@ -166,27 +172,6 @@ angular.module('nearPlaceApp')
             query.lessThanOrEqualTo('createdAt', end.toDate());
           }
 
-          if (params.status && params.status !== null) {
-
-            if (params.status === 'pending') {
-              query.doesNotExist('isApproved');
-            } else if (params.status === 'rejected') {
-              query.equalTo('isApproved', false);
-            } else if (params.status === 'approved') {
-              query.equalTo('isApproved', true);
-              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-            } else if (params.status === 'expired') {
-              query.lessThanOrEqualTo('expiresAt', moment().toDate());
-            } else if (params.status === 'expireInTenDays') {
-              var expiresAt = moment().add(10, 'days').toDate();
-              query.lessThanOrEqualTo('expiresAt', expiresAt);
-              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-            } else if (params.status === 'expireInThirtyDays') {
-              var expiresAt = moment().add(30, 'days').toDate();
-              query.lessThanOrEqualTo('expiresAt', expiresAt);
-              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-            }
-          }
 
           query.count({
             success: function (count) {

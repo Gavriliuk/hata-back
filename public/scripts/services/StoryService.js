@@ -53,32 +53,7 @@ angular.module('nearPlaceApp')
         return defer.promise;
       },
 
-      count: function (params) {
-
-        var defer = $q.defer();
-
-        var query = new Parse.Query(this);
-
-        if (params.filter != '') {
-          query.contains('canonical', params.filter);
-        }
-
-        if (params.route && params.route !== null) {
-          query.equalTo('route', params.route);
-        }
-
-        query.count({
-          success: function (count) {
-            defer.resolve(count);
-          },
-          error: function (error) {
-            defer.reject(error);
-          }
-        });
-
-        return defer.promise;
-
-      },
+     
 
       all: function (params) {
 
@@ -93,15 +68,50 @@ angular.module('nearPlaceApp')
         if (params.route && params.route !== null) {
           query.equalTo('route', params.route);
         }
+         
+//schimbari//
+      if (params.startDate && params.startDate !== null) {
+            var start = moment(params.startDate).startOf('day');
+            query.greaterThanOrEqualTo('startPeriod', start.toDate());
+          }
+          if (params.endDate && params.endDate !== null) {
+            var end = moment(params.endDate).endOf('day');
+            query.lessThanOrEqualTo('endPeriod', end.toDate());
+          }
+          
+          if (params.period && params.period !== null) {
+            var start = moment(params.period.start).startOf('day');
+            var end = moment(params.period.end).endOf('day');
+            query.greaterThanOrEqualTo('startPeriod', start.toDate());
+            query.lessThanOrEqualTo('endPeriod', end.toDate());
+          }
+      
 
-        if (params.order === 'name') {
-          query.ascending('name');
-        } else if (params.order === '-name') {
-          query.descending('name');
-        } else {
-          query.ascending('name');
-        }
-        query.include('route');
+          if (params.route && params.route !== null) {
+
+            if (params.route === 'pending') {
+              query.doesNotExist('isApproved');
+            } else if (params.route === 'rejected') {
+              query.equalTo('isApproved', false);
+            } else if (params.route === 'approved') {
+              query.equalTo('isApproved', true);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.route === 'expired') {
+              query.lessThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.route === 'expireInTenDays') {
+              var expiresAt = moment().add(10, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            } else if (params.route === 'expireInThirtyDays') {
+              var expiresAt = moment().add(30, 'days').toDate();
+              query.lessThanOrEqualTo('expiresAt', expiresAt);
+              query.greaterThanOrEqualTo('expiresAt', moment().toDate());
+            }
+          }
+
+
+         query.include('route');
+        query.descending('createdAt');
         query.limit(params.limit);
         query.skip((params.page * params.limit) - params.limit);
         query.find({
@@ -113,6 +123,41 @@ angular.module('nearPlaceApp')
         });
 
         return defer.promise;
+      },
+      
+      count: function (params) {
+
+        var defer = $q.defer();
+
+        var query = new Parse.Query(this);
+
+        if (params.filter != '') {
+          query.contains('canonical', params.filter);
+
+        }  
+         if (params.route && params.route !== null) {
+            query.equalTo('route', params.route);
+         }
+
+        if (params.date && params.date !== null) {
+          var start = moment(params.date).startOf('day');
+          var end = moment(params.date).endOf('day');
+          query.greaterThanOrEqualTo('createdAt', start.toDate());
+          query.lessThanOrEqualTo('createdAt', end.toDate());
+        }
+        
+
+        query.count({
+          success: function (count) {
+            defer.resolve(count);
+          },
+          error: function (error) {
+            defer.reject(error);
+          }
+        });
+
+        return defer.promise;
+
       },
 
     });

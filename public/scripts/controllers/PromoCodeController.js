@@ -47,6 +47,7 @@ angular.module('nearPlaceApp')
       }
 
       loadCount();
+      
       $scope.onQueryChange = function () {
         $scope.query.page = 1;
         $scope.query.total = 0;

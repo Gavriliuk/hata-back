@@ -2,7 +2,7 @@
     <form name="form" role="form" novalidate>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2 ng-show="isCreating">New entry</h2>
+                <h2 ng-show="isCreating">New Place</h2>
                 <h2 ng-show="!isCreating">Edit {{::place.title }}</h2>
                 <span flex></span>
                 <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
@@ -120,7 +120,7 @@
                         <ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
                         <md-input-container md-no-float>
                             <label>Upload image</label>
-                            <input type="text" ng-model="imageFilename" disabled>
+                            <input type="text" ng-model="imageFilenames" disabled>
                         </md-input-container>
                         <ng-md-icon icon="add_circle" class="photo-camera" ng-class="{ 'photo-active': place.images.url() }" ngf-select="uploadImageFile($file, $invalidFile)"
                             ngf-max-size="2MB" ngf-pattern="'image/*'" accept="image/*">
@@ -154,11 +154,11 @@
                     <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ru">
                     </md-progress-circular>
                 </div>
-                <div layout="row" ng-if="place.audio_ru.url()">
+                <div layout="row" ng-if="place.audio_ru.url(ru)">
                     <audio controls>
                         <source src="{{place.audio_ru.url() }}" type="audio/mpeg">
                     </audio>
-                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ru')"></ng-md-icon>
+                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ru')"></ng-md-icon>
                 </div>
 
                 <div layout="row" layout-align="start center">
