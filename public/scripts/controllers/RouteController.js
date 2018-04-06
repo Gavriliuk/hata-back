@@ -106,8 +106,42 @@ angular.module('nearPlaceApp')
                     loadCount();
                 });
         };
+
         //Story route//
 
+        $scope.onEditRouteStory = function (story) {
+            $mdDialog.show({
+                controller: 'DialogStoryController',
+                templateUrl: '/views/partials/story.html',
+                parent: angular.element(document.body),
+                // targetEvent: ev,
+                locals: {
+                    story: angular.copy(story)
+                },
+                clickOutsideToClose: true
+            })
+                .then(function (answer) {
+                    loadRoute($scope.route.id);
+                });
+        };
+
+        $scope.onEditRoutePlace = function (place) {
+            $mdDialog.show({
+                controller: 'DialogPlaceController',
+                templateUrl: '/views/partials/place.html',
+                parent: angular.element(document.body),
+                //targetEvent: ev,
+                locals: {
+                    place: angular.copy(place)
+                },
+                clickOutsideToClose: true
+            })
+                .then(function (answer) {
+                    loadRoute($scope.route.id);
+                });
+        };
+
+        //Schimabari//
         var onAddStoryInRoute = function (ev) {
 
             $mdDialog.show({
@@ -125,6 +159,7 @@ angular.module('nearPlaceApp')
                     loadCount();
                 });
         };
+
         //Story//
         $scope.onDestroySinglePlace = function (ev, place, route) {
             var routePlaceDestroy = { place: place, route: route };
@@ -269,6 +304,7 @@ angular.module('nearPlaceApp')
             );
         };
 
+
         $scope.hide = function () {
             $mdDialog.cancel();
         };
@@ -297,4 +333,5 @@ angular.module('nearPlaceApp')
                 });
             }
         };
+
     });

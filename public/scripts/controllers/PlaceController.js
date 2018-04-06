@@ -156,6 +156,7 @@ angular.module('nearPlaceApp')
         });
 
       };
+      
 
     }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place, Route, File, NgMap, GeoCoder, place) {
 
@@ -183,13 +184,13 @@ angular.module('nearPlaceApp')
 
         $scope.isCreating = false;
         $scope.place = place;
+
+
         $scope.imageFilenames = place.images.map(function (image) {
-         return image.name();
+          return image.name();
         });
 
-        $scope.audioFilename.ru = place.audio_ru.name();
-        $scope.audioFilename.ro = place.audio_ro.name();
-        $scope.audioFilename.en = place.audio_en.name();
+
 
 
       } else {
@@ -216,6 +217,9 @@ angular.module('nearPlaceApp')
       };
 
       //audio//
+
+
+
 
       $scope.uploadAudio = function (file, invalidFile, lang) {
 
@@ -381,7 +385,7 @@ angular.module('nearPlaceApp')
         if (file) {
 
           $scope.isImageUploading = true;
-          $scope.imageFilename = file.name;
+          $scope.imageFilenames = file.name;
 
           File.upload(file).then(function (savedFile) {
 
@@ -444,7 +448,8 @@ angular.module('nearPlaceApp')
             $scope.isSavingPlace = false;
             $scope.imageFilenames = place.images.map(function (image) {
               return image.name();
-             });          }
+            });
+          }
         }
       };
 
@@ -452,9 +457,7 @@ angular.module('nearPlaceApp')
       $scope.onDeleteAudio = function (lang) {
         $scope.isSavingPlace = true;
         $scope.place['audio_' + lang] = null;
-        $scope.audioFilename.ru = null;
-        $scope.audioFilename.ro = null;
-        $scope.audioFilename.en = null;
+
 
         showSimpleToast('Audio deleted.');
         $scope.isSavingPlace = false;
@@ -482,7 +485,15 @@ angular.module('nearPlaceApp')
       };
 
     })
-  .controller('DialogPlaceExpiresAtController',
+    .controller('mainController', function($scope) {
+      $scope.sortType     = 'name'; // set the default sort type
+      $scope.sortReverse  = false;  // set the default sort order
+      $scope.searchFish   = '';     // set the default search/filter term
+      
+     
+     
+      
+    }).controller('DialogPlaceExpiresAtController',
     function ($scope, $mdDialog, $mdToast, Place, place) {
 
       $scope.place = place;
