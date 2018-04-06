@@ -113,6 +113,7 @@ angular.module('nearPlaceApp')
 			$scope.placesAll = [];
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
+			$scope.objRoute.periods = [];
 			$scope.objRoute.placesRelation = {};
 
 			$scope.isCreating = false;
@@ -132,8 +133,11 @@ angular.module('nearPlaceApp')
 
 				$scope.objRoute = route;
 
+				if (!$scope.objRoute.periods) {
+					$scope.objRoute.periods = [];
+				}
+
 			} else {
-				$scope.objRoute = {};
 				$scope.isCreating = true;
 			}
 			Place.all({ page: 1, limit: 1000, filter: '' })
@@ -184,20 +188,20 @@ angular.module('nearPlaceApp')
 
 			$scope.onDeleteImage = function () {
 				$scope.isSavingRoute = true;
-				$scope.objRoute.image=null;
-				$scope.imageFilename=null;
-				
-				
+				$scope.objRoute.image = null;
+				$scope.imageFilename = null;
+
+
 				showToast('Image deleted.');
 				$scope.isSavingRoute = false;
 			};
 
 			$scope.onDeleteIcon = function () {
 				$scope.isSavingRoute = true;
-				$scope.objRoute.icon=null;
-				$scope.iconFilename=null;
-			
-				
+				$scope.objRoute.icon = null;
+				$scope.iconFilename = null;
+
+
 				showToast('Icon deleted.');
 				$scope.isSavingRoute = false;
 			};
@@ -263,9 +267,9 @@ angular.module('nearPlaceApp')
 				} else {
 
 					$scope.isSavingRoute = true;
-					 
-					
-					
+
+
+
 
 					Route.update($scope.objRoute).then(function (route) {
 						showToast('Route updated');

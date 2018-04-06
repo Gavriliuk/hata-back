@@ -138,8 +138,6 @@ angular.module('nearPlaceApp')
 
                 $scope.isCreating = false;
                 $scope.objStory = story;
-
-
             }
 
             else {

@@ -359,7 +359,7 @@ angular.module('nearPlaceApp')
                 }
             });
 
-        
+
 
         Object.defineProperty(Route.prototype, 'imageThumb',
             {
@@ -367,34 +367,34 @@ angular.module('nearPlaceApp')
                     return this.get('imageThumb');
                 }
             });
-            
-//Schimbari//
-            Object.defineProperty(Route.prototype, 'deletedimage',
+
+        //Schimbari//
+        Object.defineProperty(Route.prototype, 'deletedimage',
             {
-              get: function () {
-                return this.get('deletedimage');
-              },
-              set: function (value) {
-                this.set('deletedimage', value);
-              }
+                get: function () {
+                    return this.get('deletedimage');
+                },
+                set: function (value) {
+                    this.set('deletedimage', value);
+                }
             });
 
-//Schimbari//
+        //Schimbari//
 
 
-            
-//Schimbari//
-Object.defineProperty(Route.prototype, 'deletedicon',
-{
-  get: function () {
-    return this.get('deletedicon');
-  },
-  set: function (value) {
-    this.set('deletedicon', value);
-  }
-});
 
-//Schimbari//
+        //Schimbari//
+        Object.defineProperty(Route.prototype, 'deletedicon',
+            {
+                get: function () {
+                    return this.get('deletedicon');
+                },
+                set: function (value) {
+                    this.set('deletedicon', value);
+                }
+            });
+
+        //Schimbari//
 
 
         Object.defineProperty(Route.prototype, 'icon',
@@ -414,6 +414,15 @@ Object.defineProperty(Route.prototype, 'deletedicon',
                 },
                 set: function (val) {
                     this.set('order', val);
+                }
+            });
+        Object.defineProperty(Route.prototype, 'periods',
+            {
+                get: function () {
+                    return this.get('periods');
+                },
+                set: function (val) {
+                    this.set('periods', val);
                 }
             });
 
