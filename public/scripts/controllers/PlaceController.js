@@ -187,11 +187,6 @@ angular.module('nearPlaceApp')
          return image.name();
         });
 
-        $scope.audioFilename.ru = place.audio_ru.name();
-        $scope.audioFilename.ro = place.audio_ro.name();
-        $scope.audioFilename.en = place.audio_en.name();
-
-
       } else {
 
         $scope.isCreating = true;

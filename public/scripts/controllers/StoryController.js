@@ -138,9 +138,6 @@ angular.module('nearPlaceApp')
 
                 $scope.isCreating = false;
                 $scope.objStory = story;
-                $scope.audioFilename.ru = story.audio_ru.name();
-                $scope.audioFilename.ro = story.audio_ro.name();
-                $scope.audioFilename.en = story.audio_en.name();
             }
              else {
 
