@@ -56,6 +56,11 @@
 											</ng-md-icon>
 										</md-button>
 										<md-menu-content width="3">
+											<md-menu-item>
+												<md-button aria-label="Edit route" ng-click="onEditRoutePlace(place)">
+													Edit
+												</md-button>
+											</md-menu-item>
 											<md-menu-item aria-label="Delete place">
 												<md-button aria-label="Delete place" ng-click="onDestroySinglePlace($event, place, route)">
 													Delete
@@ -73,6 +78,7 @@
 			</md-content>
 		</md-tab>
 		<!-- Stories -->
+
 		<md-tab label="Stories">
 			<md-content class="md-padding">
 				<h3 class="md-display-0">Stories</h3>
@@ -83,6 +89,7 @@
 								<th md-column>Title</th>
 								<th md-column>Period</th>
 								<th md-column>Created At</th>
+								<th md-column>View</th>
 								<th name="Actions">
 							</tr>
 						</thead>
@@ -92,12 +99,24 @@
 								<td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
 								<td md-cell>{{ story.createdAt | date:'mediumDate' }}</td>
 								<td md-cell>
+
+
 									<md-menu>
 										<md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
 											<ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
+
 											</ng-md-icon>
 										</md-button>
-										<md-menu-content width="3">
+
+										<md-menu-content width="2">
+											<md-menu-item>
+												<md-button aria-label="Edit route" ng-click="onEditRouteStory(story)">
+													Edit
+												</md-button>
+											</md-menu-item>
+
+
+											</md-menu-item>
 											<md-menu-item aria-label="Delete story">
 												<md-button aria-label="Delete story" ng-click="onDestroySingleStory($event, story, route)">
 													Delete

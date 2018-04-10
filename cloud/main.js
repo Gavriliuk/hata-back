@@ -444,13 +444,13 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
         for (var i = 0; i < place.get('images').length; i++) {
             var url = place.get('images')[i].url();
             // deleteFSFile(place.get('images')[i].name());
-            var promise = Image.resize(url, 800, 510).then(function (base64) {
-                return saveImage(base64);
-            }).then(function (savedFile) {
-                resizedImages.push(savedFile);
-            });
+            // var promise = Image.resize(url, 800, 510).then(function (base64) {
+            //     return saveImage(base64);
+            // }).then(function (savedFile) {
+            //     resizedImages.push(savedFile);
+            // });
 
-            promises.push(promise);
+            // promises.push(promise);
             if (i === 0) {
                 var promiseThumb = Image.resize(url, 160, 160).then(function (base64) {
                     return saveImage(base64);
@@ -464,7 +464,7 @@ Parse.Cloud.beforeSave('Place', function (req, res) {
 
     Parse.Promise.when(promises).then(function (result) {
         place.set('original_images', place.get('images'));
-        place.set('images', resizedImages);
+        // place.set('images', resizedImages);
         res.success();
     }, function (error) {
         res.error(error);

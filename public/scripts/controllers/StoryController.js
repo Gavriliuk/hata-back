@@ -11,8 +11,8 @@ angular.module('nearPlaceApp')
             limit: 40,
             page: 1,
             total: 0,
-            startDate:null,
-            endDate:null
+            startDate: null,
+            endDate: null
         };
 
         $scope.stories = [];
@@ -36,7 +36,7 @@ angular.module('nearPlaceApp')
         }
 
         loadCount();
-        
+
         $scope.onQueryChange = function () {
             $scope.query.page = 1;
             $scope.query.total = 0;
@@ -44,7 +44,7 @@ angular.module('nearPlaceApp')
             loadCount();
         }
 
-       
+
 
         $scope.onCreateStory = function (ev) {
 
@@ -63,7 +63,7 @@ angular.module('nearPlaceApp')
                     loadCount();
                 });
         };
-    
+
 
         $scope.onPaginationChange = function (page, limit) {
             $scope.query.page = page;
@@ -71,16 +71,16 @@ angular.module('nearPlaceApp')
             loadStories();
         };
 
-        
+
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
         };
-        
+
         $scope.isDate = function (date) {
             return angular.isDate(date);
-          }
-    
+        }
+
 
         $scope.onEditStory = function (ev, story) {
 
@@ -139,9 +139,11 @@ angular.module('nearPlaceApp')
                 $scope.isCreating = false;
                 $scope.objStory = story;
             }
-             else {
+
+            else {
 
                 $scope.isCreating = true;
+
             }
 
             var showToast = function (message) {
@@ -212,15 +214,15 @@ angular.module('nearPlaceApp')
                 }
 
             };
-            
+
             $scope.onDeleteAudio = function (lang) {
                 $scope.isSavingStory = true;
                 $scope.objStory['audio_' + lang] = null;
-                $scope.audioFilename[lang]=null;
+                $scope.audioFilename[lang] = null;
                 showToast('Audio deleted.');
                 $scope.isSavingStory = false;
-                
-            
+
+
             };
 
             $scope.onUpdateStory = function (isFormValid) {

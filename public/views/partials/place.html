@@ -113,7 +113,7 @@
                     <md-input-container class="layout-row">
                         <div ng-repeat="img in place.images">
                             <img class="img-thumb placeImg" actual-src="{{ img.url() }}" />
-                            <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteImage(img)"></ng-md-icon>
+                            <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteImage(img)"></ng-md-icon>
                         </div>
                     </md-input-container>
                     <div layout="row" layout-align="start center">
@@ -180,7 +180,7 @@
                     <audio controls>
                         <source src="{{place.audio_ro.url() }}" type="audio/mpeg">
                     </audio>
-                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ro')"></ng-md-icon>
+                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ro')"></ng-md-icon>
                 </div>
 
                 <div layout="row" layout-align="start center">
@@ -201,7 +201,7 @@
                     <audio controls>
                         <source src="{{place.audio_en.url() }}" type="audio/mpeg">
                     </audio>
-                    <ng-md-icon icon="clear" style="fill:pink" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('en')"></ng-md-icon>
+                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('en')"></ng-md-icon>
                 </div>
             </md-content>
         </md-dialog-content>
