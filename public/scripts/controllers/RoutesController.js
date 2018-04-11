@@ -134,7 +134,6 @@ $scope.getSortClass = function(column){
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
 			$scope.objRoute.periods = [];
-			$scope.objRoute.placesRelation = {};
 
 			$scope.isCreating = false;
 			$scope.isUploading = false;
