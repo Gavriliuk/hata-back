@@ -15,6 +15,34 @@ angular.module('nearPlaceApp')
             total: 0
         };
 
+//Order by//
+
+$scope.sortColumn = "name";
+$scope.reverseSort = false;
+
+$scope.sortData = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+
+    }
+    return '';
+};
+
+//Order by //
+
+
+
+
+
+
+
+
+
         var showSimpleToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
@@ -124,6 +152,28 @@ angular.module('nearPlaceApp')
                     loadRoute($scope.route.id);
                 });
         };
+
+
+
+
+//Order by//
+
+$scope.sortColumn = "title_ru";
+$scope.reverseSort = false;
+
+$scope.sortPlace = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+    }
+    return '';
+};
+//Order by //
+
 
         $scope.onEditRoutePlace = function (place) {
             $mdDialog.show({

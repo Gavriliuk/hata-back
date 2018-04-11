@@ -14,6 +14,26 @@ angular.module('nearPlaceApp')
 
 		$scope.routes = [];
 
+
+		//Order by//
+
+$scope.sortColumn = "title_ru";
+$scope.reverseSort = false;
+
+$scope.sortData = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+    }
+    return '';
+};
+//Order by //
+
+
 		var loadRoutes = function () {
 			Auth.ensureLoggedIn().then(function () {
 				$scope.promise = Route.all($scope.query).then(function (routes) {

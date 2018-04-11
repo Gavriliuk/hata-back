@@ -22,6 +22,25 @@ angular.module('nearPlaceApp')
       $scope.places = [];
 
 
+//Order by//
+
+      $scope.sortColumn = "title_ru";
+$scope.reverseSort = false;
+
+$scope.sortData = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+      return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+    }
+    return '';
+};
+
+//Order by//
+
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
@@ -444,10 +463,13 @@ angular.module('nearPlaceApp')
         for (var i = 0; i < $scope.place.images.length; i++) {
           if ($scope.place.images[i].$$hashKey === ev.$$hashKey) {
             $scope.place.images.splice(i, 1);
+          
+          
             showSimpleToast('Image deleted.');
             $scope.isSavingPlace = false;
-            $scope.imageFilenames = place.images.map(function (image) {
-              return image.name();
+            
+            $scope.imageFilenames = place.images.map(function (images) {
+              return images.name();
             });
           }
         }
@@ -484,15 +506,6 @@ angular.module('nearPlaceApp')
         }
       };
 
-    })
-    .controller('mainController', function($scope) {
-      $scope.sortType     = 'name'; // set the default sort type
-      $scope.sortReverse  = false;  // set the default sort order
-      $scope.searchFish   = '';     // set the default search/filter term
-      
-     
-     
-      
     }).controller('DialogPlaceExpiresAtController',
     function ($scope, $mdDialog, $mdToast, Place, place) {
 

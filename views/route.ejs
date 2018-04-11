@@ -25,15 +25,47 @@
 						<thead md-head class="toolBarRouteRelation">
 							<tr md-row>
 								<th md-column></th>
-								<th md-column>Title</th>
-								<th md-column>Period</th>
-								<th md-column>Status</th>
-								<th md-column>Created At</th>
+
+								<th md-column ng-click="sortPlace('title_ru')"  >
+										Title: RU
+						<ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
+
+								 
+								</th>
+								<th md-column ng-click="sortPlace('startPeriod')"  >
+									Period
+						<ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+									
+								 
+								</th>
+
+								<th md-column ng-click="sortPlace('getStatus()')"  >
+									Status 
+									<ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
+
+								 
+								</th>
+
+
+							
+
+								<th md-column ng-click="sortPlace('createdAt')"  >
+									Created At 
+									<ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+
+								 
+								</th>
+								
+								
+								
+
+								
+
 								<th name="Actions">
 							</tr>
 						</thead>
 						<tbody md-body>
-							<tr md-row ng-repeat="place in relationsPlaces">
+							<tr md-row ng-repeat="place in relationsPlaces | orderBy:sortColumn:reverseSort"">
 								<td md-cell>
 									<img class="img-categRelationPlace img-circle" ng-src="/images/placeholder.png" actual-src="{{ place.imageThumb.url() }}"
 									/>
@@ -86,15 +118,29 @@
 					<table md-table md-progress="promise">
 						<thead md-head class="toolBarRouteRelation">
 							<tr md-row>
-								<th md-column>Title</th>
-								<th md-column>Period</th>
-								<th md-column>Created At</th>
+									<th md-column ng-click="sortData('name')"  >
+										Title
+											<ng-md-icon ng-hide="sortColumn!='name'" icon="{{getSortClass('name')}}"></ng-md-icon>
+
+										
+										</th> 
+										<th md-column ng-click="sortData('startPeriod')"> 
+											Period
+											<ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+											
+		
+										</th>
+										<th md-column ng-click="sortData('createdAt')"> 
+												Created At
+											<ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+											          
+													</th>
 								<th md-column>View</th>
 								<th name="Actions">
 							</tr>
 						</thead>
 						<tbody md-body>
-							<tr md-row ng-repeat="story in relationsStories">
+							<tr md-row ng-repeat="story in relationsStories  | orderBy:sortColumn:reverseSort">
 								<td md-cell>{{:: story.name }}</td>
 								<td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
 								<td md-cell>{{ story.createdAt | date:'mediumDate' }}</td>

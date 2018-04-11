@@ -19,6 +19,29 @@ angular.module('nearPlaceApp')
 
       $scope.promocodes = [];
 
+
+
+
+      //Order by//
+
+$scope.sortColumn = "title";
+$scope.reverseSort = false;
+
+$scope.sortData = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+      return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+    }
+    return '';
+};
+//Order by //
+
+
+
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
@@ -205,7 +228,7 @@ angular.module('nearPlaceApp')
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-          debugger;
+         
           if ($scope.howMany > 1) {
             var promises = [];
             var title = $scope.promocode.title;

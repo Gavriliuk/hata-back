@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nearPlaceApp')
-    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth) {
+    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth,) {
 
         // Pagination options.
         $scope.rowOptions = [10, 20, 40];
@@ -16,6 +16,35 @@ angular.module('nearPlaceApp')
         };
 
         $scope.stories = [];
+
+
+        $scope.onPaginationChange = function (page, limit) {
+            $scope.query.page = page;
+            $scope.query.limit = limit;
+            loadStories();
+        };
+
+
+//Order by//
+
+$scope.sortColumn = "name";
+$scope.reverseSort = false;
+
+$scope.sortData = function(column){
+$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+$scope.sortColumn = column;
+
+}
+$scope.getSortClass = function(column){
+    if ($scope.sortColumn == column){
+        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+    }
+    return '';
+};
+//Order by //
+
+
+
 
         var loadStories = function () {
             Auth.ensureLoggedIn().then(function () {
