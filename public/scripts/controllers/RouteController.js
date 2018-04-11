@@ -4,7 +4,9 @@ angular.module('nearPlaceApp')
 
     .controller('RouteController', function ($scope, $mdToast, $mdDialog, Route, Place, Story, Auth) {
         $scope.route = {};
-        $scope.data = { selectedIndex: 0 };
+        $scope.data = {
+            selectedIndex: 0
+        };
         $scope.relationsPlaces = [];
         $scope.relationsStories = [];
 
@@ -15,25 +17,25 @@ angular.module('nearPlaceApp')
             total: 0
         };
 
-//Order by//
+        //Order by//
 
-$scope.sortColumn = "name";
-$scope.reverseSort = false;
+        $scope.sortColumn = "name";
+        $scope.reverseSort = false;
 
-$scope.sortData = function(column){
-$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
-$scope.sortColumn = column;
+        $scope.sortData = function (column) {
+            $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+            $scope.sortColumn = column;
 
-}
-$scope.getSortClass = function(column){
-    if ($scope.sortColumn == column){
-        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+        }
+        $scope.getSortClass = function (column) {
+            if ($scope.sortColumn == column) {
+                return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
 
-    }
-    return '';
-};
+            }
+            return '';
+        };
 
-//Order by //
+        //Order by //
 
 
 
@@ -46,9 +48,9 @@ $scope.getSortClass = function(column){
         var showSimpleToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                    .content(message)
-                    .action('OK')
-                    .hideDelay(3000)
+                .content(message)
+                .action('OK')
+                .hideDelay(3000)
             );
         };
 
@@ -120,15 +122,18 @@ $scope.getSortClass = function(column){
         var onAddPlaceInRoute = function (ev) {
 
             $mdDialog.show({
-                controller: 'DialogAddPlaceInRouteController',
-                templateUrl: '/views/partials/route-place.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    route: $scope.route
-                },
-                clickOutsideToClose: true
-            })
+                    controller: 'DialogAddPlaceInRouteController',
+                    templateUrl: '/views/partials/route-place.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        route: $scope.route,
+                        places: $scope.relationsPlaces.map(function (place) {
+                            return place.id;
+                        })
+                    },
+                    clickOutsideToClose: true
+                })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                     loadCount();
@@ -139,15 +144,15 @@ $scope.getSortClass = function(column){
 
         $scope.onEditRouteStory = function (story) {
             $mdDialog.show({
-                controller: 'DialogStoryController',
-                templateUrl: '/views/partials/story.html',
-                parent: angular.element(document.body),
-                // targetEvent: ev,
-                locals: {
-                    story: angular.copy(story)
-                },
-                clickOutsideToClose: true
-            })
+                    controller: 'DialogStoryController',
+                    templateUrl: '/views/partials/story.html',
+                    parent: angular.element(document.body),
+                    // targetEvent: ev,
+                    locals: {
+                        story: angular.copy(story)
+                    },
+                    clickOutsideToClose: true
+                })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                 });
@@ -156,36 +161,36 @@ $scope.getSortClass = function(column){
 
 
 
-//Order by//
+        //Order by//
 
-$scope.sortColumn = "title_ru";
-$scope.reverseSort = false;
+        $scope.sortColumn = "title_ru";
+        $scope.reverseSort = false;
 
-$scope.sortPlace = function(column){
-$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
-$scope.sortColumn = column;
+        $scope.sortPlace = function (column) {
+            $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+            $scope.sortColumn = column;
 
-}
-$scope.getSortClass = function(column){
-    if ($scope.sortColumn == column){
-        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-    }
-    return '';
-};
-//Order by //
+        }
+        $scope.getSortClass = function (column) {
+            if ($scope.sortColumn == column) {
+                return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+            }
+            return '';
+        };
+        //Order by //
 
 
         $scope.onEditRoutePlace = function (place) {
             $mdDialog.show({
-                controller: 'DialogPlaceController',
-                templateUrl: '/views/partials/place.html',
-                parent: angular.element(document.body),
-                //targetEvent: ev,
-                locals: {
-                    place: angular.copy(place)
-                },
-                clickOutsideToClose: true
-            })
+                    controller: 'DialogPlaceController',
+                    templateUrl: '/views/partials/place.html',
+                    parent: angular.element(document.body),
+                    //targetEvent: ev,
+                    locals: {
+                        place: angular.copy(place)
+                    },
+                    clickOutsideToClose: true
+                })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                 });
@@ -195,15 +200,15 @@ $scope.getSortClass = function(column){
         var onAddStoryInRoute = function (ev) {
 
             $mdDialog.show({
-                controller: 'DialogAddStoryInRouteController',
-                templateUrl: '/views/partials/route-story.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    route: $scope.route
-                },
-                clickOutsideToClose: true
-            })
+                    controller: 'DialogAddStoryInRouteController',
+                    templateUrl: '/views/partials/route-story.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    locals: {
+                        route: $scope.route
+                    },
+                    clickOutsideToClose: true
+                })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                     loadCount();
@@ -212,7 +217,10 @@ $scope.getSortClass = function(column){
 
         //Story//
         $scope.onDestroySinglePlace = function (ev, place, route) {
-            var routePlaceDestroy = { place: place, route: route };
+            var routePlaceDestroy = {
+                place: place,
+                route: route
+            };
             var confirm = $mdDialog.confirm()
                 .title('Confirm action')
                 .content('Are you sure you want to delete this place?')
@@ -223,11 +231,11 @@ $scope.getSortClass = function(column){
             $mdDialog.show(confirm).then(function () {
 
                 Route.removePlace(routePlaceDestroy).then(function (success) {
-                    showSimpleToast('Place deleted.');
+                        showSimpleToast('Place deleted.');
 
-                    loadRoute($scope.route.id);
-                    loadCount();
-                },
+                        loadRoute($scope.route.id);
+                        loadCount();
+                    },
                     function (error) {
                         showSimpleToast(error.message);
                     });
@@ -235,7 +243,10 @@ $scope.getSortClass = function(column){
         };
 
         $scope.onDestroySingleStory = function (ev, story, route) {
-            var routeStoryDestroy = { story: story, route: route };
+            var routeStoryDestroy = {
+                story: story,
+                route: route
+            };
             var confirm = $mdDialog.confirm()
                 .title('Confirm action')
                 .content('Are you sure you want to delete this story?')
@@ -246,10 +257,10 @@ $scope.getSortClass = function(column){
             $mdDialog.show(confirm).then(function () {
 
                 Route.removeStory(routeStoryDestroy).then(function (success) {
-                    showSimpleToast('Story deleted.');
-                    loadRoute($scope.route.id);
-                    loadCount();
-                },
+                        showSimpleToast('Story deleted.');
+                        loadRoute($scope.route.id);
+                        loadCount();
+                    },
                     function (error) {
                         showSimpleToast(error.message);
                     });
@@ -259,47 +270,51 @@ $scope.getSortClass = function(column){
 
     })
 
-    .controller('DialogAddPlaceInRouteController', function ($scope, $mdDialog, $mdToast, Route, Place, File, route) {
+    .controller('DialogAddPlaceInRouteController', function ($scope, $mdDialog, $mdToast, Route, Place, File, route, places) {
         $scope.objRoute = {};
         $scope.objRoute.places = [];
         $scope.placesAll = [];
-        $scope.isCreating = false;
-        $scope.isUploading = false;
-        $scope.isUploadingIcon = false;
-        $scope.imageFilename = '';
-        $scope.iconFilename = '';
+       
 
-        if (route) {
-
-            $scope.isCreating = false;
-            $scope.imageFilename = route.image.name();
-
-            if (route.icon) {
-                $scope.iconFilename = route.icon.name();
-            }
-            $scope.objRoute = route;
-        } else {
-            $scope.objRoute = {};
-            $scope.isCreating = true;
-        }
-
-        Place.all({ page: 1, limit: 1000, filter: '' })
-            .then(function (places) {
-                $scope.placesAll = places;
+        Place.all({
+                page: 1,
+                limit: 1000,
+                filter: ''
+            })
+            .then(function (returnedPlaces) {
+                $scope.placesAll = returnedPlaces.map(function (place) {
+                    if (places.includes(place.id)) {
+                        place.selected = true;
+                    }
+                    return place;
+                });
             });
 
         var showToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                    .content(message)
-                    .action('OK')
-                    .hideDelay(3000)
+                .content(message)
+                .action('OK')
+                .hideDelay(3000)
             );
         };
 
         $scope.hide = function () {
             $mdDialog.cancel();
         };
+
+        // $scope.toggleObject = function (place) {
+        //     if(place.selected){
+        //         //TODO add into tobeadded array
+        //     }else{
+        //         //remove from tobeadded if exists
+        //         if(places.includes(place.id)){
+        //             //TODO tobe deleted
+        //         }
+        //     }
+        //     console.log(place);
+
+        // };
 
         $scope.cancel = function () {
             $mdDialog.cancel();
@@ -337,20 +352,24 @@ $scope.getSortClass = function(column){
         $scope.objRoute.stories = [];
         $scope.storiesAll = [];
 
-        $scope.isCreating = false;
-        $scope.objRoute = route;
+
 
         Story.all({ page: 1, limit: 1000, filter: '' })
-            .then(function (stories) {
-                $scope.storiesAll = stories;
-            });
+        .then(function (stories) {
+            $scope.storiesAll = stories;
+        });
+
+
+
+
+
 
         var showToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                    .content(message)
-                    .action('OK')
-                    .hideDelay(3000)
+                .content(message)
+                .action('OK')
+                .hideDelay(3000)
             );
         };
 

@@ -161,15 +161,35 @@ $scope.getSortClass = function(column){
                 en: false
             };
 
+            $scope.audioFilename.ru = '';
+            $scope.audioFilename.ro = '';
+            $scope.audioFilename.en = '';
+
+
             $scope.objStory = {};
 
             if (story) {
 
                 $scope.isCreating = false;
                 $scope.objStory = story;
+
+                if (story.audio_ru){
+                    $scope.audioFilename.ru = story.audio_ru.name();
+
+
+                }
+            if (story.audio_ro){
+                $scope.audioFilename.ro = story.audio_ro.name();
+
             }
 
-            else {
+            if(story.audio_en){
+                $scope.audioFilename.en = story.audio_en.name();
+
+            }
+
+
+         } else {
 
                 $scope.isCreating = true;
 

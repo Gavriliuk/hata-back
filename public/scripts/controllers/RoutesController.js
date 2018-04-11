@@ -144,10 +144,14 @@ $scope.getSortClass = function(column){
 			if (route) {
 
 				$scope.isCreating = false;
-				$scope.imageFilename = route.image.name();
+				
 
-				if (route.icon) {
-					$scope.iconFilename = route.icon.name();
+			
+				$scope.iconFilename = route.icon ? route.icon.name():"";
+				
+				if(route.image){
+
+					$scope.imageFilename = route.image ? route.image.name():"";
 				}
 
 				$scope.objRoute = route;
@@ -158,6 +162,7 @@ $scope.getSortClass = function(column){
 
 			} else {
 				$scope.isCreating = true;
+				
 			}
 			Place.all({ page: 1, limit: 1000, filter: '' })
 				.then(function (places) {
