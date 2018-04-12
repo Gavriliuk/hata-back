@@ -37,15 +37,7 @@ angular.module('nearPlaceApp')
 
         //Order by //
 
-
-
-
-
-
-
-
-
-        var showSimpleToast = function (message) {
+    var showSimpleToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
                 .content(message)
@@ -140,14 +132,12 @@ angular.module('nearPlaceApp')
                 });
         };
 
-        //Story route//
-
         $scope.onEditRouteStory = function (story) {
             $mdDialog.show({
                     controller: 'DialogStoryController',
                     templateUrl: '/views/partials/story.html',
                     parent: angular.element(document.body),
-                    // targetEvent: ev,
+                    //  targetEvent: ev,
                     locals: {
                         story: angular.copy(story)
                     },
@@ -196,7 +186,6 @@ angular.module('nearPlaceApp')
                 });
         };
 
-        //Schimabari//
         var onAddStoryInRoute = function (ev) {
 
             $mdDialog.show({
@@ -205,7 +194,10 @@ angular.module('nearPlaceApp')
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     locals: {
-                        route: $scope.route
+                        route: $scope.route,
+                        stories: $scope.relationsStories.map(function (story) {
+                            return story.id;
+                        })
                     },
                     clickOutsideToClose: true
                 })
@@ -215,66 +207,12 @@ angular.module('nearPlaceApp')
                 });
         };
 
-        //Story//
-        $scope.onDestroySinglePlace = function (ev, place, route) {
-            var routePlaceDestroy = {
-                place: place,
-                route: route
-            };
-            var confirm = $mdDialog.confirm()
-                .title('Confirm action')
-                .content('Are you sure you want to delete this place?')
-                .ok('Delete')
-                .cancel('Cancel')
-                .targetEvent(ev);
 
-            $mdDialog.show(confirm).then(function () {
-
-                Route.removePlace(routePlaceDestroy).then(function (success) {
-                        showSimpleToast('Place deleted.');
-
-                        loadRoute($scope.route.id);
-                        loadCount();
-                    },
-                    function (error) {
-                        showSimpleToast(error.message);
-                    });
-            });
-        };
-
-        $scope.onDestroySingleStory = function (ev, story, route) {
-            var routeStoryDestroy = {
-                story: story,
-                route: route
-            };
-            var confirm = $mdDialog.confirm()
-                .title('Confirm action')
-                .content('Are you sure you want to delete this story?')
-                .ok('Delete')
-                .cancel('Cancel')
-                .targetEvent(ev);
-
-            $mdDialog.show(confirm).then(function () {
-
-                Route.removeStory(routeStoryDestroy).then(function (success) {
-                        showSimpleToast('Story deleted.');
-                        loadRoute($scope.route.id);
-                        loadCount();
-                    },
-                    function (error) {
-                        showSimpleToast(error.message);
-                    });
-
-            });
-        };
-
-    })
-
-    .controller('DialogAddPlaceInRouteController', function ($scope, $mdDialog, $mdToast, Route, Place, File, route, places) {
-        $scope.objRoute = {};
+    }).controller('DialogAddPlaceInRouteController', function ($scope, $mdDialog, $mdToast, Route, Place, File, route, places) {
+        $scope.objRoute = route;
         $scope.objRoute.places = [];
         $scope.placesAll = [];
-       
+
 
         Place.all({
                 page: 1,
@@ -303,20 +241,7 @@ angular.module('nearPlaceApp')
             $mdDialog.cancel();
         };
 
-        // $scope.toggleObject = function (place) {
-        //     if(place.selected){
-        //         //TODO add into tobeadded array
-        //     }else{
-        //         //remove from tobeadded if exists
-        //         if(places.includes(place.id)){
-        //             //TODO tobe deleted
-        //         }
-        //     }
-        //     console.log(place);
-
-        // };
-
-        $scope.cancel = function () {
+         $scope.cancel = function () {
             $mdDialog.cancel();
         };
 
@@ -331,10 +256,17 @@ angular.module('nearPlaceApp')
                 $scope.placesAll.forEach(function (place) {
                     if (place.selected) {
                         placesSelected.push(place);
+                    } else if (places.includes(place.id)) {
+                        var routePlaceDestroy = {
+                            place: place,
+                            route: route
+                        };
+                        Route.removePlace(routePlaceDestroy);
                     }
                 });
-                $scope.objRoute.places = placesSelected;
 
+                $scope.objRoute.places = placesSelected;
+                
                 Route.save($scope.objRoute).then(function (route) {
                     showToast('Route saved');
                     $mdDialog.hide();
@@ -345,24 +277,29 @@ angular.module('nearPlaceApp')
                 });
             }
         };
-    })
-    //story//
-    .controller('DialogAddStoryInRouteController', function ($scope, $mdDialog, $mdToast, Route, Story, File, route) {
-        $scope.objRoute = {};
+
+    }).controller('DialogAddStoryInRouteController', function ($scope, $mdDialog, $mdToast, Route, Story, File, route, stories) {
+        $scope.objRoute = route;
         $scope.objRoute.stories = [];
         $scope.storiesAll = [];
 
 
 
-        Story.all({ page: 1, limit: 1000, filter: '' })
-        .then(function (stories) {
-            $scope.storiesAll = stories;
-        });
+        Story.all({
+                page: 1,
+                limit: 1000,
+                filter: ''
+            })
+            .then(function (returnedStories) {
+                $scope.storiesAll = returnedStories.map(function (story) {
+                    if (stories.includes(story.id)) {
+                        story.selected = true;
 
+                    }
 
-
-
-
+                    return story;
+                });
+            });
 
         var showToast = function (message) {
             $mdToast.show(
@@ -383,23 +320,42 @@ angular.module('nearPlaceApp')
         };
 
         $scope.addStoryInRoute = function (isFormValid) {
+            var storiesSelected = [];
             if (!isFormValid) {
                 showToast('Please correct all highlighted errors and try again');
                 return;
             } else {
                 $scope.isSavingRoute = true;
 
+                $scope.storiesAll.forEach(function (story) {
+                    if (story.selected) {
+                        storiesSelected.push(story);
+                    }
+                    else if (stories.includes(story.id)) {
+                        var routeStoryDestroy = {
+                            story: story,
+                            route: route
+                        };
+                        Route.removeStory(routeStoryDestroy);
+                    }
+                });
 
-                $scope.objRoute.stories = $scope.storiesAll.filter(story => story.selected);
+
+                $scope.objRoute.stories = storiesSelected;
+
 
                 Route.save($scope.objRoute).then(function (route) {
-                    showToast('Route saved');
-                    $mdDialog.hide();
-                    $scope.isSavingRoute = false;
-                }, function (error) {
-                    showToast(error.message);
-                    $scope.isSavingRoute = false;
-                });
+
+                        showToast('Route saved');
+                        $mdDialog.hide();
+                        $scope.isSavingRoute = false;
+                    },
+
+
+                    function (error) {
+                        showToast(error.message);
+                        $scope.isSavingRoute = false;
+                    });
             }
         };
 
