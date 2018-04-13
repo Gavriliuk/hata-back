@@ -15,6 +15,25 @@
           <label>Periods</label>
           <md-chips ng-model="objRoute.periods" readonly="false" md-removable="true"></md-chips>
         <!-- </md-input-container> -->
+
+
+<!-- //lucrez// -->
+<md-input-container>
+  <label>PlayModes</label>
+
+  <md-select ng-model="objRoute.playModes"  md-on-close="clearSearchTerm()"  multiple=" ">
+
+          <md-optgroup label="playModes">
+
+                   <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>       
+                  </md-optgroup>
+              </md-select>
+            </md-input-container>
+
+<!-- //lucre// -->
+
+
+
         <md-input-container>
           <label>Title: RU</label>
           <input required name="title_ru" ng-model="objRoute.title_ru">
