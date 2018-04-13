@@ -191,6 +191,7 @@ angular.module('nearPlaceApp')
     $scope.place.website = 'http://';
     $scope.imageFilenames = '';
     $scope.input = {};
+    $scope.searchAddress = "Chisinau";
     $scope.isImageUploading = false;
 
     $scope.audioFilename = {};
@@ -209,6 +210,9 @@ angular.module('nearPlaceApp')
       $scope.isCreating = false;
       $scope.place = place;
 
+      $scope.input.latitude = $scope.place.location.latitude,
+      $scope.input.longitude = $scope.place.location.longitude
+      
       $scope.imageFilenames = place.images.map(function (image) {
         return image.name();
       });
@@ -286,9 +290,9 @@ angular.module('nearPlaceApp')
       }
     };
 
-    $scope.onAddressChanged_ru = function () {
+    $scope.onSearchAddressChanged = function () {
       GeoCoder.geocode({
-        address: $scope.place.address_ru
+        address: $scope.searchAddress
       }).then(function (result) {
 
         if (map) {
@@ -300,63 +304,6 @@ angular.module('nearPlaceApp')
           map.setZoom(15);
 
           marker.setPosition(location);
-
-          $scope.place.location = new Parse.GeoPoint({
-            latitude: location.lat(),
-            longitude: location.lng()
-          });
-
-          $scope.input.latitude = location.lat();
-          $scope.input.longitude = location.lng();
-        }
-      });
-    };
-
-    $scope.onAddressChanged_ro = function () {
-      GeoCoder.geocode({
-        address: $scope.place.address_ro
-      }).then(function (result) {
-
-        if (map) {
-
-          var location = result[0].geometry.location;
-          location = new google.maps.LatLng(location.lat(), location.lng());
-
-          map.setCenter(location);
-          map.setZoom(15);
-
-          marker.setPosition(location);
-
-          $scope.place.location = new Parse.GeoPoint({
-            latitude: location.lat(),
-            longitude: location.lng()
-          });
-
-          $scope.input.latitude = location.lat();
-          $scope.input.longitude = location.lng();
-        }
-      });
-    };
-
-    $scope.onAddressChanged_en = function () {
-      GeoCoder.geocode({
-        address: $scope.place.address_en
-      }).then(function (result) {
-
-        if (map) {
-
-          var location = result[0].geometry.location;
-          location = new google.maps.LatLng(location.lat(), location.lng());
-
-          map.setCenter(location);
-          map.setZoom(15);
-
-          marker.setPosition(location);
-
-          $scope.place.location = new Parse.GeoPoint({
-            latitude: location.lat(),
-            longitude: location.lng()
-          });
 
           $scope.input.latitude = location.lat();
           $scope.input.longitude = location.lng();

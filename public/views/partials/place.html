@@ -85,6 +85,11 @@
                     <label>Address: EN</label>
                     <input type="text" name="address_en" ng-model="place.address_en" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
                 </md-input-container>
+                
+                <md-input-container class="md-block">
+                    <label>Search Address:</label>
+                    <input type="text" name="search_address" ng-model="searchAddress" ng-model-options="{ debounce: 2000 }" ng-change="onSearchAddressChanged()">
+                </md-input-container>
 
                 <md-input-container>
                     <ng-map class="map" scrollwheel="false" map-type-control="false" street-view-control="false">
