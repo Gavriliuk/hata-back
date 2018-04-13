@@ -253,6 +253,19 @@ angular.module('nearPlaceApp')
                 }
             });
 
+
+
+            Object.defineProperty(Route.prototype, 'PlayModes',
+            {
+                get: function () {
+                    return this.get('PlayModes');
+                },
+                set: function (val) {
+                    this.set('PlayModes', val);
+                }
+            });
+
+
         Object.defineProperty(Route.prototype, 'title_ru',
             {
                 get: function () {
@@ -262,6 +275,9 @@ angular.module('nearPlaceApp')
                     this.set('title_ru', val);
                 }
             });
+
+
+
         Object.defineProperty(Route.prototype, 'title_ro',
             {
                 get: function () {

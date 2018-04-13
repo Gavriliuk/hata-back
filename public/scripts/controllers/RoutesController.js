@@ -134,12 +134,17 @@ $scope.getSortClass = function(column){
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
 			$scope.objRoute.periods = [];
+		
+         
 
 			$scope.isCreating = false;
 			$scope.isUploading = false;
 			$scope.isUploadingIcon = false;
 			$scope.imageFilename = '';
 			$scope.iconFilename = '';
+
+
+			$scope.PlayModes = ['PoiOnly' ,'StoryOnly' ,'StoryPoi'];
 
 			if (route) {
 
