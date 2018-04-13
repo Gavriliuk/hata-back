@@ -255,13 +255,13 @@ angular.module('nearPlaceApp')
 
 
 
-            Object.defineProperty(Route.prototype, 'PlayModes',
+            Object.defineProperty(Route.prototype, 'playModes',
             {
                 get: function () {
-                    return this.get('PlayModes');
+                    return this.get('playModes');
                 },
                 set: function (val) {
-                    this.set('PlayModes', val);
+                    this.set('playModes', val);
                 }
             });
 

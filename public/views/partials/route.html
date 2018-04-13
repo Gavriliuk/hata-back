@@ -21,11 +21,11 @@
 <md-input-container>
   <label>PlayModes</label>
 
-  <md-select ng-model="objRoute.PlayModes"  md-on-close="clearSearchTerm()"  multiple=" ">
+  <md-select ng-model="objRoute.playModes"  md-on-close="clearSearchTerm()"  multiple=" ">
 
-          <md-optgroup label="PlayModes">
+          <md-optgroup label="playModes">
 
-                   <md-option ng-value="playmode" ng-repeat="playmode in PlayModes">{{playmode}}</md-option>       
+                   <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>       
                   </md-optgroup>
               </md-select>
             </md-input-container>
