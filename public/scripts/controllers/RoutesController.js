@@ -144,7 +144,7 @@ $scope.getSortClass = function(column){
 			$scope.iconFilename = '';
 
 
-			$scope.playModes = [{label:'Poi Only',value:"payOnly"} ,{label:'Story Only',value:"storyOnly"} ,{label:'Story Poi',value:"storyPoi"}];
+			$scope.playModes = [{label:'Poi Only',value:"poiOnly"} ,{label:'Story Only',value:"storyOnly"} ,{label:'Story Poi',value:"storyPoi"}];
 
 			if (route) {
 

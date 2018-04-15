@@ -265,6 +265,16 @@ angular.module('nearPlaceApp')
                 }
             });
 
+            Object.defineProperty(Route.prototype, 'defaultPlayMode',
+            {
+                get: function () {
+                    return this.get('defaultPlayMode');
+                },
+                set: function (val) {
+                    this.set('defaultPlayMode', val);
+                }
+            });
+
 
         Object.defineProperty(Route.prototype, 'title_ru',
             {

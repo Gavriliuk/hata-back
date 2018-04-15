@@ -12,25 +12,37 @@
     <md-dialog-content>
       <md-content layout="column" layout-padding>
         <!-- <md-input-container> -->
-          <label>Periods</label>
-          <md-chips ng-model="objRoute.periods" readonly="false" md-removable="true"></md-chips>
+        <label>Periods</label>
+        <md-chips ng-model="objRoute.periods" readonly="false" md-removable="true"></md-chips>
         <!-- </md-input-container> -->
 
 
-<!-- //lucrez// -->
-<md-input-container>
-  <label>PlayModes</label>
+        <!-- //lucrez// -->
+        <md-input-container>
+          <label>PlayModes</label>
 
-  <md-select ng-model="objRoute.playModes"  md-on-close="clearSearchTerm()"  multiple=" ">
+          <md-select ng-model="objRoute.playModes" md-on-close="clearSearchTerm()" multiple=" ">
 
-          <md-optgroup label="playModes">
+            <md-optgroup label="playModes">
 
-                   <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>       
-                  </md-optgroup>
-              </md-select>
-            </md-input-container>
+              <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
 
-<!-- //lucre// -->
+        <md-input-container>
+          <label>Default Play Mode</label>
+
+          <md-select ng-model="objRoute.defaultPlayMode">
+
+            <md-optgroup label="defaultPlayMode">
+
+              <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
+
+        <!-- //lucre// -->
 
 
 
@@ -121,61 +133,61 @@
 
         <div layout="column">
           <md-input-container class="layout-row">
-              <div ng-show="objRoute.image">
-                  <img class="img-thumb placeImg" actual-src="{{ objRoute.image.url() }}" />
-                  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteImage()"></ng-md-icon>
-              </div>
+            <div ng-show="objRoute.image">
+              <img class="img-thumb placeImg" actual-src="{{ objRoute.image.url() }}" />
+              <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteImage()"></ng-md-icon>
+            </div>
           </md-input-container>
 
 
 
 
-        <div layout="row" layout-align="start center">
+          <div layout="row" layout-align="start center">
 
-          <md-input-container md-no-float>
-            <label>Upload Image</label>
-            <input type="text" ng-model="imageFilename" disabled>
-          </md-input-container>
-          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.image.url() }" ngf-select="uploadImage($file, $invalidFile)"
-            ngf-max-size="4MB" ngf-pattern="'image/*'" accept="image/*">
-            <md-tooltip>                    
-              Add an Image
-            </md-tooltip>
-          </ng-md-icon>
-          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploading">
-          </md-progress-circular>
-          
-        </div>
+            <md-input-container md-no-float>
+              <label>Upload Image</label>
+              <input type="text" ng-model="imageFilename" disabled>
+            </md-input-container>
+            <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.image.url() }" ngf-select="uploadImage($file, $invalidFile)"
+              ngf-max-size="4MB" ngf-pattern="'image/*'" accept="image/*">
+              <md-tooltip>
+                Add an Image
+              </md-tooltip>
+            </ng-md-icon>
+            <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploading">
+            </md-progress-circular>
+
+          </div>
 
 
 
-        <div layout="column">
-          <md-input-container class="layout-row">
+          <div layout="column">
+            <md-input-container class="layout-row">
               <div ng-show="objRoute.icon">
-                  <img class="icon-thumb placeImg" actual-src="{{ objRoute.icon.url() }}" />
-                  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
+                <img class="icon-thumb placeImg" actual-src="{{ objRoute.icon.url() }}" />
+                <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
               </div>
-          </md-input-container>
+            </md-input-container>
 
 
-        <div layout="row" layout-align="start center">
-          <md-input-container md-no-float>
-            <label>Upload Icon</label>
-            <input type="text" ng-model="iconFilename" disabled>
-          </md-input-container>
-          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
-            ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
-            <md-tooltip>
-              Add an Icon
-            </md-tooltip>
-          </ng-md-icon>
-          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
-          </md-progress-circular>
-        </div>
+            <div layout="row" layout-align="start center">
+              <md-input-container md-no-float>
+                <label>Upload Icon</label>
+                <input type="text" ng-model="iconFilename" disabled>
+              </md-input-container>
+              <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objRoute.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
+                ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
+                <md-tooltip>
+                  Add an Icon
+                </md-tooltip>
+              </ng-md-icon>
+              <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
+              </md-progress-circular>
+            </div>
 
-        <div class="hint">
-          * The icon image's dimensions should be 64x64 px
-        </div>
+            <div class="hint">
+              * The icon image's dimensions should be 64x64 px
+            </div>
 
       </md-content>
     </md-dialog-content>
