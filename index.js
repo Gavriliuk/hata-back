@@ -321,6 +321,13 @@ app.get('/dashboard/promocodes', isAdmin, function (req, res) {
     res.render('promocodes');
 });
 
+
+app.get('/dashboard/categories', isAdmin, function (req, res) {
+  res.render('categories');
+});
+
+
+
 app.get('/dashboard/users', isAdmin, function (req, res) {
   res.render('users');
 });

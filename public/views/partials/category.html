@@ -1,0 +1,110 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Category Dialog">
+    <form name="form" role="form" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="isCreating">New Place Category</h2>
+                <h2 ng-show="!isCreating">Edit {{::objCategory.title }}</h2>
+                <span flex></span>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content layout="column" layout-padding>
+
+   
+                <md-input-container class="md-block">
+                    <label>Title: RU</label>
+                    <input type="text" required name="title_ru" ng-model="objCategory.title_ru">
+                    <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title RU required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title: RO</label>
+                    <input type="text" required name="title_ro" ng-model="objCategory.title_ro">
+                    <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title RO required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title: EN</label>
+                    <input type="text" required name="title_en" ng-model="objCategory.title_en">
+                    <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title EN required</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description: RU</label>
+                    <textarea name="description_ru" ng-maxlength="600" ng-model="objCategory.description_ru" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RU required</div>
+                        <div ng-message="maxlength">Description RU too large</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description: RO</label>
+                    <textarea name="description_ro" ng-maxlength="600" ng-model="objCategory.description_ro" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RO required</div>
+                        <div ng-message="maxlength">Description RO too large</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description: EN</label>
+                    <textarea name="description_en" ng-maxlength="600" ng-model="objCategory.description_en" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_en.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description EN required</div>
+                        <div ng-message="maxlength">Description EN too large</div>
+                    </div>
+
+
+                    <div layout="column">
+                        <md-input-container class="layout-row">
+                          <div ng-show="objCategory.icon">
+                            <img class="icon-thumb placeImg" actual-src="{{ objCategory.icon.url() }}" />
+                            <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
+                          </div>
+                        </md-input-container>
+            
+            
+                        <div layout="row" layout-align="start center">
+                          <md-input-container md-no-float>
+                            <label>Upload Icon</label>
+                            <input type="text" ng-model="iconFilename" disabled>
+                          </md-input-container>
+                          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objCategory.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
+                            ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
+                            <md-tooltip>
+                              Add an Icon
+                            </md-tooltip>
+                          </ng-md-icon>
+                          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
+                          </md-progress-circular>
+                        </div>
+            
+                        <div class="hint">
+                          * The icon image's dimensions should be 64x64 px
+                        </div>
+            
+                </md-input-container>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onSaveCategory(form.$valid)" ng-disabled="isSavingCategory" ng-show="isCreating">
+                {{ !isSavingCategory ? 'Save' : 'Saving...' }}
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onUpdateCategory(form.$valid)" ng-disabled="isSavingCategory" ng-show="!isCreating">
+                {{ !isSavingCategory ? 'Update' : 'Updating...' }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

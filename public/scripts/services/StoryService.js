@@ -2,7 +2,7 @@
 angular.module('nearPlaceApp')
   .factory('Story', function ($q) {
 
-    var Story = Parse.Object.extend('Story', {}, {
+    var Story = Parse.Object.extend('Story', {},{
 
       create: function (story) {
 

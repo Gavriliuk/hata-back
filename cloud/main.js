@@ -366,6 +366,36 @@ Parse.Cloud.beforeSave('Route', function (req, res) {
     });
 
 });
+
+
+
+Parse.Cloud.beforeSave('Category', function (req, res) {
+    var category = req.object;
+    var user = req.user;
+
+    if (!user) {
+        return res.error('Not Authorized');
+    }
+
+
+    if (!category.existed()) {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setRoleWriteAccess('Admin', true);
+        category.setACL(acl);
+    }
+
+    if ((category.dirty('title_ru') && category.get('title_ru')) || (category.dirty('title_ro') && category.get('title_ro')) || (category.dirty('title_en') && category.get('title_en'))) {
+        category.set('canonical', (category.get('title_ru') + category.get('title_ro') + category.get('title_en')).toLowerCase());
+    }
+    return res.success();
+});
+
+
+
+
+
+
 Parse.Cloud.beforeSave('Story', function (req, res) {
     var story = req.object;
     var user = req.user;
