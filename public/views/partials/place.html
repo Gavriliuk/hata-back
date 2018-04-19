@@ -1,226 +1,235 @@
 <md-dialog flex="100" flex-gt-xs="40" aria-label="Place Dialog">
-    <form name="form" role="form" novalidate>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2 ng-show="isCreating">New Place</h2>
-                <h2 ng-show="!isCreating">Edit {{::place.title }}</h2>
-                <span flex></span>
-                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
-            </div>
-        </md-toolbar>
-        <md-dialog-content>
-            <md-content layout="column" layout-padding>
+	 <form name="form" role="form" novalidate>
+		  <md-toolbar>
+				<div class="md-toolbar-tools">
+					 <h2 ng-show="isCreating">New Place</h2>
+					 <h2 ng-show="!isCreating">Edit {{::place.title }}</h2>
+					 <span flex></span>
+					 <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+				</div>
+		  </md-toolbar>
+		  <md-dialog-content>
+				<md-content layout="column" layout-padding>
 
-                <md-input-container class="md-block">
-                    <label>Start Period</label>
-                    <md-datepicker ng-model="place.startPeriod" md-current-view="year">
-                    </md-datepicker>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>End Period</label>
-                    <md-datepicker ng-model="place.endPeriod" md-current-view="year">
-                    </md-datepicker>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Title: RU</label>
-                    <input type="text" required name="title_ru" ng-model="place.title_ru">
-                    <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Title RU required</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Title: RO</label>
-                    <input type="text" required name="title_ro" ng-model="place.title_ro">
-                    <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Title RO required</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Title: EN</label>
-                    <input type="text" required name="title_en" ng-model="place.title_en">
-                    <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Title EN required</div>
-                    </div>
-                </md-input-container>
+					 <!-- <md-input-container class="md-block">
+						  <label>Start Period</label>
+						  <md-datepicker ng-model="place.startPeriod" md-current-view="year">
+						  </md-datepicker>
+					 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>End Period</label>
+						  <md-datepicker ng-model="place.endPeriod" md-current-view="year">
+						  </md-datepicker>
+					 </md-input-container> -->
 
-                <md-input-container class="md-block">
-                    <label>Description: RU</label>
-                    <textarea name="description_ru" ng-maxlength="600" ng-model="place.description_ru" columns="2" md-maxlength="600">
-                    </textarea>
-                    <div ng-messages="form.description_ru.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Description RU required</div>
-                        <div ng-message="maxlength">Description RU too large</div>
-                    </div>
-                </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Description: RO</label>
-                    <textarea name="description_ro" ng-maxlength="600" ng-model="place.description_ro" columns="2" md-maxlength="600">
-                    </textarea>
-                    <div ng-messages="form.description_ro.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Description RO required</div>
-                        <div ng-message="maxlength">Description RO too large</div>
-                    </div>
-                </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Description: EN</label>
-                    <textarea name="description_en" ng-maxlength="600" ng-model="place.description_en" columns="2" md-maxlength="600">
-                    </textarea>
-                    <div ng-messages="form.description_en.$error" ng-show="form.$submitted">
-                        <div ng-message="required">Description EN required</div>
-                        <div ng-message="maxlength">Description EN too large</div>
-                    </div>
-                </md-input-container>
+		  <md-input-container>
+				<label>Add object category</label>				
+				<md-select ng-model="place.category" ng-model-options="{trackBy: '$value.id'}">
+					 <md-option ng-value="category" ng-repeat="category in categories">{{category.title_ru}}</md-option>
+				</md-select>
+			 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Title: RU</label>
+						  <input type="text" required name="title_ru" ng-model="place.title_ru">
+						  <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+								<div ng-message="required">Title RU required</div>
+						  </div>
+					 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Title: RO</label>
+						  <input type="text" required name="title_ro" ng-model="place.title_ro">
+						  <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+								<div ng-message="required">Title RO required</div>
+						  </div>
+					 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Title: EN</label>
+						  <input type="text" required name="title_en" ng-model="place.title_en">
+						  <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+								<div ng-message="required">Title EN required</div>
+						  </div>
+					 </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Address: RU</label>
-                    <input type="text" name="address_ru" ng-model="place.address_ru" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ru()">
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Address: RO</label>
-                    <input type="text" name="address_ro" ng-model="place.address_ro" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ro()">
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label>Address: EN</label>
-                    <input type="text" name="address_en" ng-model="place.address_en" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
-                </md-input-container>
-                
-                <md-input-container class="md-block">
-                    <label>Search Address:</label>
-                    <input type="text" name="search_address" ng-model="searchAddress" ng-model-options="{ debounce: 2000 }" ng-change="onSearchAddressChanged()">
-                </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Description: RU</label>
+						  <textarea name="description_ru" ng-maxlength="600" ng-model="place.description_ru" columns="2" md-maxlength="600">
+						  </textarea>
+						  <div ng-messages="form.description_ru.$error" ng-show="form.$submitted">
+								<div ng-message="required">Description RU required</div>
+								<div ng-message="maxlength">Description RU too large</div>
+						  </div>
+					 </md-input-container>
 
-                <md-input-container>
-                    <ng-map class="map" scrollwheel="false" map-type-control="false" street-view-control="false">
-                        <marker draggable="true" on-dragend="onMarkerDragEnd()"></marker>
-                    </ng-map>
-                </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Description: RO</label>
+						  <textarea name="description_ro" ng-maxlength="600" ng-model="place.description_ro" columns="2" md-maxlength="600">
+						  </textarea>
+						  <div ng-messages="form.description_ro.$error" ng-show="form.$submitted">
+								<div ng-message="required">Description RO required</div>
+								<div ng-message="maxlength">Description RO too large</div>
+						  </div>
+					 </md-input-container>
 
-                <div layout="row" layout-align="start center">
-                    <md-input-container>
-                        <label>Latitude</label>
-                        <input type="number" name="latitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.latitude">
-                    </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Description: EN</label>
+						  <textarea name="description_en" ng-maxlength="600" ng-model="place.description_en" columns="2" md-maxlength="600">
+						  </textarea>
+						  <div ng-messages="form.description_en.$error" ng-show="form.$submitted">
+								<div ng-message="required">Description EN required</div>
+								<div ng-message="maxlength">Description EN too large</div>
+						  </div>
+					 </md-input-container>
 
-                    <md-input-container>
-                        <label>Longitude</label>
-                        <input type="number" name="longitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.longitude">
-                    </md-input-container>
-                </div>
+					 <md-input-container class="md-block">
+						  <label>Address: RU</label>
+						  <input type="text" name="address_ru" ng-model="place.address_ru" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ru()">
+					 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Address: RO</label>
+						  <input type="text" name="address_ro" ng-model="place.address_ro" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_ro()">
+					 </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Address: EN</label>
+						  <input type="text" name="address_en" ng-model="place.address_en" ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged_en()">
+					 </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Radius (km)</label>
-                    <input type="text" name="radius" ng-model="place.radius">
-                </md-input-container>
+					 <md-input-container class="md-block">
+						  <label>Search Address:</label>
+						  <input type="text" name="search_address" ng-model="searchAddress" ng-model-options="{ debounce: 2000 }" ng-change="onSearchAddressChanged()">
+					 </md-input-container>
 
-                <div layout="column">
-                    <md-input-container class="layout-row">
-                        <div ng-repeat="img in place.images">
-                            <img class="img-thumb placeImg" actual-src="{{ img.url() }}" />
-                            <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteImage(img)"></ng-md-icon>
-                        </div>
-                    </md-input-container>
-                    <div layout="row" layout-align="start center">
-                        <ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
-                        <md-input-container md-no-float>
-                            <label>Upload image</label>
-                            <input type="text" ng-model="imageFilenames" disabled>
-                        </md-input-container>
-                        <ng-md-icon icon="add_circle" class="photo-camera" ng-class="{ 'photo-active': place.images.url() }" ngf-select="uploadImageFile($file, $invalidFile)"
-                            ngf-max-size="2MB" ngf-pattern="'image/*'" accept="image/*">
-                            <md-tooltip>
-                                Add image
-                            </md-tooltip>
-                        </ng-md-icon>
-                        <md-progress-circular class="md-primary" md-diameter="30" ng-if="isImageUploading">
-                        </md-progress-circular>
-                    </div>
-                </div>
+					 <md-input-container>
+						  <ng-map class="map" scrollwheel="false" map-type-control="false" street-view-control="false">
+								<marker draggable="true" on-dragend="onMarkerDragEnd()"></marker>
+						  </ng-map>
+					 </md-input-container>
 
-                <div class="hint">
-                    The image's dimensions should be min 800x600 px
-                </div>
+					 <div layout="row" layout-align="start center">
+						  <md-input-container>
+								<label>Latitude</label>
+								<input type="number" name="latitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.latitude">
+						  </md-input-container>
 
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload Audio: RU</label>
+						  <md-input-container>
+								<label>Longitude</label>
+								<input type="number" name="longitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.longitude">
+						  </md-input-container>
+					 </div>
 
-                        <input type="text" ng-model="audioFilename.ru" disabled>
+					 <md-input-container class="md-block">
+						  <label>Radius (km)</label>
+						  <input type="text" name="radius" ng-model="place.radius">
+					 </md-input-container>
 
-                    </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ru.url() }" ngf-select="uploadAudio($file, $invalidFile,'ru')"
-                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+					 <div layout="column">
+						  <md-input-container class="layout-row">
+								<div ng-repeat="img in place.images">
+									 <img class="img-thumb placeImg" actual-src="{{ img.url() }}" />
+									 <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteImage(img)"></ng-md-icon>
+								</div>
+						  </md-input-container>
+						  <div layout="row" layout-align="start center">
+								<ng-md-icon icon="photo_camera" class="photo-camera"></ng-md-icon>
+								<md-input-container md-no-float>
+									 <label>Upload image</label>
+									 <input type="text" ng-model="imageFilenames" disabled>
+								</md-input-container>
+								<ng-md-icon icon="add_circle" class="photo-camera" ng-class="{ 'photo-active': place.images.url() }" ngf-select="uploadImageFile($file, $invalidFile)"
+									 ngf-max-size="2MB" ngf-pattern="'image/*'" accept="image/*">
+									 <md-tooltip>
+										  Add image
+									 </md-tooltip>
+								</ng-md-icon>
+								<md-progress-circular class="md-primary" md-diameter="30" ng-if="isImageUploading">
+								</md-progress-circular>
+						  </div>
+					 </div>
 
-                        <md-tooltip>
-                            Add Audio: RU
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ru">
-                    </md-progress-circular>
-                </div>
-                <div layout="row" ng-if="place.audio_ru.url(ru)">
-                    <audio controls>
-                        <source src="{{place.audio_ru.url() }}" type="audio/mpeg">
-                    </audio>
-                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ru')"></ng-md-icon>
-                </div>
+					 <div class="hint">
+						  The image's dimensions should be min 800x600 px
+					 </div>
 
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload Audio: RO</label>
-                        <input type="text" ng-model="audioFilename.ro" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ro.url() }" ngf-select="uploadAudio($file, $invalidFile,'ro')"
-                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+					 <div layout="row" layout-align="start center">
+						  <md-input-container md-no-float>
+								<label>Upload Audio: RU</label>
 
-                        <md-tooltip>
-                            Add Audio: RO
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ro">
-                    </md-progress-circular>
-                </div>
-                <div layout="row" ng-if="place.audio_ro.url()">
-                    <audio controls>
-                        <source src="{{place.audio_ro.url() }}" type="audio/mpeg">
-                    </audio>
-                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ro')"></ng-md-icon>
-                </div>
+								<input type="text" ng-model="audioFilename.ru" disabled>
 
-                <div layout="row" layout-align="start center">
-                    <md-input-container md-no-float>
-                        <label>Upload Audio: EN</label>
-                        <input type="text" ng-model="audioFilename.en" disabled>
-                    </md-input-container>
-                    <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_en.url() }" ngf-select="uploadAudio($file, $invalidFile,'en')"
-                        ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
-                        <md-tooltip>
-                            Add Audio: EN
-                        </md-tooltip>
-                    </ng-md-icon>
-                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.en">
-                    </md-progress-circular>
-                </div>
-                <div layout="row" ng-if="place.audio_en.url()">
-                    <audio controls>
-                        <source src="{{place.audio_en.url() }}" type="audio/mpeg">
-                    </audio>
-                    <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('en')"></ng-md-icon>
-                </div>
-            </md-content>
-        </md-dialog-content>
-        <md-dialog-actions layout="row">
-            <span flex></span>
-            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
-                Cancel
-            </md-button>
-            <md-button type="submit" class="md-raised md-primary" ng-click="onSavePlace(form.$valid)" ng-disabled="isSavingPlace" ng-show="isCreating">
-                {{ !isSavingPlace ? 'Save' : 'Saving...' }}
-            </md-button>
-            <md-button type="submit" class="md-raised md-primary" ng-click="onUpdatePlace(form.$valid)" ng-disabled="isSavingPlace" ng-show="!isCreating">
-                {{ !isSavingPlace ? 'Update' : 'Updating...' }}
-            </md-button>
-        </md-dialog-actions>
-    </form>
+						  </md-input-container>
+						  <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ru.url() }" ngf-select="uploadAudio($file, $invalidFile,'ru')"
+								ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+
+								<md-tooltip>
+									 Add Audio: RU
+								</md-tooltip>
+						  </ng-md-icon>
+						  <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ru">
+						  </md-progress-circular>
+					 </div>
+					 <div layout="row" ng-if="place.audio_ru.url(ru)">
+						  <audio controls>
+								<source src="{{place.audio_ru.url() }}" type="audio/mpeg">
+						  </audio>
+						  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ru')"></ng-md-icon>
+					 </div>
+
+					 <div layout="row" layout-align="start center">
+						  <md-input-container md-no-float>
+								<label>Upload Audio: RO</label>
+								<input type="text" ng-model="audioFilename.ro" disabled>
+						  </md-input-container>
+						  <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ro.url() }" ngf-select="uploadAudio($file, $invalidFile,'ro')"
+								ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+
+								<md-tooltip>
+									 Add Audio: RO
+								</md-tooltip>
+						  </ng-md-icon>
+						  <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ro">
+						  </md-progress-circular>
+					 </div>
+					 <div layout="row" ng-if="place.audio_ro.url()">
+						  <audio controls>
+								<source src="{{place.audio_ro.url() }}" type="audio/mpeg">
+						  </audio>
+						  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('ro')"></ng-md-icon>
+					 </div>
+
+					 <div layout="row" layout-align="start center">
+						  <md-input-container md-no-float>
+								<label>Upload Audio: EN</label>
+								<input type="text" ng-model="audioFilename.en" disabled>
+						  </md-input-container>
+						  <ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_en.url() }" ngf-select="uploadAudio($file, $invalidFile,'en')"
+								ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">
+								<md-tooltip>
+									 Add Audio: EN
+								</md-tooltip>
+						  </ng-md-icon>
+						  <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.en">
+						  </md-progress-circular>
+					 </div>
+					 <div layout="row" ng-if="place.audio_en.url()">
+						  <audio controls>
+								<source src="{{place.audio_en.url() }}" type="audio/mpeg">
+						  </audio>
+						  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteAudio('en')"></ng-md-icon>
+					 </div>
+				</md-content>
+		  </md-dialog-content>
+		  <md-dialog-actions layout="row">
+				<span flex></span>
+				<md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+					 Cancel
+				</md-button>
+				<md-button type="submit" class="md-raised md-primary" ng-click="onSavePlace(form.$valid)" ng-disabled="isSavingPlace" ng-show="isCreating">
+					 {{ !isSavingPlace ? 'Save' : 'Saving...' }}
+				</md-button>
+				<md-button type="submit" class="md-raised md-primary" ng-click="onUpdatePlace(form.$valid)" ng-disabled="isSavingPlace" ng-show="!isCreating">
+					 {{ !isSavingPlace ? 'Update' : 'Updating...' }}
+				</md-button>
+		  </md-dialog-actions>
+	 </form>
 </md-dialog>

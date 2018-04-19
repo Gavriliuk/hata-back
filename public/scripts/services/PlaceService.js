@@ -391,6 +391,15 @@ angular.module('nearPlaceApp')
       }
     });
 
+    Object.defineProperty(Place.prototype, 'category', {
+      get: function () {
+        return this.get('category');
+      },
+      set: function (value) {
+        this.set('category', value);
+      }
+    });
+
     return Place;
 
   });

@@ -102,10 +102,7 @@ angular.module('nearPlaceApp')
         $mdOpenMenu(ev);
       };
 
-      $scope.isDate = function (date) {
-        return angular.isDate(date);
-      }
-
+  
       $scope.onUpdateCategory = function (ev, category) {
 
         var objCategory= angular.copy(category);
@@ -151,12 +148,6 @@ angular.module('nearPlaceApp')
 
       $scope.objCategory = {};
      
-
-
-      $scope.isCreating = false;
-      $scope.isUploading = false;
-
- 
       $scope.isUploadingIcon = false;
       $scope.iconFilename = '';
       

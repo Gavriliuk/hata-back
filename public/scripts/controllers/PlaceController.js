@@ -58,6 +58,8 @@ angular.module('nearPlaceApp')
         });
       };
 
+
+
       loadPlaces();
 
       var loadCount = function () {
@@ -177,9 +179,19 @@ angular.module('nearPlaceApp')
       };
 
 
-    }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place, Route, File, NgMap, GeoCoder, place) {
+    }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place,Category, Route, File, NgMap, GeoCoder, place) {
 
     var marker, map;
+    
+    var loadCategories = function () {
+      $scope.promise = Category.all({}).then(function (categories) {
+        $scope.categories = categories;
+    
+     
+        
+    });
+  };
+  loadCategories();
 
     $scope.routes = [];
 

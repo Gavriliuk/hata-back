@@ -66,32 +66,14 @@ angular.module('nearPlaceApp')
 
           var query = new Parse.Query(this);
 
-          if (params.filter != '') {
+          if (params.filter && params.filter != '') {
             query.contains('canonical', params.filter);
-          }
-
-        
-//schimbari//
-          if (params.startDate && params.startDate !== null) {
-            var start = moment(params.startDate).startOf('day');
-            query.greaterThanOrEqualTo('startPeriod', start.toDate());
-          }
-          if (params.endDate && params.endDate !== null) {
-            var end = moment(params.endDate).endOf('day');
-            query.lessThanOrEqualTo('endPeriod', end.toDate());
-          }
-
-          if (params.period && params.period !== null) {
-            var start = moment(params.period.start).startOf('day');
-            var end = moment(params.period.end).endOf('day');
-            query.greaterThanOrEqualTo('startPeriod', start.toDate());
-            query.lessThanOrEqualTo('endPeriod', end.toDate());
           }
 
      
    
-          query.limit(params.limit);
-          query.skip((params.page * params.limit) - params.limit);
+          params.limit && query.limit(params.limit);
+          params.page && query.skip((params.page * params.limit) - params.limit);
           query.find({
             success: function (categories) {
               defer.resolve(categories);
@@ -106,8 +88,6 @@ angular.module('nearPlaceApp')
         },
 
 
-
-
         count: function (params) {
 
           var defer = $q.defer();
@@ -116,13 +96,6 @@ angular.module('nearPlaceApp')
 
           if (params.filter != '') {
             query.contains('canonical', params.filter);
-          }
-
-          if (params.date && params.date !== null) {
-            var start = moment(params.date).startOf('day');
-            var end = moment(params.date).endOf('day');
-            query.greaterThanOrEqualTo('createdAt', start.toDate());
-            query.lessThanOrEqualTo('createdAt', end.toDate());
           }
 
 
