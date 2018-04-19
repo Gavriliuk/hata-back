@@ -2,7 +2,7 @@
 
 angular.module('nearPlaceApp')
   .controller('CategoryCtrl',
-    function ($scope, $mdDialog, $mdToast,Category, Auth) {
+    function ($scope, $mdDialog, $mdToast, Category, Auth) {
 
       // Pagination options
       $scope.rowOptions = [10, 20, 40];
@@ -17,7 +17,6 @@ angular.module('nearPlaceApp')
       };
 
       $scope.categories = [];
-
 
       //Order by//
 
@@ -37,13 +36,12 @@ angular.module('nearPlaceApp')
       };
 
       //Order by//
-
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
-          .content(message)
-          .action('OK')
-          .hideDelay(3000)
+            .content(message)
+            .action('OK')
+            .hideDelay(3000)
         );
       };
 
@@ -77,15 +75,15 @@ angular.module('nearPlaceApp')
       $scope.onCreateCategory = function (ev) {
 
         $mdDialog.show({
-            controller: 'DialogCategoryController',
-            templateUrl: '/views/partials/category.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            locals: {
-              category: null
-            },
-            clickOutsideToClose: true
-          })
+          controller: 'DialogCategoryController',
+          templateUrl: '/views/partials/category.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            category: null
+          },
+          clickOutsideToClose: true
+        })
           .then(function (answer) {
             loadCategories();
             loadCount();
@@ -102,10 +100,9 @@ angular.module('nearPlaceApp')
         $mdOpenMenu(ev);
       };
 
-  
       $scope.onUpdateCategory = function (ev, category) {
 
-        var objCategory= angular.copy(category);
+        var objCategory = angular.copy(category);
 
         $mdDialog.show({
           controller: 'DialogCategoryController',
@@ -131,10 +128,10 @@ angular.module('nearPlaceApp')
         $mdDialog.show(confirm).then(function () {
 
           Category.destroy(category).then(function (success) {
-              showSimpleToast('Category deleted.');
-              loadCategories();
-              loadCount();
-            },
+            showSimpleToast('Category deleted.');
+            loadCategories();
+            loadCount();
+          },
             function (error) {
               showSimpleToast(error.message);
             });
@@ -142,123 +139,116 @@ angular.module('nearPlaceApp')
         });
       };
 
-   
-
-    }).controller('DialogCategoryController', function ($scope, $mdDialog, $mdToast, Category,  File, category) {
+    }).controller('DialogCategoryController', function ($scope, $mdDialog, $mdToast, Category, File, category) {
 
       $scope.objCategory = {};
-     
+
       $scope.isUploadingIcon = false;
       $scope.iconFilename = '';
-      
-    if (category) {
-      $scope.isCreating = false;
 
-   
-      $scope.iconFilename = category.icon ? category.icon.name():"";
-      $scope.objCategory=category;
- 
-   } else {
+      if (category) {
+        $scope.isCreating = false;
 
-    $scope.isCreating = true;
+        $scope.iconFilename = category.icon ? category.icon.name() : "";
+        $scope.objCategory = category;
 
-  }
-
-
-    var showSimpleToast = function (message) {
-      $mdToast.show(
-        $mdToast.simple()
-        .content(message)
-        .action('OK')
-        .hideDelay(3000)
-      );
-    };
-
-    $scope.hide = function () {
-      $mdDialog.cancel();
-    };
-
-    $scope.cancel = function () {
-      $mdDialog.cancel();
-    };
-
-    $scope.onSaveCategory = function (isFormValid) {
-
-      if (!isFormValid) {
-        showSimpleToast('Category correct all highlighted errors and try again');
-
-      }else if (!$scope.objCategory.icon ) {
-        showSimpleToast('Upload an icon');
       } else {
-        
 
-        Category.create($scope.objCategory).then(function (category) {
+        $scope.isCreating = true;
+
+      }
+
+      var showSimpleToast = function (message) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(message)
+            .action('OK')
+            .hideDelay(3000)
+        );
+      };
+
+      $scope.hide = function () {
+        $mdDialog.cancel();
+      };
+
+      $scope.cancel = function () {
+        $mdDialog.cancel();
+      };
+
+      $scope.onSaveCategory = function (isFormValid) {
+
+        if (!isFormValid) {
+          showSimpleToast('Category correct all highlighted errors and try again');
+
+        } else if (!$scope.objCategory.icon) {
+          showSimpleToast('Upload an icon');
+        } else {
+
+
+          Category.create($scope.objCategory).then(function (category) {
             showSimpleToast('Category saved');
             $mdDialog.hide();
             $scope.isSavingCategory = false;
           },
-          function (error) {
+            function (error) {
+              showSimpleToast(error.message);
+              $scope.isSavingCategory = false;
+            });
+        }
+      };
+
+      $scope.uploadIcon = function (file, invalidFile) {
+
+        if (file) {
+          $scope.iconFilename = file.name;
+          $scope.isUploadingIcon = true;
+
+          File.upload(file).then(function (savedFile) {
+            $scope.objCategory.icon = savedFile;
+            $scope.isUploadingIcon = false;
+            showSimpleToast('Icon uploaded');
+          }, function (error) {
             showSimpleToast(error.message);
-            $scope.isSavingCategory = false;
+            $scope.isUploadingIcon = false;
           });
-      }
-    };
-
-    $scope.uploadIcon = function (file, invalidFile) {
-
-      if (file) {
-        $scope.iconFilename = file.name;
-        $scope.isUploadingIcon = true;
-
-        File.upload(file).then(function (savedFile) {
-          $scope.objCategory.icon = savedFile;
-          $scope.isUploadingIcon = false;
-          showSimpleToast('Icon uploaded');
-        }, function (error) {
-          showSimpleToast(error.message);
-          $scope.isUploadingIcon = false;
-        });
-      } else {
-        if (invalidFile) {
-          if (invalidFile.$error === 'maxSize') {
-            showSimpleToast('Icon too big. Max ' + invalidFile.$errorParam);
-          } else if (invalidFile.$error === 'dimensions') {
-            showSimpleToast('Icon size should be 64x64');
+        } else {
+          if (invalidFile) {
+            if (invalidFile.$error === 'maxSize') {
+              showSimpleToast('Icon too big. Max ' + invalidFile.$errorParam);
+            } else if (invalidFile.$error === 'dimensions') {
+              showSimpleToast('Icon size should be 64x64');
+            }
           }
         }
-      }
-    };
+      };
 
-    
-			$scope.onDeleteIcon = function () {
-				$scope.isSavingCategory = true;
-				$scope.objCategory.icon = null;
-				$scope.iconFilename = null;
-
-
-				showSimpleToast('Icon deleted.');
-				$scope.isSavingCategory = false;
-			};
-
-
-
-    $scope.onUpdateCategory = function (isFormValid) {
-      if (!isFormValid) {
-        showSimpleToast('Category correct all highlighted errors and try again');
-      } else {
-
+      $scope.onDeleteIcon = function () {
         $scope.isSavingCategory = true;
+        $scope.objCategory.icon = null;
+        $scope.iconFilename = null;
 
-        Category.update($scope.objCategory).then(function (category) {
+        showSimpleToast('Icon deleted.');
+        $scope.isSavingCategory = false;
+      };
+
+      $scope.onUpdateCategory = function (isFormValid) {
+        if (!isFormValid) {
+          showSimpleToast('Category correct all highlighted errors and try again');
+        } else if (!$scope.objCategory.icon) {
+          showSimpleToast('Upload an icon');
+        } else {
+
+          $scope.isSavingCategory = true;
+
+          Category.update($scope.objCategory).then(function (category) {
             showSimpleToast('Category updated');
             $mdDialog.hide();
             $scope.isSavingCategory = false;
           },
-          function (error) {
-            showSimpleToast('Error. Category not updated.', error.message);
-            $scope.isSavingCategory = false;
-          });
-
-      }
-    };
-});
+            function (error) {
+              showSimpleToast('Error. Category not updated.', error.message);
+              $scope.isSavingCategory = false;
+            });
+        }
+      };
+    });
