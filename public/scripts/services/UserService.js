@@ -9,26 +9,30 @@ angular.module('nearPlaceApp')
 
         Parse.Cloud.run('getUsers', params, {
           success: function (users) {
-              defer.resolve(users);
+            defer.resolve(users);
           },
           error: function (error) {
-              defer.reject(error);
+            defer.reject(error);
           }
         });
 
         return defer.promise;
       },
 
+
       create: function (data) {
+
 
         var defer = $q.defer();
 
         Parse.Cloud.run('createUser', data, {
-          success: function(result) {
-              defer.resolve(result);
+
+
+          success: function (result) {
+            defer.resolve(result);
           },
-          error: function(error) {
-              defer.reject(error);
+          error: function (error) {
+            defer.reject(error);
           }
 
         });
@@ -36,6 +40,7 @@ angular.module('nearPlaceApp')
         return defer.promise;
 
       },
+
 
       update: function (user) {
 
@@ -47,16 +52,18 @@ angular.module('nearPlaceApp')
           'password': user.password,
           'photo': user.photo,
           'roleName': user.roleName,
+          'route': user.route
         }
 
         var defer = $q.defer();
 
+
         Parse.Cloud.run('updateUser', data, {
-          success: function(result) {
-              defer.resolve(result);
+          success: function (result) {
+            defer.resolve(result);
           },
-          error: function(error) {
-              defer.reject(error);
+          error: function (error) {
+            defer.reject(error);
           }
         });
 
@@ -94,55 +101,68 @@ angular.module('nearPlaceApp')
     });
 
     Object.defineProperty(User.prototype, 'name', {
-      get: function() {
+      get: function () {
         return this.get('name');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('name', val);
       }
     });
 
     Object.defineProperty(User.prototype, 'username', {
-      get: function() {
+      get: function () {
         return this.get('username');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('username', val);
       }
     });
 
     Object.defineProperty(User.prototype, 'email', {
-      get: function() {
+      get: function () {
         return this.get('email');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('email', val);
       }
     });
 
     Object.defineProperty(User.prototype, 'photo', {
-      get: function() {
+      get: function () {
         return this.get('photo');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('photo', val);
       }
     });
 
     Object.defineProperty(User.prototype, 'photoThumb', {
-      get: function() {
+      get: function () {
         return this.get('photoThumb');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('photoThumb', val);
       }
     });
 
+
+    Object.defineProperty(User.prototype, 'route', {
+      get: function () {
+        return this.get('route');
+      },
+      set: function (val) {
+        this.set('route', val);
+      }
+    });
+
+
+
+
     Object.defineProperty(User.prototype, 'roleName', {
-      get: function() {
+      get: function () {
         return this.get('roleName');
       },
-      set: function(val) {
+      set: function (val) {
         this.set('roleName', val);
       }
     });

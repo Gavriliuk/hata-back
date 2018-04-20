@@ -1,3 +1,5 @@
+
+
 var Image = require('../helpers/image');
 var fs = require('fs');
 
@@ -166,6 +168,8 @@ Parse.Cloud.define('getUsers', function (req, res) {
         }
 
         query.descending('createdAt');
+        query.include('route');
+
         query.limit(params.limit);
         query.skip((params.page * params.limit) - params.limit);
 
@@ -201,6 +205,7 @@ Parse.Cloud.define('createUser', function (req, res) {
             user.set('password', data.password);
             user.set('photo', data.photo);
             user.set('roleName', data.roleName);
+            user.set('route', data.route);
 
             var acl = new Parse.ACL();
             acl.setPublicReadAccess(false);
@@ -241,6 +246,9 @@ Parse.Cloud.define('updateUser', function (req, res) {
         objUser.set('username', data.email);
         objUser.set('email', data.email);
         objUser.set('photo', data.photo);
+        objUser.set('route', data.route);
+
+
 
         if (!data.password) {
             objUser.set('password', data.password);
@@ -645,6 +653,7 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
         if (userData) {
             userData.set('name', user.get('name'));
             userData.set('photo', user.get('photo'));
+            userData.set('route', user.get('route'));
         } else {
 
             var aclUserData = new Parse.ACL();
@@ -656,6 +665,8 @@ Parse.Cloud.afterSave(Parse.User, function (req) {
                 ACL: aclUserData,
                 name: user.get('name'),
                 photo: user.get('photo'),
+                route: user.get('route')
+
             });
         }
         userData.save(null, { useMasterKey: true });

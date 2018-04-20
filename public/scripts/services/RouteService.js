@@ -205,7 +205,7 @@ angular.module('nearPlaceApp')
 
                 var query = new Parse.Query(this);
 
-                if (params.filter != '') {
+                if (params.filter && params.filter != '') {
                     query.contains('canonical', params.filter);
                 }
 
@@ -217,8 +217,8 @@ angular.module('nearPlaceApp')
                     query.ascending('order');
                 }
 
-                query.limit(params.limit);
-                query.skip((params.page * params.limit) - params.limit);
+                params.limit && query.limit(params.limit);
+                params.page && query.skip((params.page * params.limit) - params.limit);
                 query.find({
                     success: function (routes) {
                         defer.resolve(routes);
@@ -255,7 +255,7 @@ angular.module('nearPlaceApp')
 
 
 
-            Object.defineProperty(Route.prototype, 'playModes',
+        Object.defineProperty(Route.prototype, 'playModes',
             {
                 get: function () {
                     return this.get('playModes');
@@ -265,7 +265,7 @@ angular.module('nearPlaceApp')
                 }
             });
 
-            Object.defineProperty(Route.prototype, 'defaultPlayMode',
+        Object.defineProperty(Route.prototype, 'defaultPlayMode',
             {
                 get: function () {
                     return this.get('defaultPlayMode');

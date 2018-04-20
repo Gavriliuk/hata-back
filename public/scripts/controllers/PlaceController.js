@@ -44,9 +44,9 @@ angular.module('nearPlaceApp')
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
-          .content(message)
-          .action('OK')
-          .hideDelay(3000)
+            .content(message)
+            .action('OK')
+            .hideDelay(3000)
         );
       };
 
@@ -82,15 +82,15 @@ angular.module('nearPlaceApp')
       $scope.onCreatePlace = function (ev) {
 
         $mdDialog.show({
-            controller: 'DialogPlaceController',
-            templateUrl: '/views/partials/place.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            locals: {
-              place: null
-            },
-            clickOutsideToClose: true
-          })
+          controller: 'DialogPlaceController',
+          templateUrl: '/views/partials/place.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals: {
+            place: null
+          },
+          clickOutsideToClose: true
+        })
           .then(function (answer) {
             loadPlaces();
             loadCount();
@@ -154,10 +154,10 @@ angular.module('nearPlaceApp')
         $mdDialog.show(confirm).then(function () {
 
           Place.destroy(place).then(function (success) {
-              showSimpleToast('Place deleted.');
-              loadPlaces();
-              loadCount();
-            },
+            showSimpleToast('Place deleted.');
+            loadPlaces();
+            loadCount();
+          },
             function (error) {
               showSimpleToast(error.message);
             });
@@ -179,390 +179,388 @@ angular.module('nearPlaceApp')
       };
 
 
-    }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place,Category, Route, File, NgMap, GeoCoder, place) {
+    }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place, Category, Route, File, NgMap, GeoCoder, place) {
 
-    var marker, map;
-    
-    var loadCategories = function () {
-      $scope.promise = Category.all({}).then(function (categories) {
-        $scope.categories = categories;
-    
-     
-        
-    });
-  };
-  loadCategories();
+      var marker, map;
 
-    $scope.routes = [];
+      var loadCategories = function () {
+        $scope.promise = Category.all({}).then(function (categories) {
+          $scope.categories = categories;
 
-    $scope.isCreating = false;
-    $scope.isUploading = false;
+        });
+      };
+      loadCategories();
 
-    $scope.place = {};
-    $scope.place.images = [];
-    $scope.place.website = 'http://';
-    $scope.imageFilenames = '';
-    $scope.input = {};
-    $scope.searchAddress = "Chisinau";
-    $scope.isImageUploading = false;
-
-    $scope.audioFilename = {};
-    $scope.isAudioUploading = {
-      ro: false,
-      ru: false,
-      en: false
-    };
-    $scope.audioFilename.ru = '';
-    $scope.audioFilename.ro = '';
-    $scope.audioFilename.en = '';
-
-
-    if (place) {
+      $scope.routes = [];
 
       $scope.isCreating = false;
-      $scope.place = place;
+      $scope.isUploading = false;
 
-      $scope.input.latitude = $scope.place.location.latitude,
-      $scope.input.longitude = $scope.place.location.longitude
-      
-      $scope.imageFilenames = place.images.map(function (image) {
-        return image.name();
-      });
+      $scope.place = {};
+      $scope.place.images = [];
+      $scope.place.website = 'http://';
+      $scope.imageFilenames = '';
+      $scope.input = {};
+      $scope.searchAddress = "Chisinau";
+      $scope.isImageUploading = false;
 
-      if (place.audio_ru) {
-        $scope.audioFilename.ru = place.audio_ru.name();
+      $scope.audioFilename = {};
+      $scope.isAudioUploading = {
+        ro: false,
+        ru: false,
+        en: false
+      };
+      $scope.audioFilename.ru = '';
+      $scope.audioFilename.ro = '';
+      $scope.audioFilename.en = '';
 
+
+      if (place) {
+
+        $scope.isCreating = false;
+        $scope.place = place;
+
+        $scope.input.latitude = $scope.place.location.latitude,
+          $scope.input.longitude = $scope.place.location.longitude
+
+        $scope.imageFilenames = place.images.map(function (image) {
+          return image.name();
+        });
+
+        if (place.audio_ru) {
+          $scope.audioFilename.ru = place.audio_ru.name();
+
+
+        }
+        if (place.audio_ro) {
+          $scope.audioFilename.ro = place.audio_ro.name();
+
+        }
+
+        if (place.audio_en) {
+          $scope.audioFilename.en = place.audio_en.name();
+
+        }
+
+
+      } else {
+
+        $scope.isCreating = true;
 
       }
-      if (place.audio_ro) {
-        $scope.audioFilename.ro = place.audio_ro.name();
-
-      }
-
-      if (place.audio_en) {
-        $scope.audioFilename.en = place.audio_en.name();
-
-      }
-
-
-    } else {
-
-      $scope.isCreating = true;
-
-    }
 
 
 
-    Route.all({
+      Route.all({
         page: 1,
         limit: 1000,
         filter: ''
       })
-      .then(function (routes) {
-        $scope.routes = routes;
-      });
+        .then(function (routes) {
+          $scope.routes = routes;
+        });
 
-    var showSimpleToast = function (message) {
-      $mdToast.show(
-        $mdToast.simple()
-        .content(message)
-        .action('OK')
-        .hideDelay(3000)
-      );
-    };
+      var showSimpleToast = function (message) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(message)
+            .action('OK')
+            .hideDelay(3000)
+        );
+      };
 
-    //audio//
-
-
+      //audio//
 
 
-    $scope.uploadAudio = function (file, invalidFile, lang) {
 
-      if (file) {
 
-        $scope.isAudioUploading[lang] = true;
-        $scope.audioFilename[lang] = file.name;
+      $scope.uploadAudio = function (file, invalidFile, lang) {
 
-        File.uploadAudio(file).then(function (savedFile) {
+        if (file) {
+
+          $scope.isAudioUploading[lang] = true;
+          $scope.audioFilename[lang] = file.name;
+
+          File.uploadAudio(file).then(function (savedFile) {
 
             $scope.place['audio_' + lang] = savedFile;
             $scope.isAudioUploading[lang] = false;
             showSimpleToast('Audio uploaded');
           },
-          function (error) {
-            $scope.isAudioUploading[lang] = false;
-            showSimpleToast(error.message);
-          });
-      } else {
-        if (invalidFile) {
-          if (invalidFile.$error === 'maxSize') {
-            showSimpleToast('Audio too big. Max ' + invalidFile.$errorParam);
+            function (error) {
+              $scope.isAudioUploading[lang] = false;
+              showSimpleToast(error.message);
+            });
+        } else {
+          if (invalidFile) {
+            if (invalidFile.$error === 'maxSize') {
+              showSimpleToast('Audio too big. Max ' + invalidFile.$errorParam);
+            }
           }
         }
-      }
-    };
+      };
 
-    $scope.onSearchAddressChanged = function () {
-      GeoCoder.geocode({
-        address: $scope.searchAddress
-      }).then(function (result) {
+      $scope.onSearchAddressChanged = function () {
+        GeoCoder.geocode({
+          address: $scope.searchAddress
+        }).then(function (result) {
 
-        if (map) {
+          if (map) {
 
-          var location = result[0].geometry.location;
-          location = new google.maps.LatLng(location.lat(), location.lng());
+            var location = result[0].geometry.location;
+            location = new google.maps.LatLng(location.lat(), location.lng());
 
-          map.setCenter(location);
+            map.setCenter(location);
+            map.setZoom(15);
+
+            marker.setPosition(location);
+
+            $scope.input.latitude = location.lat();
+            $scope.input.longitude = location.lng();
+          }
+        });
+      };
+
+      NgMap.getMap().then(function (objMap) {
+
+        map = objMap;
+        marker = map.markers[0];
+
+        // Fix gray area in second render
+        google.maps.event.trigger(map, 'resize');
+
+        if (place) {
+
+          var placeLocation = new google.maps.LatLng(
+            place.location.latitude,
+            place.location.longitude);
+
+          map.setCenter(placeLocation)
+          marker.setPosition(placeLocation);
           map.setZoom(15);
-
-          marker.setPosition(location);
-
-          $scope.input.latitude = location.lat();
-          $scope.input.longitude = location.lng();
+        } else {
+          map.setZoom(1);
+          map.setCenter(new google.maps.LatLng(0, 0));
         }
       });
-    };
-
-    NgMap.getMap().then(function (objMap) {
-
-      map = objMap;
-      marker = map.markers[0];
-
-      // Fix gray area in second render
-      google.maps.event.trigger(map, 'resize');
-
-      if (place) {
-
-        var placeLocation = new google.maps.LatLng(
-          place.location.latitude,
-          place.location.longitude);
-
-        map.setCenter(placeLocation)
-        marker.setPosition(placeLocation);
-        map.setZoom(15);
-      } else {
-        map.setZoom(1);
-        map.setCenter(new google.maps.LatLng(0, 0));
-      }
-    });
 
 
-    $scope.onMarkerDragEnd = function (ev) {
+      $scope.onMarkerDragEnd = function (ev) {
 
-      var lat = ev.latLng.lat();
-      var lng = ev.latLng.lng();
-
-      $scope.place.location = new Parse.GeoPoint({
-        latitude: lat,
-        longitude: lng
-      });
-
-      $scope.input.latitude = lat;
-      $scope.input.longitude = lng;
-    };
-
-    $scope.onInputLocationChanged = function () {
-
-      if ($scope.input.latitude && $scope.input.longitude && map) {
+        var lat = ev.latLng.lat();
+        var lng = ev.latLng.lng();
 
         $scope.place.location = new Parse.GeoPoint({
-          latitude: $scope.input.latitude,
-          longitude: $scope.input.longitude
+          latitude: lat,
+          longitude: lng
         });
 
-        marker.setPosition(new google.maps.LatLng(
-          $scope.input.latitude,
-          $scope.input.longitude
-        ));
+        $scope.input.latitude = lat;
+        $scope.input.longitude = lng;
+      };
 
-        map.setCenter(new google.maps.LatLng(
-          $scope.input.latitude,
-          $scope.input.longitude
-        ));
+      $scope.onInputLocationChanged = function () {
 
-        map.setZoom(12);
-      }
-    };
+        if ($scope.input.latitude && $scope.input.longitude && map) {
 
-    $scope.uploadImageFile = function (file, invalidFile) {
+          $scope.place.location = new Parse.GeoPoint({
+            latitude: $scope.input.latitude,
+            longitude: $scope.input.longitude
+          });
 
-      if (file) {
+          marker.setPosition(new google.maps.LatLng(
+            $scope.input.latitude,
+            $scope.input.longitude
+          ));
 
-        $scope.isImageUploading = true;
-        $scope.imageFilenames = file.name;
+          map.setCenter(new google.maps.LatLng(
+            $scope.input.latitude,
+            $scope.input.longitude
+          ));
 
-        File.upload(file).then(function (savedFile) {
+          map.setZoom(12);
+        }
+      };
+
+      $scope.uploadImageFile = function (file, invalidFile) {
+
+        if (file) {
+
+          $scope.isImageUploading = true;
+          $scope.imageFilenames = file.name;
+
+          File.upload(file).then(function (savedFile) {
 
             $scope.place.images.push(savedFile);
             $scope.isImageUploading = false;
             showSimpleToast('Image uploaded');
           },
-          function (error) {
-            $scope.isImageUploading = false;
-            showSimpleToast(error.message);
-          });
+            function (error) {
+              $scope.isImageUploading = false;
+              showSimpleToast(error.message);
+            });
 
-      } else {
-        if (invalidFile) {
-          if (invalidFile.$error === 'maxSize') {
-            showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+        } else {
+          if (invalidFile) {
+            if (invalidFile.$error === 'maxSize') {
+              showSimpleToast('Image too big. Max ' + invalidFile.$errorParam);
+            }
           }
         }
-      }
-    };
+      };
 
-    $scope.hide = function () {
-      $mdDialog.cancel();
-    };
+      $scope.hide = function () {
+        $mdDialog.cancel();
+      };
 
-    $scope.cancel = function () {
-      $mdDialog.cancel();
-    };
+      $scope.cancel = function () {
+        $mdDialog.cancel();
+      };
 
-    $scope.onSavePlace = function (isFormValid) {
+      $scope.onSavePlace = function (isFormValid) {
 
-      if (!isFormValid) {
-        showSimpleToast('Please correct all highlighted errors and try again');
-      } else if (!$scope.place.images) {
-        showSimpleToast('Upload at least the first image');
-      } else if (!$scope.place.location) {
-        showSimpleToast('Ubication is required');
-      } else {
+        if (!isFormValid) {
+          showSimpleToast('Please correct all highlighted errors and try again');
+        } else if (!$scope.place.images) {
+          showSimpleToast('Upload at least the first image');
+        } else if (!$scope.place.location) {
+          showSimpleToast('Ubication is required');
+        } else {
 
-        Place.create($scope.place).then(function (success) {
+          Place.create($scope.place).then(function (success) {
             showSimpleToast('Place saved');
             $mdDialog.hide();
             $scope.isSavingPlace = false;
           },
-          function (error) {
-            showSimpleToast(error.message);
-            $scope.isSavingPlace = false;
-          });
-      }
-    };
-
-    $scope.onDeleteImage = function (ev) {
-      $scope.isSavingPlace = true;
-      for (var i = 0; i < $scope.place.images.length; i++) {
-        if ($scope.place.images[i].$$hashKey === ev.$$hashKey) {
-
-
-
-          $scope.place.images.splice(i, 1);
-
-          showSimpleToast('Image deleted.');
-          $scope.isSavingPlace = false;
-
-
-          $scope.imageFilenames =  $scope.place.images.map(function (image) {
-            return image.name();
-          });
-          
+            function (error) {
+              showSimpleToast(error.message);
+              $scope.isSavingPlace = false;
+            });
         }
-      }
-    };
+      };
+
+      $scope.onDeleteImage = function (ev) {
+        $scope.isSavingPlace = true;
+        for (var i = 0; i < $scope.place.images.length; i++) {
+          if ($scope.place.images[i].$$hashKey === ev.$$hashKey) {
 
 
-    $scope.onDeleteAudio = function (lang) {
 
-      $scope.isSavingPlace = true;
-      $scope.place['audio_' + lang] = null;
+            $scope.place.images.splice(i, 1);
 
-      $scope.audioFilename[lang] = null;
-
-
-      showSimpleToast('Audio deleted.');
-      $scope.isSavingPlace = false;
-    };
+            showSimpleToast('Image deleted.');
+            $scope.isSavingPlace = false;
 
 
-    $scope.onUpdatePlace = function (isFormValid) {
-      if (!isFormValid) {
-        showSimpleToast('Please correct all highlighted errors and try again');
-      } else {
+            $scope.imageFilenames = $scope.place.images.map(function (image) {
+              return image.name();
+            });
+
+          }
+        }
+      };
+
+
+      $scope.onDeleteAudio = function (lang) {
 
         $scope.isSavingPlace = true;
+        $scope.place['audio_' + lang] = null;
 
-        Place.update($scope.place).then(function (place) {
+        $scope.audioFilename[lang] = null;
+
+
+        showSimpleToast('Audio deleted.');
+        $scope.isSavingPlace = false;
+      };
+
+
+      $scope.onUpdatePlace = function (isFormValid) {
+        if (!isFormValid) {
+          showSimpleToast('Please correct all highlighted errors and try again');
+        } else {
+
+          $scope.isSavingPlace = true;
+
+          Place.update($scope.place).then(function (place) {
             showSimpleToast('Place updated');
             $mdDialog.hide();
             $scope.isSavingPlace = false;
           },
-          function (error) {
-            showSimpleToast('Error. Place not updated.', error.message);
-            $scope.isSavingPlace = false;
-          });
+            function (error) {
+              showSimpleToast('Error. Place not updated.', error.message);
+              $scope.isSavingPlace = false;
+            });
 
-      }
-    };
-
-  }).controller('DialogPlaceExpiresAtController',
-    function ($scope, $mdDialog, $mdToast, Place, place) {
-
-      $scope.place = place;
-      $scope.formData = {};
-
-
-      var showToast = function (message) {
-        $mdToast.show(
-          $mdToast.simple()
-          .content(message)
-          .action('OK')
-          .hideDelay(3000)
-        );
+        }
       };
 
-      $scope.isDayInvalid = function () {
-        var days = $scope.formData.days;
+    }).controller('DialogPlaceExpiresAtController',
+      function ($scope, $mdDialog, $mdToast, Place, place) {
 
-        if (days) {
-          days = parseInt(days, 10);
-          return days < 1;
+        $scope.place = place;
+        $scope.formData = {};
+
+
+        var showToast = function (message) {
+          $mdToast.show(
+            $mdToast.simple()
+              .content(message)
+              .action('OK')
+              .hideDelay(3000)
+          );
+        };
+
+        $scope.isDayInvalid = function () {
+          var days = $scope.formData.days;
+
+          if (days) {
+            days = parseInt(days, 10);
+            return days < 1;
+          }
+          return true;
         }
-        return true;
-      }
 
-      $scope.onUpdateExpiresAt = function () {
+        $scope.onUpdateExpiresAt = function () {
 
-        var expiresAt = moment().add($scope.formData.days, 'days').toDate();
-        place.expiresAt = expiresAt;
-        place.isApproved = true;
+          var expiresAt = moment().add($scope.formData.days, 'days').toDate();
+          place.expiresAt = expiresAt;
+          place.isApproved = true;
 
-        $scope.isSavingExpiresAt = true;
+          $scope.isSavingExpiresAt = true;
 
-        Place.update(place).then(function (success) {
+          Place.update(place).then(function (success) {
             $scope.isSavingExpiresAt = false;
             showToast('Place updated');
             $scope.hide();
           },
-          function (error) {
-            $scope.isSavingExpiresAt = false;
-            showToast('There was an error');
-          });
-      }
-
-      $scope.hide = function () {
-        $mdDialog.hide();
-      };
-
-    }).directive('numbersOnly', function () {
-    return {
-      require: 'ngModel',
-      link: function (scope, element, attr, ngModelCtrl) {
-        function fromUser(text) {
-          if (text) {
-            var transformedInput = text.replace(/[^0-9]/g, '');
-
-            if (transformedInput !== text) {
-              ngModelCtrl.$setViewValue(transformedInput);
-              ngModelCtrl.$render();
-            }
-            return transformedInput;
-          }
-          return undefined;
+            function (error) {
+              $scope.isSavingExpiresAt = false;
+              showToast('There was an error');
+            });
         }
 
-        ngModelCtrl.$parsers.push(fromUser);
-      }
-    };
-  });
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+
+      }).directive('numbersOnly', function () {
+        return {
+          require: 'ngModel',
+          link: function (scope, element, attr, ngModelCtrl) {
+            function fromUser(text) {
+              if (text) {
+                var transformedInput = text.replace(/[^0-9]/g, '');
+
+                if (transformedInput !== text) {
+                  ngModelCtrl.$setViewValue(transformedInput);
+                  ngModelCtrl.$render();
+                }
+                return transformedInput;
+              }
+              return undefined;
+            }
+
+            ngModelCtrl.$parsers.push(fromUser);
+          }
+        };
+      });

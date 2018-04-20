@@ -6,8 +6,7 @@
       <div class="md-toolbar-tools">
         <h2>{{ objUser.id ? 'Edit' : 'New' }} User</h2>
         <span flex></span>
-        <ng-md-icon aria-label="Close dialog" icon="close" class="icon-close"
-        ng-click="cancel()">
+        <ng-md-icon aria-label="Close dialog" icon="close" class="icon-close" ng-click="cancel()">
         </ng-md-icon>
       </div>
     </md-toolbar>
@@ -21,6 +20,14 @@
           <div ng-messages="form.name.$error" ng-show="form.$submitted">
             <div ng-message="required">Name required</div>
           </div>
+        </md-input-container>
+
+
+        <md-input-container>
+          <label>Add Route </label>
+          <md-select ng-model="objUser.route" md-on-close="clearSearchTerm()" multiple=" ">
+            <md-option ng-value="route.title_ru" ng-repeat="route in routies">{{route.title_ru}}</md-option>
+          </md-select>
         </md-input-container>
 
         <md-input-container>
@@ -58,16 +65,13 @@
             <input type="text" ng-model="imageFilename" disabled>
           </md-input-container>
 
-          <ng-md-icon icon="photo_camera" class="photo-camera"
-            ng-class="{ 'photo-active': objUser.photo.url() }"
-            ngf-select="uploadImage($file)" ngf-max-size="2MB"
-            ngf-pattern="'image/*'" accept="image/*">
+          <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objUser.photo.url() }" ngf-select="uploadImage($file)"
+            ngf-max-size="2MB" ngf-pattern="'image/*'" accept="image/*">
             <md-tooltip>
               Add an image
             </md-tooltip>
           </ng-md-icon>
-          <md-progress-circular class="md-primary" md-diameter="30"
-            ng-if="isUploading">
+          <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploading">
           </md-progress-circular>
         </div>
       </md-content>
@@ -78,15 +82,11 @@
       <md-button class="md-raised" md-primary md-raised ng-click="cancel()">
         Cancel
       </md-button>
-      <md-button type="submit" class="md-raised md-primary"
-        ng-disabled="isSavingUser"
-        ng-click="onEventSaveUser(form.$valid)"
+      <md-button type="submit" class="md-raised md-primary" ng-disabled="isSavingUser" ng-click="onEventSaveUser(form.$valid)"
         ng-show="!objUser.id">
         {{ !isSavingUser ? 'Save' : 'Saving...' }}
       </md-button>
-      <md-button type="submit" class="md-raised md-primary"
-        ng-disabled="isSavingUser"
-        ng-click="onEventUpdateUser(form.$valid)"
+      <md-button type="submit" class="md-raised md-primary" ng-disabled="isSavingUser" ng-click="onEventUpdateUser(form.$valid)"
         ng-show="objUser.id">
         {{ !isSavingUser ? 'Update' : 'Updating...' }}
       </md-button>
