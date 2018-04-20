@@ -201,6 +201,18 @@ angular.module('nearPlaceApp')
       }
     });
 
+
+    Object.defineProperty(Promocode.prototype, 'route', {
+      get: function () {
+        return this.get('route');
+      },
+      set: function (val) {
+        this.set('route', val);
+      }
+    });
+
+
+
     Object.defineProperty(Promocode.prototype, 'description', {
       get: function () {
         return this.get('description');

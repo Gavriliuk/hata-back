@@ -24,21 +24,21 @@ angular.module('nearPlaceApp')
 
       //Order by//
 
-$scope.sortColumn = "title";
-$scope.reverseSort = false;
+      $scope.sortColumn = "title";
+      $scope.reverseSort = false;
 
-$scope.sortData = function(column){
-$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
-$scope.sortColumn = column;
+      $scope.sortData = function (column) {
+        $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+        $scope.sortColumn = column;
 
-}
-$scope.getSortClass = function(column){
-    if ($scope.sortColumn == column){
-      return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-    }
-    return '';
-};
-//Order by //
+      }
+      $scope.getSortClass = function (column) {
+        if ($scope.sortColumn == column) {
+          return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+        }
+        return '';
+      };
+      //Order by //
 
 
 
@@ -70,7 +70,7 @@ $scope.getSortClass = function(column){
       }
 
       loadCount();
-      
+
       $scope.onQueryChange = function () {
         $scope.query.page = 1;
         $scope.query.total = 0;
@@ -192,7 +192,18 @@ $scope.getSortClass = function(column){
 
       };
 
-    }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode) {
+    }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode, Route) {
+
+
+      var loadRouties = function () {
+        $scope.promise = Route.all({}).then(function (routies) {
+          $scope.routies = routies;
+          console.log(routies);
+
+        });
+
+      };
+      loadRouties();
 
       $scope.promocode = {};
       $scope.howMany = 1;
@@ -228,7 +239,7 @@ $scope.getSortClass = function(column){
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-         
+
           if ($scope.howMany > 1) {
             var promises = [];
             var title = $scope.promocode.title;

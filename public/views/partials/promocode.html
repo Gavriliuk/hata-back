@@ -15,6 +15,7 @@
                     <md-datepicker ng-model="promocode.startPeriod" md-current-view="year">
                     </md-datepicker>
                 </md-input-container>
+
                 <md-input-container class="md-block">
                     <label>End Period</label>
                     <md-datepicker ng-model="promocode.endPeriod" md-current-view="year">
@@ -27,6 +28,14 @@
                         <div ng-message="required">Title required</div>
                     </div>
                 </md-input-container>
+
+                <md-input-container>
+                    <label>Add Route </label>
+                    <md-select ng-model="promocode.route" md-on-close="clearSearchTerm()" multiple=" ">
+                        <md-option ng-value="route.id" ng-repeat="route in routies">{{route.title_ru}}</md-option>
+                    </md-select>
+                </md-input-container>
+
 
                 <md-input-container class="md-block">
                     <label>Description</label>
@@ -48,7 +57,7 @@
                     <label>How Many</label>
                     <input type="number" name="many" ng-model="howMany">
                 </md-input-container>
-              
+
             </md-content>
         </md-dialog-content>
         <md-dialog-actions layout="row">
