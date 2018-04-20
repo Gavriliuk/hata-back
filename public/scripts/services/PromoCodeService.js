@@ -27,7 +27,12 @@ angular.module('nearPlaceApp')
 
           var objPromocode = new Promocode();
           promocode.user = Parse.User.current();
-
+          ;
+          promocode.code = voucher_codes.generate({
+            prefix: promocode.prefix || "DMS-",
+            length: promocode.length || 5,
+            charset: promocode.charset || "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+          })[0];
 
           objPromocode.save(promocode, {
             success: function (success) {
@@ -281,6 +286,14 @@ angular.module('nearPlaceApp')
       },
       set: function (value) {
         this.set('endPeriod', value);
+      }
+    });
+    Object.defineProperty(Promocode.prototype, 'code', {
+      get: function () {
+        return this.get('code');
+      },
+      set: function (value) {
+        this.set('code', value);
       }
     });
 

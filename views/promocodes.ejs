@@ -58,9 +58,9 @@
                         
                     
                     </th> 
-                    <th md-column ng-click="sortData('id')">
+                    <th md-column ng-click="sortData('code')">
                         Code
-                        <ng-md-icon ng-hide="sortColumn!='id'" icon="{{getSortClass('id')}}"></ng-md-icon>
+                        <ng-md-icon ng-hide="sortColumn!='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
                     
                     </th> 
 
@@ -104,7 +104,7 @@
             <tbody md-body>
                 <tr md-row ng-repeat="promocode in promocodes| orderBy:sortColumn:reverseSort">
                     <td md-cell>{{:: promocode.title }}</td>
-                    <td md-cell>{{:: promocode.id.toUpperCase()}}</td>
+                    <td md-cell>{{:: promocode.code}}</td>
                     <td md-cell>{{:: promocode.sum}}</td>
                     <td md-cell>{{:: promocode.startPeriod | date:'yyyy-MM-dd'}}</td>
                     <td md-cell>{{:: promocode.endPeriod | date:'yyyy-MM-dd'}}</td>

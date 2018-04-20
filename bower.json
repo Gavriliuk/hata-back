@@ -14,7 +14,8 @@
     "angular-moment": "^0.10.3",
     "moment": "^2.12.0",
     "angular-material-icons": "^0.6.0",
-    "parse": "~1.7.1"
+    "parse": "~1.7.1",
+    "voucher-code-generator": "^1.1.1"
   },
   "resolutions": {
     "angular": "~1.5.0",

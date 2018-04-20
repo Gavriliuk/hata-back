@@ -205,7 +205,11 @@ angular.module('nearPlaceApp')
       };
       loadRouties();
 
-      $scope.promocode = {};
+      $scope.promocode = {
+        prefix: "DMS-",
+        charset: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        length: 5
+      };
       $scope.howMany = 1;
 
       $scope.isCreating = true;
