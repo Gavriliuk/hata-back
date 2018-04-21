@@ -10,7 +10,7 @@ angular.module('nearPlaceApp')
           return 'Expired';
         }
         else if (this.isApproved && !this.isUsed) {
-          return 'Approved';
+          return 'Active';
         } else if (this.isApproved === false) {
           return 'Rejected';
         } else if (this.isUsed) {
@@ -27,7 +27,9 @@ angular.module('nearPlaceApp')
 
           var objPromocode = new Promocode();
           promocode.user = Parse.User.current();
-          ;
+          promocode.isApproved = true;
+
+
           promocode.code = voucher_codes.generate({
             prefix: promocode.prefix || "DMS-",
             length: promocode.length || 5,
