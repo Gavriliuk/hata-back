@@ -3,7 +3,7 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2 ng-show="isCreating">New entry</h2>
-                <h2 ng-show="!isCreating">{{::promocode.title }}: {{::promocode.id.toUpperCase()}}</h2>
+                <h2 ng-show="!isCreating">{{::promocode.title }}: {{::promocode.code}}</h2>
                 <span flex></span>
                 <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
             </div>

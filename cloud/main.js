@@ -147,6 +147,59 @@ Parse.Cloud.define('likePlace', function (req, res) {
 
 });
 
+Parse.Cloud.define('applyPromocode', function (req, res) {
+
+    var promocode = req.params.promocode;
+    var deviceId = req.params.deviceId;
+
+    var objPromocode;
+    var query = new Parse.Query('Promocode');
+    query.equalTo('code', promocode);
+    var response = { action: null };
+
+    query.find().then(function (dbPromocode) {
+        if (dbPromocode.length && !dbPromocode[0].get("isUsed") && dbPromocode[0].get("isApproved")) {
+            objPromocode = dbPromocode[0];
+            objPromocode.set("deviceId", deviceId);
+            objPromocode.set("isUsed", true);
+            response.action = 'ok';
+            response.payload = objPromocode;
+            return objPromocode.save(null, { useMasterKey: true });
+        } else {
+            response.action = 'ko';
+            response.error = 'Promocode Not Found!';
+        }
+    }).then(function () {
+        res.success(response);
+    }, function (error) {
+        res.error(error.message);
+    });
+});
+Parse.Cloud.define('validatePromocode', function (req, res) {
+
+    var promocode = req.params.promocode;
+    var routeId = req.params.routeId;
+
+    var objPromocode;
+    var query = new Parse.Query('Promocode');
+    query.equalTo('code', promocode);
+    var response = { action: null };
+
+    query.find().then(function (dbPromocode) {
+        if (dbPromocode.length && !dbPromocode[0].get("isUsed") && dbPromocode[0].get("isApproved") && dbPromocode[0].get("route").includes(routeId)) {
+            response.action = 'ok';
+            return response;
+        } else {
+            response.action = 'ko';
+            response.error = 'Promocode Not Valid!';
+        }
+    }).then(function () {
+        res.success(response);
+    }, function (error) {
+        res.error(error.message);
+    });
+});
+
 Parse.Cloud.define('getUsers', function (req, res) {
 
     var params = req.params;
