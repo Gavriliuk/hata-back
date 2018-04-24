@@ -175,6 +175,7 @@ Parse.Cloud.define('applyPromocode', function (req, res) {
         res.error(error.message);
     });
 });
+
 Parse.Cloud.define('validatePromocode', function (req, res) {
 
     var promocode = req.params.promocode;
