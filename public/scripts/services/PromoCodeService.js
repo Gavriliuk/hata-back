@@ -238,6 +238,17 @@ angular.module('nearPlaceApp')
       }
     });
 
+
+    Object.defineProperty(Promocode.prototype, 'prefix', {
+      get: function () {
+        return this.get('prefix');
+      },
+      set: function (value) {
+        this.set('prefix', value);
+      }
+    });
+
+
     Object.defineProperty(Promocode.prototype, 'currency', {
       get: function () {
         return this.get('currency');
@@ -263,6 +274,7 @@ angular.module('nearPlaceApp')
         this.set('isUsed', value);
       }
     });
+
 
     Object.defineProperty(Promocode.prototype, 'expiresAt', {
       get: function () {

@@ -28,13 +28,15 @@
                         <div ng-message="required">Title required</div>
                     </div>
                 </md-input-container>
+
                 <md-input-container class="md-block" ng-show="isCreating">
                     <label>Prefix</label>
                     <input type="text" name="prefix" ng-model="promocode.prefix">
                 </md-input-container>
+
                 <md-input-container class="md-block" ng-show="isCreating">
                     <label>Charset</label>
-                    <input type="text"  name="charset" ng-model="promocode.charset">
+                    <input type="text" name="charset" ng-model="promocode.charset">
                 </md-input-container>
 
                 <md-input-container class="md-block" ng-show="isCreating">
