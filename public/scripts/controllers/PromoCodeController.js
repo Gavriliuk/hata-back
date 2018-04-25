@@ -195,20 +195,11 @@ angular.module('nearPlaceApp')
     }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode, Route) {
 
 
-<<<<<<< HEAD
       var loadRouties = function () {
         $scope.promise = Route.all({}).then(function (routies) {
           $scope.routies = routies;
           console.log(routies);
-=======
-      var loadRoutes = function () {
-        $scope.promise = Route.all({}).then(function (routes) {
-          $scope.routes = routes;
-
->>>>>>> f10deab... #63 Filter promocodes by prefix
-
         });
-
       };
       loadRouties();
 
