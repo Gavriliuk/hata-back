@@ -55,56 +55,85 @@
     <md-table-container>
         <table md-table md-progress="promise">
             <thead md-head>
+
                 <tr md-row>
+                    <md-menu>
+                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                            <ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
+                            </ng-md-icon>
+                        </md-button>
+                        <md-menu-content width="1">
 
-                    <th md-column ng-click="sortData('title')">
-                        Title
-                        <ng-md-icon ng-hide="sortColumn!='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
-
-
-                    </th>
-                    <th md-column ng-click="sortData('code')">
-                        Code
-                        <ng-md-icon ng-hide="sortColumn!='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
-
-                    </th>
-
-                    <th md-column ng-click="sortData('sum')">
-                        Sum
-                        <ng-md-icon ng-hide="sortColumn!='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
-
-                    </th>
-
-                    <th md-column ng-click="sortData('startPeriod')">
-                        Start Period
-                        <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
-
-                    </th>
-                    <th md-column ng-click="sortData('endPeriod')">
-                        End Period
-                        <ng-md-icon ng-hide="sortColumn!='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
+                            <md-menu-item aria-label="Delete promocode">
+                                <md-button aria-label="Delete promocode" ng-click="onDestroyPromocodes($event)">
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
 
 
-                    </th>
+                            <th md-column>
+                                <label>
+                                     <md-checkbox ng-model="check"  ng-change="toggleSelectAll(check) ">
 
-                    <th md-column ng-click="sortData('getStatus()')">
-                        Status
-                        <ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
+                                    Select
+
+                                </label>
+                            </th>
+
+                            <th md-column ng-click="sortData('title')">
+                                Title
+                                <ng-md-icon ng-hide="sortColumn!='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
 
 
-                    </th>
+                            </th>
+                            <th md-column ng-click="sortData('code')">
+                                Code
+                                <ng-md-icon ng-hide="sortColumn!='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
 
-                    <th md-column ng-click="sortData('createdAt')">
-                        Created At
-                        <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+                            </th>
 
-                    </th>
+                            <th md-column ng-click="sortData('sum')">
+                                Sum
+                                <ng-md-icon ng-hide="sortColumn!='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
 
-                    <th name="Actions">
+                            </th>
+
+                            <th md-column ng-click="sortData('startPeriod')">
+                                Start Period
+                                <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+
+                            </th>
+                            <th md-column ng-click="sortData('endPeriod')">
+                                End Period
+                                <ng-md-icon ng-hide="sortColumn!='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
+
+
+                            </th>
+
+                            <th md-column ng-click="sortData('getStatus()')">
+                                Status
+                                <ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
+
+
+                            </th>
+
+                            <th md-column ng-click="sortData('createdAt')">
+                                Created At
+                                <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+
+                            </th>
+
+                            <th name="Actions">
                 </tr>
             </thead>
             <tbody md-body>
                 <tr md-row ng-repeat="promocode in promocodes | orderBy:sortColumn:reverseSort | filter:search ">
+                    <td md-cell>
+                        <md-checkbox ng-model="promocode.selected " ng-click="clearParent()" >
+
+                        </md-checkbox>
+                    </td>
+
                     <td md-cell>{{:: promocode.title }}</td>
                     <td md-cell>{{:: promocode.code}}</td>
                     <td md-cell>{{:: promocode.sum}}</td>

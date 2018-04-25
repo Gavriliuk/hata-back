@@ -20,7 +20,11 @@ angular.module('nearPlaceApp')
       $scope.promocodes = [];
 
 
-
+      $scope.toggleSelectAll = function (ev) {
+        $scope.promocodes.forEach(function (promocode) {
+          promocode.selected = ev;
+        });
+      }
 
       //Order by//
 
@@ -51,10 +55,14 @@ angular.module('nearPlaceApp')
         );
       };
 
+
       var loadPromocodes = function () {
         Auth.ensureLoggedIn().then(function () {
           $scope.promise = Promocode.all($scope.query).then(function (promocodes) {
-            $scope.promocodes = promocodes;
+            $scope.promocodes = promocodes.map(function (promoCd) {
+              promoCd.selected = false;
+              return promoCd;
+            })
           });
         });
       };
@@ -65,6 +73,7 @@ angular.module('nearPlaceApp')
         Auth.ensureLoggedIn().then(function () {
           Promocode.count($scope.query).then(function (total) {
             $scope.query.total = total;
+
           });
         });
       }
@@ -77,6 +86,7 @@ angular.module('nearPlaceApp')
         loadPromocodes();
         loadCount();
       }
+
 
       $scope.onCreatePromocode = function (ev) {
 
@@ -192,8 +202,40 @@ angular.module('nearPlaceApp')
 
       };
 
-    }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode, Route) {
 
+      $scope.onDestroyPromocodes = function (ev) {
+        //  var promocodesSelected = [];
+        var confirm = $mdDialog.confirm()
+          .title('Confirm action')
+          .content('Are you sure you want to delete this promocodes?')
+          .ok('Delete')
+          .cancel('Cancel')
+          .targetEvent(ev);
+        var promocodeDeleted = [];
+        $scope.promocodes.forEach(function (promocodes) {
+          if (promocodes.selected) {
+
+            console.log(promocodes.code);
+
+
+            // $mdDialog.show(confirm).then(function () {
+
+
+            promocodeDeleted.push(Promocode.destroy(promocodes));
+
+
+          };
+        });
+        Promise.all(promocodeDeleted).then(function () {
+          loadPromocodes();
+          loadCount();
+
+        })
+
+      };
+
+
+    }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode, Route) {
 
       var loadRouties = function () {
         $scope.promise = Route.all({}).then(function (routies) {
@@ -202,7 +244,6 @@ angular.module('nearPlaceApp')
         });
       };
       loadRouties();
-
 
       $scope.promocode = {
         prefix: "DMS-",
@@ -298,6 +339,7 @@ angular.module('nearPlaceApp')
 
       $scope.promocode = promocode;
       $scope.formData = {};
+      $scope.promocodesAll = [];
 
       var showToast = function (message) {
         $mdToast.show(
