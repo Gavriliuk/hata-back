@@ -129,7 +129,15 @@ angular.module('nearPlaceApp')
             }
           }
 
-          query.descending('createdAt');
+          if (params.sortColumn) {
+            if (params.reverseSort) {
+              query.ascending(params.sortColumn);
+
+            }
+            else {
+              query.descending(params.sortColumn);
+            }
+          }
           query.limit(params.limit);
           query.skip((params.page * params.limit) - params.limit);
           query.find({

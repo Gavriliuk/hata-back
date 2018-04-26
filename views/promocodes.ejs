@@ -69,57 +69,52 @@
                                     Delete
                                 </md-button>
                             </md-menu-item>
-
-
                             <th md-column>
                                 <label>
-                                     <md-checkbox ng-model="check"  ng-change="toggleSelectAll(check) ">
-
-                                    Select
-
+                                    <md-checkbox ng-model="check" ng-change="toggleSelectAll(check) ">
+                                        Select
                                 </label>
                             </th>
 
                             <th md-column ng-click="sortData('title')">
                                 Title
-                                <ng-md-icon ng-hide="sortColumn!='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
 
 
                             </th>
                             <th md-column ng-click="sortData('code')">
                                 Code
-                                <ng-md-icon ng-hide="sortColumn!='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
 
                             </th>
 
                             <th md-column ng-click="sortData('sum')">
                                 Sum
-                                <ng-md-icon ng-hide="sortColumn!='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
 
                             </th>
 
                             <th md-column ng-click="sortData('startPeriod')">
                                 Start Period
-                                <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
 
                             </th>
                             <th md-column ng-click="sortData('endPeriod')">
                                 End Period
-                                <ng-md-icon ng-hide="sortColumn!='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
 
 
                             </th>
 
-                            <th md-column ng-click="sortData('getStatus()')">
+                            <th md-column ng-click="sortData('isUsed')">
                                 Status
-                                <ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
-
+                                <ng-md-icon ng-show="query.sortColumn=='isUsed'" icon="{{getSortClass('isUsed')}}"></ng-md-icon>
 
                             </th>
 
                             <th md-column ng-click="sortData('createdAt')">
                                 Created At
-                                <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+                                <ng-md-icon ng-show="query.sortColumn=='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
 
                             </th>
 
@@ -127,9 +122,9 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="promocode in promocodes | orderBy:sortColumn:reverseSort | filter:search ">
+                <tr md-row ng-repeat="promocode in promocodes | filter:search ">
                     <td md-cell>
-                        <md-checkbox ng-model="promocode.selected " ng-click="clearParent()" >
+                        <md-checkbox ng-model="promocode.selected " ng-click="clearParent()">
 
                         </md-checkbox>
                     </td>

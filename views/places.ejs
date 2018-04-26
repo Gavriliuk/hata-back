@@ -7,7 +7,7 @@
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Search by Title</label>
                         <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
-                    </md-input-container> 
+                    </md-input-container>
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Status</label>
                         <md-select ng-model="query.status" ng-change="onQueryChange()">
@@ -34,12 +34,12 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                 
+
                 </div>
                 <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
-                    </md-datepicker>
-                    <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
-                    </md-datepicker>
+                </md-datepicker>
+                <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
+                </md-datepicker>
             </md-content>
 
         </div>
@@ -50,34 +50,34 @@
             <thead md-head>
                 <tr md-row>
                     <th md-column></th>
-                   
+
                     <th md-column ng-click="sortData('title_ru')">
-                            Title
-                            <ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
-                            </th>
-
-                            <th md-column ng-click="sortData('startPeriod')">
-                                 Period
-                                 <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
-                         </th>
-
-                         <th md-column ng-click="sortData('getStatus()')">
-                            Status
-                            <ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
+                        Title
+                        <ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
                     </th>
 
-                    
-                    <th md-column ng-click="sortData('createdAt')"> 
-                 Created At
-                 <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+                    <th md-column ng-click="sortData('startPeriod')">
+                        Period
+                        <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+                    </th>
 
-                     </th>
+                    <th md-column ng-click="sortData('getStatus()')">
+                        Status
+                        <ng-md-icon ng-hide="sortColumn!='getStatus()'" icon="{{getSortClass('getStatus()')}}"></ng-md-icon>
+                    </th>
+
+
+                    <th md-column ng-click="sortData('createdAt')">
+                        Created At
+                        <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+
+                    </th>
 
                     <th name="Actions">
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="place in places | orderBy:sortColumn:reverseSort"">
+                <tr md-row ng-repeat="place in places | orderBy:sortColumn:reverseSort">
                     <td md-cell>
                         <img class="img-thumb img-circle" ng-src="/images/placeholder.png" actual-src="{{ place.imageThumb.url() }}" />
                     </td>
