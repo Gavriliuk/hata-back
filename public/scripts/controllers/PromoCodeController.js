@@ -9,6 +9,7 @@ angular.module('nearPlaceApp')
 
       $scope.query = {
         filter: '',
+        filterprefix: '',
         limit: 40,
         sortColumn: 'isUsed',
         reverseSort: false,
@@ -22,11 +23,15 @@ angular.module('nearPlaceApp')
       $scope.promocodes = [];
 
 
+
       $scope.toggleSelectAll = function (ev) {
         $scope.promocodes.forEach(function (promocode) {
           promocode.selected = ev;
+
         });
       }
+
+
 
       $scope.sortData = function (column) {
         $scope.query.reverseSort = ($scope.query.sortColumn == column) ? !$scope.query.reverseSort : false;
@@ -42,7 +47,8 @@ angular.module('nearPlaceApp')
 
         return '';
       };
-      //Order by //
+
+
 
       var showSimpleToast = function (message) {
         $mdToast.show(
@@ -200,36 +206,102 @@ angular.module('nearPlaceApp')
 
       };
 
+      $scope.onDowlandPromocodes = function (ev) {
+   
+        var csvContent = '';
+        var cvsPromocodesHeader = '';
+        
+        var cvsPromocodesValues = '';
+    
+        
+        cvsPromocodesHeader = Promocode.getAllAttributes().join(';')+'\n';
+     
+        $scope.promocodes.forEach(function (promocode, index, infoArray,) {
+   
+          if (promocode.selected) {
+            Promocode.getAllAttributes().forEach(function (key) {
+              cvsPromocodesValues += promocode.attributes[key]+';';
+            });
+
+            cvsPromocodesValues+='\n';
+          }
+          
+        });
+
+        csvContent+=cvsPromocodesHeader+cvsPromocodesValues;
+
+        function downloadFile(content, fileName, strMimeType) {
+
+          var D = document;
+          var a = D.createElement('a');
+          strMimeType = strMimeType || 'application/octet-stream;charset=utf-8';
+          var rawFile;
+          if (navigator.msSaveBlob) { // IE10
+            return navigator.msSaveBlob(new Blob([content], {
+              type: strMimeType
+            }), fileName);
+
+
+          } if ('download' in a) {
+            var blob = new Blob([content], {
+              type: strMimeType
+            });
+            rawFile = URL.createObjectURL(blob);
+            a.setAttribute('download', fileName);
+          } else {
+            rawFile = 'content:' + strMimeType + ',' + encodeURIComponent(content);
+            a.setAttribute('target', '_blank');
+          }
+          a.href = rawFile;
+          a.setAttribute('style', 'display:none;');
+          D.body.appendChild(a);
+          setTimeout(function () {
+            if (a.click) {
+              a.click();
+
+            } else if (document.createEvent) {
+              var eventObj = document.createEvent('MouseEvents');
+              eventObj.initEvent('click', true, true);
+              a.dispatchEvent(eventObj);
+            }
+            D.body.removeChild(a);
+
+          }, 100);
+        }
+
+        downloadFile(csvContent, 'PromocodUpload.csv');
+      };
+
+
+      // Mistakes
 
       $scope.onDestroyPromocodes = function (ev) {
-        //  var promocodesSelected = [];
+
         var confirm = $mdDialog.confirm()
           .title('Confirm action')
           .content('Are you sure you want to delete this promocodes?')
           .ok('Delete')
           .cancel('Cancel')
           .targetEvent(ev);
-        var promocodeDeleted = [];
-        $scope.promocodes.forEach(function (promocodes) {
-          if (promocodes.selected) {
 
-            console.log(promocodes.code);
+        $mdDialog.show(confirm).then(function () {
 
+          var promocodeDeleted = [];
 
-            // $mdDialog.show(confirm).then(function () {
+          $scope.promocodes.forEach(function (promocodes) {
+            if (promocodes.selected) {
 
+              promocodeDeleted.push(Promocode.destroy(promocodes));
 
-            promocodeDeleted.push(Promocode.destroy(promocodes));
+            };
+          });
 
+          Promise.all(promocodeDeleted).then(function () {
+            loadPromocodes();
+            loadCount();
 
-          };
+          })
         });
-        Promise.all(promocodeDeleted).then(function () {
-          loadPromocodes();
-          loadCount();
-
-        })
-
       };
 
 

@@ -11,7 +11,7 @@
 
                     <md-input-container class="md-block" flex-gt-xs>
 
-                        <input ng-model="search.prefix" placeholder="Search by Prefix" />
+                        <input ng-model="query.filterprefix" placeholder="Search by Prefix"   ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()"/>
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-xs>
@@ -43,8 +43,12 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
+
+                    <md-input-container>
                     <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
                     </md-datepicker>
+                </md-input-container>
+
                     <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
                     </md-datepicker>
                 </div>
@@ -62,13 +66,21 @@
                             <ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
                             </ng-md-icon>
                         </md-button>
-                        <md-menu-content width="1">
 
-                            <md-menu-item aria-label="Delete promocode">
+                        <md-menu-content width="2">
+
+                            <md-menu-item>
                                 <md-button aria-label="Delete promocode" ng-click="onDestroyPromocodes($event)">
                                     Delete
                                 </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+
+                                <md-button aria-label="Upload  promocodes" ng-click="onDowlandPromocodes($event)">
+                                    Download as CSV
+                                </md-button>
                             </md-menu-item>
+                                </md-menu-content>
                             <th md-column>
                                 <label>
                                     <md-checkbox ng-model="check" ng-change="toggleSelectAll(check) ">
@@ -122,7 +134,7 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row ng-repeat="promocode in promocodes | filter:search ">
+                <tr md-row ng-repeat="promocode in promocodes">
                     <td md-cell>
                         <md-checkbox ng-model="promocode.selected " ng-click="clearParent()">
 
