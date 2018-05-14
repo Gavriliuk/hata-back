@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('nearPlaceApp')
-  .factory('Promocode', function ($q, moment) {
+angular.module('nearPlaceApp').factory('Promocode', function ($q, moment) {
 
     var Promocode = Parse.Object.extend('Promocode', {
 
@@ -18,9 +17,14 @@ angular.module('nearPlaceApp')
         } else {
           return 'Pending';
         }
-      }
+      }  
     }, {
-
+      getAllAttributes: function () {
+        var except=["constructor","getStatus","user"];
+        return Object.getOwnPropertyNames(this.prototype).filter(function(property){
+          return except.indexOf(property)==-1;
+        });
+      },
         create: function (promocode) {
 
           var defer = $q.defer();
@@ -28,6 +32,8 @@ angular.module('nearPlaceApp')
           var objPromocode = new Promocode();
           promocode.user = Parse.User.current();
           promocode.isApproved = true;
+          promocode.isUsed = false;
+
 
 
           promocode.code = voucher_codes.generate({
@@ -88,7 +94,16 @@ angular.module('nearPlaceApp')
 
           if (params.filter != '') {
             query.contains('canonical', params.filter);
+      
           }
+
+          // 1
+          if (params.filterprefix != '') {
+            query.contains('prefix', params.filterprefix);
+          
+          }
+          // 
+
 
           if (params.startDate && params.startDate !== null) {
             var start = moment(params.startDate).startOf('day');
@@ -157,6 +172,13 @@ angular.module('nearPlaceApp')
           if (params.filter != '') {
             query.contains('canonical', params.filter);
           }
+
+          
+          // 1
+          if (params.filterprefix != '') {
+            query.contains('prefix', params.filterprefix);
+          }
+// 
 
           if (params.date && params.date !== null) {
             var start = moment(params.date).startOf('day');
