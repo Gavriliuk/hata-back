@@ -1,7 +1,5 @@
 angular.module('nearPlaceApp')
   .controller('UserCtrl', function (User, $scope, $mdDialog, $mdToast, Auth) {
-
-    // Pagination options.
     $scope.rowOptions = [10, 20, 40];
 
     $scope.query = {
@@ -9,7 +7,7 @@ angular.module('nearPlaceApp')
       limit: 40,
       page: 1,
       total: 0
-    }
+    };
 
     $scope.users = [];
 
@@ -20,7 +18,7 @@ angular.module('nearPlaceApp')
           .action('OK')
           .hideDelay(3000)
       );
-    }
+    };
 
     Auth.ensureLoggedIn().then(function () {
       User.fetch().then(function (user) {
@@ -42,21 +40,20 @@ angular.module('nearPlaceApp')
     $scope.onSearch = function () {
       $scope.query.page = 1;
       loadUsers();
-    }
+    };
 
     $scope.onPaginationChange = function (page, limit) {
       $scope.query.page = page;
       $scope.query.limit = limit;
       loadUsers();
-    }
+    };
 
     $scope.openMenu = function ($mdOpenMenu, ev) {
       originatorEv = ev;
       $mdOpenMenu(ev);
-    }
+    };
 
     $scope.onSaveUser = function (ev) {
-
       $mdDialog.show({
         controller: 'DialogUserController',
         templateUrl: '/views/partials/user.html',
@@ -70,12 +67,11 @@ angular.module('nearPlaceApp')
         .then(function (answer) {
           loadUsers();
         });
-    }
+    };
 
     $scope.onUpdateUser = function (ev, user) {
 
       var objUser = angular.copy(user);
-
       $mdDialog.show({
         controller: 'DialogUserController',
         templateUrl: '/views/partials/user.html',
@@ -100,7 +96,6 @@ angular.module('nearPlaceApp')
         .targetEvent(ev);
 
       $mdDialog.show(confirm).then(function () {
-
         User.delete({ id: user.id }).then(function () {
           loadUsers();
           showToast('User ' + user.getUsername() + ' deleted');
@@ -111,7 +106,6 @@ angular.module('nearPlaceApp')
           });
       });
     };
-
   }).controller('DialogUserController',
     function (User, File, $scope, $mdDialog, $mdToast, user, Route) {
 
@@ -119,8 +113,8 @@ angular.module('nearPlaceApp')
         $scope.promise = Route.all({}).then(function (routies) {
           $scope.routies = routies;
         });
-
       };
+
       loadRouties();
 
       $scope.imageFilename = '';
@@ -152,7 +146,6 @@ angular.module('nearPlaceApp')
         } else if (file.$error) {
           showSimpleToast('File too large. Max 2MB');
         } else {
-
           $scope.imageFilename = file.name;
           $scope.isUploading = true;
 
@@ -161,27 +154,22 @@ angular.module('nearPlaceApp')
             $scope.isUploading = false;
             showSimpleToast('File uploaded');
           }, function (error) {
-
             showSimpleToast(error.message);
             $scope.isUploading = false;
             $scope.objUser.photo = null;
-
           });
         }
-      }
+      };
 
       $scope.onEventSaveUser = function (isValidForm) {
 
         if (isValidForm) {
-
           if (!$scope.objUser.password) {
             showSimpleToast('Password required');
           } else if ($scope.objUser.password.length < 6) {
             showSimpleToast('Password should be at least 6 characters');
           } else {
-
             $scope.isSavingUser = true;
-
             User.create($scope.objUser).then(function (data) {
               showSimpleToast('User saved');
               $mdDialog.hide();
@@ -194,12 +182,11 @@ angular.module('nearPlaceApp')
         } else {
           showSimpleToast('Please correct all highlighted errors and try again');
         }
-      }
+      };
 
       $scope.onEventUpdateUser = function (isValidForm) {
 
         if (isValidForm) {
-
           if ($scope.objUser.password && $scope.objUser.password.length < 6) {
             showSimpleToast('Password should be at least 6 characters');
             return;
@@ -218,14 +205,13 @@ angular.module('nearPlaceApp')
         } else {
           showSimpleToast('Please correct all highlighted errors and try again');
         }
-      }
+      };
 
       $scope.hide = function () {
         $mdDialog.cancel();
-      }
+      };
 
       $scope.cancel = function () {
         $mdDialog.cancel();
-      }
-
+      };
     });

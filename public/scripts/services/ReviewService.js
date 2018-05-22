@@ -1,96 +1,77 @@
 'use strict';
- angular.module('nearPlaceApp')
- .factory('Review', function ($q) {
+angular.module('nearPlaceApp')
+  .factory('Review', function ($q) {
 
     var Review = Parse.Object.extend('Review', {
-
       getStatus: function () {
-
         if (this.isInappropriate) {
           return 'Inappropriate';
         }
         return null;
       }
-
     }, {
+        update: function (review) {
+          var defer = $q.defer();
+          review.save(null, {
+            success: function (obj) {
+              defer.resolve(obj);
+            },
+            error: function (obj, error) {
+              defer.reject(error);
+            }
+          });
+          return defer.promise;
+        },
 
-      update: function (review) {
+        count: function (params) {
+          var defer = $q.defer();
+          var query = new Parse.Query(this);
 
-        var defer = $q.defer();
-
-        review.save(null, {
-          success: function (obj) {
-            defer.resolve(obj);
-          },
-          error: function (obj, error) {
-            defer.reject(error);
+          if (params.status) {
+            if (params.status === 'inappropriate') {
+              query.equalTo('isInappropriate', true);
+            }
+            if (params.status === 'appropriate') {
+              query.equalTo('isInappropriate', false);
+            }
           }
-        });
+          query.count({
+            success: function (count) {
+              defer.resolve(count);
+            },
+            error: function (error) {
+              defer.reject(error);
+            }
+          });
+          return defer.promise;
+        },
 
-        return defer.promise;
-      },
-
-      count: function (params) {
-
-        var defer = $q.defer();
-
-        var query = new Parse.Query(this);
-
-        if (params.status) {
-          if (params.status === 'inappropriate') {
-            query.equalTo('isInappropriate', true);
+        all: function (params) {
+          var defer = $q.defer();
+          var query = new Parse.Query(this);
+          if (params.status) {
+            if (params.status === 'inappropriate') {
+              query.equalTo('isInappropriate', true);
+            }
+            if (params.status === 'appropriate') {
+              query.equalTo('isInappropriate', false);
+            }
           }
-          if (params.status === 'appropriate') {
-            query.equalTo('isInappropriate', false);
-          }
-        }
-
-        query.count({
-          success: function (count) {
-            defer.resolve(count);
-          },
-          error: function (error) {
-            defer.reject(error);
-          }
-        });
-
-        return defer.promise;
-
-      },
-
-      all: function (params) {
-
-        var defer = $q.defer();
-
-        var query = new Parse.Query(this);
-
-        if (params.status) {
-          if (params.status === 'inappropriate') {
-            query.equalTo('isInappropriate', true);
-          }
-          if (params.status === 'appropriate') {
-            query.equalTo('isInappropriate', false);
-          }
-        }
-
-        query.descending('createdAt');
-        query.include(['userData', 'place']);
-        query.limit(params.limit);
-        query.skip((params.page * params.limit) - params.limit);
-        query.find({
-          success: function (reviews) {
-            defer.resolve(reviews);
-          },
-          error: function (error) {
-            defer.reject(error);
-          }
-        });
-
-        return defer.promise;
-
-      },
-
-    });
+          query.descending('createdAt');
+          query.include(['userData', 'place']);
+          query.limit(params.limit);
+          query.skip((params.page * params.limit) - params.limit);
+          query.find({
+            success: function (reviews) {
+              defer.resolve(reviews);
+            },
+            error: function (error) {
+              defer.reject(error);
+            }
+          });
+          return defer.promise;
+        },
+      });
 
     Object.defineProperty(Review.prototype, 'userData', {
       get: function () {
@@ -124,7 +105,5 @@
         this.set('isInappropriate', val);
       }
     });
-
     return Review;
-
-});
+  });

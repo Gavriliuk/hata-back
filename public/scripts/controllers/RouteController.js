@@ -1,48 +1,38 @@
 'use strict';
-
 angular.module('nearPlaceApp')
-
     .controller('RouteController', function ($scope, $mdToast, $mdDialog, Route, Place, Story, Auth) {
+
         $scope.route = {};
         $scope.data = {
             selectedIndex: 0
         };
         $scope.relationsPlaces = [];
         $scope.relationsStories = [];
-
         $scope.query = {
             filter: '',
             limit: 40,
             page: 1,
             total: 0
         };
-
-        //Order by//
-
         $scope.sortColumn = "name";
         $scope.reverseSort = false;
-
         $scope.sortData = function (column) {
             $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
             $scope.sortColumn = column;
-
         }
         $scope.getSortClass = function (column) {
             if ($scope.sortColumn == column) {
                 return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-
             }
             return '';
         };
 
-        //Order by //
-
-    var showSimpleToast = function (message) {
+        var showSimpleToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                .content(message)
-                .action('OK')
-                .hideDelay(3000)
+                    .content(message)
+                    .action('OK')
+                    .hideDelay(3000)
             );
         };
 
@@ -55,19 +45,17 @@ angular.module('nearPlaceApp')
                 });
             });
         };
+
         var loadRoute = function (id) {
             $scope.loadRoute(id);
-        }
+        };
 
         var placesRelFunction = function (route) {
             if (route) {
-
                 var relation = route.relation('placesRelation');
                 var query = relation.query();
-
                 Route.find(query).then(function (places) {
                     $scope.relationsPlaces = places;
-
                 }, function (error) {
                     $scope.relationsPlaces = [];
                 });
@@ -76,17 +64,12 @@ angular.module('nearPlaceApp')
 
         var storiesRelFunction = function (route) {
             if (route) {
-
                 var relation = route.relation('storiesRelation');
                 var query = relation.query();
-
                 Route.find(query).then(function (stories) {
                     $scope.relationsStories = stories;
-
                 }, function (error) {
                     $scope.relationsStories = [];
-
-
                 });
             }
         };
@@ -97,7 +80,8 @@ angular.module('nearPlaceApp')
                     $scope.query.total = total;
                 });
             });
-        }
+        };
+
         loadCount();
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
@@ -110,22 +94,22 @@ angular.module('nearPlaceApp')
             } else {
                 onAddStoryInRoute(ev);
             }
-        }
-        var onAddPlaceInRoute = function (ev) {
+        };
 
+        var onAddPlaceInRoute = function (ev) {
             $mdDialog.show({
-                    controller: 'DialogAddPlaceInRouteController',
-                    templateUrl: '/views/partials/route-place.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        route: $scope.route,
-                        places: $scope.relationsPlaces.map(function (place) {
-                            return place.id;
-                        })
-                    },
-                    clickOutsideToClose: true
-                })
+                controller: 'DialogAddPlaceInRouteController',
+                templateUrl: '/views/partials/route-place.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    route: $scope.route,
+                    places: $scope.relationsPlaces.map(function (place) {
+                        return place.id;
+                    })
+                },
+                clickOutsideToClose: true
+            })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                     loadCount();
@@ -134,95 +118,84 @@ angular.module('nearPlaceApp')
 
         $scope.onEditRouteStory = function (story) {
             $mdDialog.show({
-                    controller: 'DialogStoryController',
-                    templateUrl: '/views/partials/story.html',
-                    parent: angular.element(document.body),
-                    //  targetEvent: ev,
-                    locals: {
-                        story: angular.copy(story)
-                    },
-                    clickOutsideToClose: true
-                })
+                controller: 'DialogStoryController',
+                templateUrl: '/views/partials/story.html',
+                parent: angular.element(document.body),
+                //  targetEvent: ev,
+                locals: {
+                    story: angular.copy(story)
+                },
+                clickOutsideToClose: true
+            })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                 });
         };
 
-
-
-
-        //Order by//
-
         $scope.sortColumn = "title_ru";
         $scope.reverseSort = false;
-
         $scope.sortPlace = function (column) {
             $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
             $scope.sortColumn = column;
+        };
 
-        }
         $scope.getSortClass = function (column) {
             if ($scope.sortColumn == column) {
                 return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
             }
             return '';
         };
-        //Order by //
-
 
         $scope.onEditRoutePlace = function (place) {
             $mdDialog.show({
-                    controller: 'DialogPlaceController',
-                    templateUrl: '/views/partials/place.html',
-                    parent: angular.element(document.body),
-                    //targetEvent: ev,
-                    locals: {
-                        place: angular.copy(place)
-                    },
-                    clickOutsideToClose: true
-                })
+                controller: 'DialogPlaceController',
+                templateUrl: '/views/partials/place.html',
+                parent: angular.element(document.body),
+                //targetEvent: ev,
+                locals: {
+                    place: angular.copy(place)
+                },
+                clickOutsideToClose: true
+            })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                 });
         };
 
         var onAddStoryInRoute = function (ev) {
-
             $mdDialog.show({
-                    controller: 'DialogAddStoryInRouteController',
-                    templateUrl: '/views/partials/route-story.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    locals: {
-                        route: $scope.route,
-                        stories: $scope.relationsStories.map(function (story) {
-                            return story.id;
-                        })
-                    },
-                    clickOutsideToClose: true
-                })
+                controller: 'DialogAddStoryInRouteController',
+                templateUrl: '/views/partials/route-story.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                locals: {
+                    route: $scope.route,
+                    stories: $scope.relationsStories.map(function (story) {
+                        return story.id;
+                    })
+                },
+                clickOutsideToClose: true
+            })
                 .then(function (answer) {
                     loadRoute($scope.route.id);
                     loadCount();
                 });
         };
-
-
     }).controller('DialogAddPlaceInRouteController', function ($scope, $mdDialog, $mdToast, Route, Place, File, route, places) {
         $scope.objRoute = route;
         $scope.objRoute.places = [];
         $scope.placesAll = [];
 
-
         Place.all({
-                page: 1,
-                limit: 1000,
-                filter: ''
-            })
+            page: 1,
+            limit: 1000,
+            filter: ''
+        })
             .then(function (returnedPlaces) {
                 $scope.placesAll = returnedPlaces.map(function (place) {
                     if (places.includes(place.id)) {
-                        place.selected = true;
+                        place.selected = true;   
+
                     }
                     return place;
                 });
@@ -231,9 +204,9 @@ angular.module('nearPlaceApp')
         var showToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                .content(message)
-                .action('OK')
-                .hideDelay(3000)
+                    .content(message)
+                    .action('OK')
+                    .hideDelay(3000)
             );
         };
 
@@ -241,7 +214,7 @@ angular.module('nearPlaceApp')
             $mdDialog.cancel();
         };
 
-         $scope.cancel = function () {
+        $scope.cancel = function () {
             $mdDialog.cancel();
         };
 
@@ -283,20 +256,16 @@ angular.module('nearPlaceApp')
         $scope.objRoute.stories = [];
         $scope.storiesAll = [];
 
-
-
         Story.all({
-                page: 1,
-                limit: 1000,
-                filter: ''
-            })
+            page: 1,
+            limit: 1000,
+            filter: ''
+        })
             .then(function (returnedStories) {
                 $scope.storiesAll = returnedStories.map(function (story) {
                     if (stories.includes(story.id)) {
                         story.selected = true;
-
                     }
-
                     return story;
                 });
             });
@@ -304,9 +273,9 @@ angular.module('nearPlaceApp')
         var showToast = function (message) {
             $mdToast.show(
                 $mdToast.simple()
-                .content(message)
-                .action('OK')
-                .hideDelay(3000)
+                    .content(message)
+                    .action('OK')
+                    .hideDelay(3000)
             );
         };
 
@@ -340,23 +309,17 @@ angular.module('nearPlaceApp')
                     }
                 });
 
-
                 $scope.objRoute.stories = storiesSelected;
 
-
                 Route.save($scope.objRoute).then(function (route) {
-
-                        showToast('Route saved');
-                        $mdDialog.hide();
-                        $scope.isSavingRoute = false;
-                    },
-
-
+                    showToast('Route saved');
+                    $mdDialog.hide();
+                    $scope.isSavingRoute = false;
+                },
                     function (error) {
                         showToast(error.message);
                         $scope.isSavingRoute = false;
                     });
             }
         };
-
     });

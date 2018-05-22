@@ -25,6 +25,7 @@
                     <md-datepicker ng-model="objStory.startPeriod" md-current-view="year">
                     </md-datepicker>
                 </md-input-container>
+
                 <md-input-container class="md-block">
                     <label>End Period</label>
                     <md-datepicker ng-model="objStory.endPeriod" md-current-view="year">
@@ -46,12 +47,12 @@
                     <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ru">
                     </md-progress-circular>
                 </div>
+
                 <div layout="row" ng-if="objStory.audio_ru.url()">
                     <audio controls>
                         <source src="{{objStory.audio_ru.url()}}" type="audio/mpeg">
                     </audio>
                     <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearStory" ng-click="onDeleteAudio('ru')"></ng-md-icon>
-
                 </div>
 
                 <div layout="row" layout-align="start center">
@@ -68,6 +69,7 @@
                     <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.ro">
                     </md-progress-circular>
                 </div>
+
                 <div layout="row" ng-if="objStory.audio_ro.url()">
                     <audio controls>
                         <source src="{{objStory.audio_ro.url() }}" type="audio/mpeg">
@@ -90,13 +92,14 @@
                     <md-progress-circular class="md-primary" md-diameter="30" ng-if="isAudioUploading.en">
                     </md-progress-circular>
                 </div>
+
                 <div layout="row" ng-if="objStory.audio_en.url()">
                     <audio controls>
                         <source src="{{objStory.audio_en.url() }}" type="audio/mpeg">
                     </audio>
                     <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearStory" ng-click="onDeleteAudio('en')"></ng-md-icon>
-
                 </div>
+
             </md-content>
         </md-dialog-content>
 

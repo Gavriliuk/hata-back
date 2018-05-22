@@ -6,12 +6,12 @@
                 <div layout-gt-sm="row" class="filter-bar">
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Search by Title</label>
-                        <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
+                        <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()" />
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-xs>
-
-                        <input ng-model="query.filterprefix" placeholder="Search by Prefix"   ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()"/>
+                        <input ng-model="query.filterprefix" placeholder="Search by Prefix" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()"
+                        />
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-xs>
@@ -45,9 +45,9 @@
                     </md-input-container>
 
                     <md-input-container>
-                    <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
-                    </md-datepicker>
-                </md-input-container>
+                        <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
+                        </md-datepicker>
+                    </md-input-container>
 
                     <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
                     </md-datepicker>
@@ -59,88 +59,76 @@
     <md-table-container>
         <table md-table md-progress="promise">
             <thead md-head>
-
                 <tr md-row>
                     <md-menu>
                         <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
                             <ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
                             </ng-md-icon>
                         </md-button>
-
                         <md-menu-content width="2">
-
                             <md-menu-item>
                                 <md-button aria-label="Delete promocode" ng-click="onDestroyPromocodes($event)">
                                     Delete
                                 </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-
+                            </md-menu-item>
+                            <md-menu-item>
                                 <md-button aria-label="Upload  promocodes" ng-click="onDowlandPromocodes($event)">
                                     Download as CSV
                                 </md-button>
                             </md-menu-item>
-                                </md-menu-content>
-                            <th md-column>
-                                <label>
-                                    <md-checkbox ng-model="check" ng-change="toggleSelectAll(check) ">
-                                        Select
-                                </label>
-                            </th>
+                        </md-menu-content>
+                        <th md-column>
+                            <label>
+                                <md-checkbox ng-model="check" ng-change="toggleSelectAll(check) ">
+                                    Select
+                            </label>
+                        </th>
 
-                            <th md-column ng-click="sortData('title')">
-                                Title
-                                <ng-md-icon ng-show="query.sortColumn=='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
+                        <th md-column ng-click="sortData('title')">
+                            Title
+                            <ng-md-icon ng-show="query.sortColumn=='title'" icon="{{getSortClass('title')}}"></ng-md-icon>
+                        </th>
 
+                        <th md-column ng-click="sortData('code')">
+                            Code
+                            <ng-md-icon ng-show="query.sortColumn=='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
+                        </th>
 
-                            </th>
-                            <th md-column ng-click="sortData('code')">
-                                Code
-                                <ng-md-icon ng-show="query.sortColumn=='code'" icon="{{getSortClass('code')}}"></ng-md-icon>
+                        <th md-column ng-click="sortData('sum')">
+                            Sum
+                            <ng-md-icon ng-show="query.sortColumn=='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
+                        </th>
 
-                            </th>
+                        <th md-column ng-click="sortData('startPeriod')">
+                            Start Period
+                            <ng-md-icon ng-show="query.sortColumn=='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+                        </th>
 
-                            <th md-column ng-click="sortData('sum')">
-                                Sum
-                                <ng-md-icon ng-show="query.sortColumn=='sum'" icon="{{getSortClass('sum')}}"></ng-md-icon>
+                        <th md-column ng-click="sortData('endPeriod')">
+                            End Period
+                            <ng-md-icon ng-show="query.sortColumn=='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
+                        </th>
 
-                            </th>
+                        <th md-column ng-click="sortData('isUsed')">
+                            Status
+                            <ng-md-icon ng-show="query.sortColumn=='isUsed'" icon="{{getSortClass('isUsed')}}"></ng-md-icon>
+                        </th>
 
-                            <th md-column ng-click="sortData('startPeriod')">
-                                Start Period
-                                <ng-md-icon ng-show="query.sortColumn=='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
+                        <th md-column ng-click="sortData('createdAt')">
+                            Created At
+                            <ng-md-icon ng-show="query.sortColumn=='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+                        </th>
 
-                            </th>
-                            <th md-column ng-click="sortData('endPeriod')">
-                                End Period
-                                <ng-md-icon ng-show="query.sortColumn=='endPeriod'" icon="{{getSortClass('endPeriod')}}"></ng-md-icon>
-
-
-                            </th>
-
-                            <th md-column ng-click="sortData('isUsed')">
-                                Status
-                                <ng-md-icon ng-show="query.sortColumn=='isUsed'" icon="{{getSortClass('isUsed')}}"></ng-md-icon>
-
-                            </th>
-
-                            <th md-column ng-click="sortData('createdAt')">
-                                Created At
-                                <ng-md-icon ng-show="query.sortColumn=='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
-
-                            </th>
-
-                            <th name="Actions">
+                        <th name="Actions">
                 </tr>
             </thead>
+
             <tbody md-body>
                 <tr md-row ng-repeat="promocode in promocodes">
                     <td md-cell>
                         <md-checkbox ng-model="promocode.selected " ng-click="clearParent()">
-
                         </md-checkbox>
                     </td>
-
                     <td md-cell>{{:: promocode.title }}</td>
                     <td md-cell>{{:: promocode.code}}</td>
                     <td md-cell>{{:: promocode.sum}}</td>
@@ -184,6 +172,7 @@
                                         Approve
                                     </md-button>
                                 </md-menu-item> -->
+
                                 <md-menu-item>
                                     <md-button aria-label="Use promocode" ng-click="onUpdateIsUsed(promocode, true)">
                                         Use

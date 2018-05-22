@@ -3,7 +3,6 @@ angular.module('nearPlaceApp').factory('Auth', function ($q) {
   var mSessionToken = null;
 
   return {
-
     getLoggedUser: function () {
       return Parse.User.current();
     },
@@ -30,7 +29,6 @@ angular.module('nearPlaceApp').factory('Auth', function ($q) {
       } else {
         defer.resolve(Parse.User.current());
       }
-
       return defer.promise;
     },
 
@@ -46,7 +44,6 @@ angular.module('nearPlaceApp').factory('Auth', function ($q) {
           defer.reject(error);
         }
       });
-
       return defer.promise;
     },
 
@@ -62,27 +59,24 @@ angular.module('nearPlaceApp').factory('Auth', function ($q) {
           defer.reject(error);
         }
       });
-
       return defer.promise;
     },
 
-  	logIn: function (username, password) {
-  	  var defer = $q.defer();
+    logIn: function (username, password) {
+      var defer = $q.defer();
 
-  	  Parse.User.logIn(username, password, {
-  		success: function (user) {
-  		  defer.resolve(user);
-  		},
-  		error: function (user, error) {
-  		  defer.reject(error);
-  	  	}
-  	  });
-
-  	  return defer.promise;
+      Parse.User.logIn(username, password, {
+        success: function (user) {
+          defer.resolve(user);
+        },
+        error: function (user, error) {
+          defer.reject(error);
+        }
+      });
+      return defer.promise;
     },
-
-  	logOut: function () {
-  	  Parse.User.logOut();
-  	}
+    logOut: function () {
+      Parse.User.logOut();
+    }
   }
 });

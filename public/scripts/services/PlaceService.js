@@ -2,11 +2,9 @@
 
 angular.module('nearPlaceApp')
   .factory('Place', function ($q, moment) {
-
     var Place = Parse.Object.extend('Place', {
 
       getStatus: function () {
-
         if (moment().toDate() >= this.expiresAt) {
           return 'Expired';
         }
@@ -18,17 +16,11 @@ angular.module('nearPlaceApp')
           return 'Pending';
         }
       }
-
     }, {
-
         create: function (place) {
-
-          
           var defer = $q.defer();
-
           var objPlace = new Place();
           place.user = Parse.User.current();
-
 
           objPlace.save(place, {
             success: function (success) {
@@ -37,14 +29,11 @@ angular.module('nearPlaceApp')
               defer.reject(error);
             }
           });
-
           return defer.promise;
         },
 
         update: function (place) {
-
           var defer = $q.defer();
-
           place.save(null, {
             success: function (success) {
               defer.resolve(success);
@@ -52,15 +41,12 @@ angular.module('nearPlaceApp')
               defer.reject(error);
             }
           });
-
           return defer.promise;
-
         },
 
         destroy: function (place) {
 
           var defer = $q.defer();
-
           place.destroy({
             success: function (obj) {
               defer.resolve(obj);
@@ -68,25 +54,18 @@ angular.module('nearPlaceApp')
               defer.reject(error);
             }
           });
-
           return defer.promise;
-
         },
 
         all: function (params) {
-
           var defer = $q.defer();
-
           var query = new Parse.Query(this);
-
           if (params.filter != '') {
             query.contains('canonical', params.filter);
           }
-
           if (params.route && params.route !== null) {
             query.equalTo('route', params.route);
           }
-//schimbari//
           if (params.startDate && params.startDate !== null) {
             var start = moment(params.startDate).startOf('day');
             query.greaterThanOrEqualTo('startPeriod', start.toDate());
@@ -95,16 +74,13 @@ angular.module('nearPlaceApp')
             var end = moment(params.endDate).endOf('day');
             query.lessThanOrEqualTo('endPeriod', end.toDate());
           }
-
           if (params.period && params.period !== null) {
             var start = moment(params.period.start).startOf('day');
             var end = moment(params.period.end).endOf('day');
             query.greaterThanOrEqualTo('startPeriod', start.toDate());
             query.lessThanOrEqualTo('endPeriod', end.toDate());
           }
-
           if (params.status && params.status !== null) {
-
             if (params.status === 'pending') {
               query.doesNotExist('isApproved');
             } else if (params.status === 'rejected') {
@@ -123,7 +99,6 @@ angular.module('nearPlaceApp')
               query.greaterThanOrEqualTo('expiresAt', moment().toDate());
             }
           }
-
           query.include('route');
           query.descending('createdAt');
           query.limit(params.limit);
@@ -144,35 +119,25 @@ angular.module('nearPlaceApp')
               defer.reject(error);
             }
           });
-
           return defer.promise;
         },
-
-
-
-
         count: function (params) {
 
           var defer = $q.defer();
-
           var query = new Parse.Query(this);
 
           if (params.filter != '') {
             query.contains('canonical', params.filter);
           }
-
           if (params.route && params.route !== null) {
             query.equalTo('route', params.route);
           }
-
           if (params.date && params.date !== null) {
             var start = moment(params.date).startOf('day');
             var end = moment(params.date).endOf('day');
             query.greaterThanOrEqualTo('createdAt', start.toDate());
             query.lessThanOrEqualTo('createdAt', end.toDate());
           }
-
-
           query.count({
             success: function (count) {
               defer.resolve(count);
@@ -180,10 +145,8 @@ angular.module('nearPlaceApp')
               defer.reject(error);
             }
           });
-
           return defer.promise;
         }
-
       });
 
 
@@ -204,6 +167,7 @@ angular.module('nearPlaceApp')
         this.set('title_ru', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'title_ro', {
       get: function () {
         return this.get('title_ro');
@@ -222,7 +186,6 @@ angular.module('nearPlaceApp')
       }
     });
 
-
     Object.defineProperty(Place.prototype, 'description_ru', {
       get: function () {
         return this.get('description_ru');
@@ -231,6 +194,7 @@ angular.module('nearPlaceApp')
         this.set('description_ru', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'description_ro', {
       get: function () {
         return this.get('description_ro');
@@ -239,6 +203,7 @@ angular.module('nearPlaceApp')
         this.set('description_ro', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'description_en', {
       get: function () {
         return this.get('description_en');
@@ -256,6 +221,7 @@ angular.module('nearPlaceApp')
         this.set('address_ru', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'address_ro', {
       get: function () {
         return this.get('address_ro');
@@ -264,6 +230,7 @@ angular.module('nearPlaceApp')
         this.set('address_ro', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'address_en', {
       get: function () {
         return this.get('address_en');
@@ -282,34 +249,32 @@ angular.module('nearPlaceApp')
       }
     });
 
-    Object.defineProperty(Place.prototype, 'images',
-      {
-        get: function () {
-          return this.get('images');
-        },
-        set: function (val) {
-          this.set('images', val);
-        }
-      });
+    Object.defineProperty(Place.prototype, 'images', {
+      get: function () {
+        return this.get('images');
+      },
+      set: function (val) {
+        this.set('images', val);
+      }
+    });
 
-    Object.defineProperty(Place.prototype, 'original_images',
-      {
-        get: function () {
-          return this.get('original_images');
-        },
-        set: function (val) {
-          this.set('original_images', val);
-        }
-      });
-    Object.defineProperty(Place.prototype, 'deletedImages',
-      {
-        get: function () {
-          return this.get('deletedImages');
-        },
-        set: function (value) {
-          this.set('deletedImages', value);
-        }
-      });
+    Object.defineProperty(Place.prototype, 'original_images', {
+      get: function () {
+        return this.get('original_images');
+      },
+      set: function (val) {
+        this.set('original_images', val);
+      }
+    });
+
+    Object.defineProperty(Place.prototype, 'deletedImages', {
+      get: function () {
+        return this.get('deletedImages');
+      },
+      set: function (value) {
+        this.set('deletedImages', value);
+      }
+    });
 
     Object.defineProperty(Place.prototype, 'audio_en', {
       get: function () {
@@ -328,6 +293,7 @@ angular.module('nearPlaceApp')
         this.set('audio_ru', value);
       }
     });
+
     Object.defineProperty(Place.prototype, 'audio_ro', {
       get: function () {
         return this.get('audio_ro');
@@ -399,7 +365,5 @@ angular.module('nearPlaceApp')
         this.set('category', value);
       }
     });
-
     return Place;
-
   });

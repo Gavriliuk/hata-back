@@ -1,10 +1,7 @@
 'use strict';
-
 angular.module('nearPlaceApp')
   .controller('CategoryCtrl',
     function ($scope, $mdDialog, $mdToast, Category, Auth) {
-
-      // Pagination options
       $scope.rowOptions = [10, 20, 40];
 
       $scope.query = {
@@ -17,17 +14,14 @@ angular.module('nearPlaceApp')
       };
 
       $scope.categories = [];
-
-      //Order by//
-
       $scope.sortColumn = "title_ru";
       $scope.reverseSort = false;
 
       $scope.sortData = function (column) {
         $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
         $scope.sortColumn = column;
+      };
 
-      }
       $scope.getSortClass = function (column) {
         if ($scope.sortColumn == column) {
           return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
@@ -35,7 +29,6 @@ angular.module('nearPlaceApp')
         return '';
       };
 
-      //Order by//
       var showSimpleToast = function (message) {
         $mdToast.show(
           $mdToast.simple()
@@ -61,7 +54,7 @@ angular.module('nearPlaceApp')
             $scope.query.total = total;
           });
         });
-      }
+      };
 
       loadCount();
 
@@ -70,10 +63,9 @@ angular.module('nearPlaceApp')
         $scope.query.total = 0;
         loadCategories();
         loadCount();
-      }
+      };
 
       $scope.onCreateCategory = function (ev) {
-
         $mdDialog.show({
           controller: 'DialogCategoryController',
           templateUrl: '/views/partials/category.html',
@@ -101,7 +93,6 @@ angular.module('nearPlaceApp')
       };
 
       $scope.onUpdateCategory = function (ev, category) {
-
         var objCategory = angular.copy(category);
 
         $mdDialog.show({
@@ -126,7 +117,6 @@ angular.module('nearPlaceApp')
           .targetEvent(ev);
 
         $mdDialog.show(confirm).then(function () {
-
           Category.destroy(category).then(function (success) {
             showSimpleToast('Category deleted.');
             loadCategories();
@@ -138,24 +128,19 @@ angular.module('nearPlaceApp')
 
         });
       };
-
     }).controller('DialogCategoryController', function ($scope, $mdDialog, $mdToast, Category, File, category) {
 
       $scope.objCategory = {};
-
       $scope.isUploadingIcon = false;
       $scope.iconFilename = '';
 
       if (category) {
         $scope.isCreating = false;
-
         $scope.iconFilename = category.icon ? category.icon.name() : "";
         $scope.objCategory = category;
 
       } else {
-
         $scope.isCreating = true;
-
       }
 
       var showSimpleToast = function (message) {
@@ -183,8 +168,6 @@ angular.module('nearPlaceApp')
         } else if (!$scope.objCategory.icon) {
           showSimpleToast('Upload an icon');
         } else {
-
-
           Category.create($scope.objCategory).then(function (category) {
             showSimpleToast('Category saved');
             $mdDialog.hide();
@@ -237,7 +220,6 @@ angular.module('nearPlaceApp')
         } else if (!$scope.objCategory.icon) {
           showSimpleToast('Upload an icon');
         } else {
-
           $scope.isSavingCategory = true;
 
           Category.update($scope.objCategory).then(function (category) {

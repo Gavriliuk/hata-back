@@ -8,7 +8,6 @@
                 <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
             </div>
         </md-toolbar>
-
         <md-dialog-content>
             <md-content layout="column">
                 <md-input-container class="md-block">
@@ -46,7 +45,6 @@
             <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingRoute" ng-click="addPlaceInRoute(form.$valid)">
                 {{ !isSavingRoute ? 'Save' : 'Saving...' }}
             </md-button>
-
         </md-dialog-actions>
     </form>
 </md-dialog>

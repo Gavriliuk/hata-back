@@ -3,8 +3,7 @@
     <md-toolbar>
       <div class="md-toolbar-tools">
         <span flex></span>
-        <ng-md-icon icon="close" class="icon-close" ng-click="hide()"
-          aria-label="Close dialog">
+        <ng-md-icon icon="close" class="icon-close" ng-click="hide()" aria-label="Close dialog">
         </ng-md-icon>
       </div>
     </md-toolbar>
@@ -14,7 +13,6 @@
         <p>
 
         </p>
-
         <md-input-container class="md-block">
           <label># of days</label>
           <input required numbers-only name="days" ng-model="formData.days">
@@ -28,13 +26,11 @@
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button class="md-raised" ng-click="hide()">
-       Cancel
+        Cancel
       </md-button>
-      <md-button type="submit" class="md-raised md-primary"
-        ng-disabled="isSavingExpiresAt || isDayInvalid()"
-        ng-click="onUpdateExpiresAt(form.$valid)">
+      <md-button type="submit" class="md-raised md-primary" ng-disabled="isSavingExpiresAt || isDayInvalid()" ng-click="onUpdateExpiresAt(form.$valid)">
         Update
-     </md-button>
+      </md-button>
     </md-dialog-actions>
   </form>
 </md-dialog>

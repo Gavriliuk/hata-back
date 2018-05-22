@@ -1,74 +1,67 @@
 <md-content ng-controller="StoryCtrl">
+    <md-table-toolbar>
+        <div layout="row">
+            <md-content flex-gt-md="65" flex="100" style="overflow: hidden">
+                <br>
+                <div layout-gt-sm="row" class="filter-bar">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Search by Title</label>
+                        <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
+                    </md-input-container>
 
-        <md-table-toolbar>
-                <div layout="row">
-                    <md-content flex-gt-md="65" flex="100" style="overflow: hidden">
-                        <br>
-                        <div layout-gt-sm="row" class="filter-bar">
-                            <md-input-container class="md-block" flex-gt-xs>
-                                <label>Search by Title</label>
-                                <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
-                            </md-input-container>
-                    
-                               <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
-                                </md-datepicker>
-                                <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
-                                </md-datepicker>
-                            </div>
-                        </md-content>
-                    </div>
-                            </md-table-toolbar>
-                             <md-table-container>
+                    <md-datepicker ng-model="query.startDate" ng-change="onQueryChange()" md-placeholder="Start Date" flex-gt-xs>
+                    </md-datepicker>
+                    <md-datepicker ng-model="query.endDate" ng-change="onQueryChange()" md-placeholder="End Date" flex-gt-xs>
+                    </md-datepicker>
+                </div>
+            </md-content>
+        </div>
+    </md-table-toolbar>
+    <md-table-container>
         <table md-table md-progress="promise">
-                <table md-table md-progress="promise">
-                        <thead md-head>
-                            <tr md-row>
-                            
-                                <th md-column ng-click="sortData('name')">
-                                    Title
+            <table md-table md-progress="promise">
+                <thead md-head>
+                    <tr md-row>
+
+                        <th md-column ng-click="sortData('name')">
+                            Title
                             <ng-md-icon ng-hide="sortColumn!='name'" icon="{{getSortClass('name')}}"></ng-md-icon>
-                                    
-                                
-                                </th> 
-                                <th md-column ng-click="sortData('startPeriod')"> 
-                                    Period
+                        </th>
+                        <th md-column ng-click="sortData('startPeriod')">
+                            Period
 
                             <ng-md-icon ng-hide="sortColumn!='startPeriod'" icon="{{getSortClass('startPeriod')}}"></ng-md-icon>
-                                        
-
-                                </th>
-                                <th name="Actions">
-                            </tr>
-                        </thead>
-            <tbody md-body>
-                <tr md-row ng-repeat="story in stories | orderBy:sortColumn:reverseSort">
-                    <td md-cell>{{:: story.name }}</td>
-
-                    <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
-                    <td md-cell>
-                        <md-menu>
-                            <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
-                                <ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
-                                </ng-md-icon>
-                            </md-button>
-                            <md-menu-content width="3">
-
-                                <md-menu-item>
-                                    <md-button aria-label="Edit story" ng-click="onEditStory($event, story)">
-                                        Edit
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button aria-label="Delete story" ng-click="onDestroyStory($event, story)">
-                                        Delete
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </th>
+                        <th name="Actions">
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="story in stories | orderBy:sortColumn:reverseSort">
+                        <td md-cell>{{:: story.name }}</td>
+                        <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
+                        <td md-cell>
+                            <md-menu>
+                                <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                                    <ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
+                                    </ng-md-icon>
+                                </md-button>
+                                <md-menu-content width="3">
+                                    <md-menu-item>
+                                        <md-button aria-label="Edit story" ng-click="onEditStory($event, story)">
+                                            Edit
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="Delete story" ng-click="onDestroyStory($event, story)">
+                                            Delete
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
     </md-table-container>
     <md-table-pagination md-options="rowOptions" md-limit="query.limit" md-page="query.page" md-total="{{query.total}}" md-on-paginate="onPaginationChange">
     </md-table-pagination>

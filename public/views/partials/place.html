@@ -22,8 +22,6 @@
 						  </md-datepicker>
 					 </md-input-container> -->
 
-
-
 				<md-input-container>
 					<label>Add object category</label>
 					<md-select ng-model="place.category" ng-model-options="{trackBy: '$value.id'}">
@@ -61,7 +59,6 @@
 						<div ng-message="maxlength">Description RU too large</div>
 					</div>
 				</md-input-container>
-
 				<md-input-container class="md-block">
 					<label>Description: RO</label>
 					<textarea name="description_ro" ng-maxlength="600" ng-model="place.description_ro" columns="2" md-maxlength="600">
@@ -71,7 +68,6 @@
 						<div ng-message="maxlength">Description RO too large</div>
 					</div>
 				</md-input-container>
-
 				<md-input-container class="md-block">
 					<label>Description: EN</label>
 					<textarea name="description_en" ng-maxlength="600" ng-model="place.description_en" columns="2" md-maxlength="600">
@@ -154,9 +150,7 @@
 				<div layout="row" layout-align="start center">
 					<md-input-container md-no-float>
 						<label>Upload Audio: RU</label>
-
 						<input type="text" ng-model="audioFilename.ru" disabled>
-
 					</md-input-container>
 					<ng-md-icon icon="headset" class="photo-camera" ng-class="{ 'photo-active': place.audio_ru.url() }" ngf-select="uploadAudio($file, $invalidFile,'ru')"
 					 ngf-max-size="50MB" ngf-pattern="'audio/*'" accept="audio/*">

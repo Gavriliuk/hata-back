@@ -14,26 +14,26 @@
                 <md-input-container class="md-block">
                     <table md-table md-progress="promise">
                         <thead md-head>
-                        <tr md-row class="categRelationStory">
-                            <th md-column>Name</th>
-                            <th md-column>Route</th>
-                            <th md-column>Period</th>
-                            <th name="Actions">
-                        </tr>
+                            <tr md-row class="categRelationStory">
+                                <th md-column>Name</th>
+                                <th md-column>Route</th>
+                                <th md-column>Period</th>
+                                <th name="Actions">
+                            </tr>
                         </thead>
                         <tbody md-body>
-                        <tr md-row ng-repeat="story in storiesAll">
+                            <tr md-row ng-repeat="story in storiesAll">
 
-                          <td md-cell>{{:: story.name }}</td>
-                            <td md-cell>{{:: story.route.get('title_ru') }}</td>
-                          <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
-                          <td md-cell>
-                                <md-checkbox class="md-secondary" ng-model="story.selected"></md-checkbox>
-                            </td>
-                        </tr>
+                                <td md-cell>{{:: story.name }}</td>
+                                <td md-cell>{{:: story.route.get('title_ru') }}</td>
+                                <td md-cell>{{:: story.startPeriod | date:'y'}} - {{:: story.endPeriod | date:'y'}}</td>
+                                <td md-cell>
+                                    <md-checkbox class="md-secondary" ng-model="story.selected"></md-checkbox>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    </md-input-container>
+                </md-input-container>
             </md-content>
         </md-dialog-content>
 
@@ -42,9 +42,7 @@
             <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
                 Cancel
             </md-button>
-            <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating"
-                       ng-disabled="isSavingRoute"
-                       ng-click="addStoryInRoute(form.$valid)">
+            <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingRoute" ng-click="addStoryInRoute(form.$valid)">
                 {{ !isSavingRoute ? 'Save' : 'Saving...' }}
             </md-button>
         </md-dialog-actions>

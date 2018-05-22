@@ -1,12 +1,8 @@
 angular.module('nearPlaceApp')
   .factory('User', function ($q) {
-
     var User = Parse.User.extend({}, {
-
       all: function (params) {
-
         var defer = $q.defer();
-
         Parse.Cloud.run('getUsers', params, {
           success: function (users) {
             defer.resolve(users);
@@ -15,35 +11,22 @@ angular.module('nearPlaceApp')
             defer.reject(error);
           }
         });
-
         return defer.promise;
       },
-
-
       create: function (data) {
-
-
         var defer = $q.defer();
-
         Parse.Cloud.run('createUser', data, {
-
-
           success: function (result) {
             defer.resolve(result);
           },
           error: function (error) {
             defer.reject(error);
           }
-
         });
-
         return defer.promise;
-
       },
 
-
       update: function (user) {
-
         var data = {
           'id': user.id,
           'name': user.name,
@@ -56,8 +39,6 @@ angular.module('nearPlaceApp')
         }
 
         var defer = $q.defer();
-
-
         Parse.Cloud.run('updateUser', data, {
           success: function (result) {
             defer.resolve(result);
@@ -66,14 +47,11 @@ angular.module('nearPlaceApp')
             defer.reject(error);
           }
         });
-
         return defer.promise;
       },
 
       delete: function (data) {
-
         var defer = $q.defer();
-
         Parse.Cloud.run('destroyUser', data, {
           success: function (response) {
             defer.resolve(response);
@@ -82,22 +60,18 @@ angular.module('nearPlaceApp')
             defer.reject(error);
           }
         });
-
         return defer.promise;
       },
 
       fetch: function () {
         var defer = $q.defer();
-
         Parse.User.current().fetch().then(function (user) {
           defer.resolve(user);
         }, function (error) {
           defer.reject(error);
         });
-
         return defer.promise;
       }
-
     });
 
     Object.defineProperty(User.prototype, 'name', {
@@ -145,7 +119,6 @@ angular.module('nearPlaceApp')
       }
     });
 
-
     Object.defineProperty(User.prototype, 'route', {
       get: function () {
         return this.get('route');
@@ -155,9 +128,6 @@ angular.module('nearPlaceApp')
       }
     });
 
-
-
-
     Object.defineProperty(User.prototype, 'roleName', {
       get: function () {
         return this.get('roleName');
@@ -166,7 +136,5 @@ angular.module('nearPlaceApp')
         this.set('roleName', val);
       }
     });
-
     return User;
-
   });

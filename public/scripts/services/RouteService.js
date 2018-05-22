@@ -3,12 +3,9 @@ angular.module('nearPlaceApp')
     .factory('Route', function ($q) {
 
         var Route = Parse.Object.extend('Route', {}, {
-
             create: function (route) {
-
                 var defer = $q.defer();
                 var objRoute = new Route();
-
                 objRoute.save(route, {
                     success: function (obj) {
                         defer.resolve(obj);
@@ -16,14 +13,11 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
             },
 
             update: function (route) {
-
                 var defer = $q.defer();
-
                 route.save(null, {
                     success: function (obj) {
                         defer.resolve(obj);
@@ -31,7 +25,6 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
             },
             save: function (route) {
@@ -51,7 +44,6 @@ angular.module('nearPlaceApp')
                         delete route.stories[i];
                     }
                 }
-
                 route.save(null, {
                     success: function (obj) {
                         defer.resolve(obj);
@@ -61,10 +53,8 @@ angular.module('nearPlaceApp')
                 });
                 return defer.promise;
             },
-
             get: function (routeId) {
                 var defer = $q.defer();
-
                 var route = new Route();
                 var query = new Parse.Query(route);
                 query.get(routeId, {
@@ -74,13 +64,11 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
             },
 
             find: function (places) {
                 var defer = $q.defer();
-
                 places.find({
                     success: function (obj) {
                         defer.resolve(obj);
@@ -88,16 +76,14 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
+
                 return defer.promise;
             },
-
             destroy: function (routeId) {
 
                 var defer = $q.defer();
-
                 var route = new Route();
                 route.id = routeId;
-
                 route.destroy({
                     success: function (obj) {
                         defer.resolve(obj);
@@ -105,7 +91,6 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
             },
 
@@ -117,7 +102,6 @@ angular.module('nearPlaceApp')
                 var query = relation.query();
                 query.find({
                     success: function (follower) {
-
                         for (var i = 0; i < follower.length; i++) {
                             if (follower[i].id === place.id) {
                                 relation.remove(follower[i]);
@@ -131,7 +115,6 @@ angular.module('nearPlaceApp')
                 });
                 return defer.promise;
             },
-
             removeStory: function (storyObj) {
                 var defer = $q.defer();
                 var route = storyObj.route;
@@ -140,7 +123,6 @@ angular.module('nearPlaceApp')
                 var query = relation.query();
                 query.find({
                     success: function (follower) {
-
                         for (var i = 0; i < follower.length; i++) {
                             if (follower[i].id === story.id) {
                                 relation.remove(follower[i]);
@@ -148,7 +130,6 @@ angular.module('nearPlaceApp')
                             }
                         }
                         defer.resolve(follower);
-
                     },
                     error: function (follower, error) {
                         defer.reject(error);
@@ -156,15 +137,11 @@ angular.module('nearPlaceApp')
                 });
                 return defer.promise;
             },
-
-
             destroy: function (routeId) {
 
                 var defer = $q.defer();
-
                 var route = new Route();
                 route.id = routeId;
-
                 route.destroy({
                     success: function (obj) {
                         defer.resolve(obj);
@@ -172,20 +149,17 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
             },
 
             count: function (params) {
 
                 var defer = $q.defer();
-
                 var query = new Parse.Query(this);
 
                 if (params.filter != '') {
                     query.contains('canonical', params.filter);
                 }
-
                 query.count({
                     success: function (count) {
                         defer.resolve(count);
@@ -194,21 +168,33 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
+            },
 
+            getByIds: function (ids) {
+
+                var defer = $q.defer();
+                var query = new Parse.Query(this);
+
+                query.containedIn('objectId', ids);
+                query.find({
+                    success: function (routes) {
+                        defer.resolve(routes);
+                    }, error: function (error) {
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
             },
 
             all: function (params) {
 
                 var defer = $q.defer();
-
                 var query = new Parse.Query(this);
 
                 if (params.filter && params.filter != '') {
                     query.contains('canonical', params.filter);
                 }
-
                 if (params.order === 'order') {
                     query.ascending('order');
                 } else if (params.order === '-order') {
@@ -216,7 +202,6 @@ angular.module('nearPlaceApp')
                 } else {
                     query.ascending('order');
                 }
-
                 params.limit && query.limit(params.limit);
                 params.page && query.skip((params.page * params.limit) - params.limit);
                 query.find({
@@ -226,232 +211,194 @@ angular.module('nearPlaceApp')
                         defer.reject(error);
                     }
                 });
-
                 return defer.promise;
-
             },
-
         });
 
-        Object.defineProperty(Route.prototype, 'placesRelation',
-            {
-                get: function () {
-                    return this.get('placesRelation');
-                },
-                set: function (val) {
-                    this.set('placesRelation', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'placesRelation', {
+            get: function () {
+                return this.get('placesRelation');
+            },
+            set: function (val) {
+                this.set('placesRelation', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'storiesRelation',
-            {
-                get: function () {
-                    return this.get('storiesRelation');
-                },
-                set: function (val) {
-                    this.set('storiesRelation', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'storiesRelation', {
+            get: function () {
+                return this.get('storiesRelation');
+            },
+            set: function (val) {
+                this.set('storiesRelation', val);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'playModes', {
+            get: function () {
+                return this.get('playModes');
+            },
+            set: function (val) {
+                this.set('playModes', val);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'defaultPlayMode', {
+            get: function () {
+                return this.get('defaultPlayMode');
+            },
+            set: function (val) {
+                this.set('defaultPlayMode', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'playModes',
-            {
-                get: function () {
-                    return this.get('playModes');
-                },
-                set: function (val) {
-                    this.set('playModes', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'title_ru', {
+            get: function () {
+                return this.get('title_ru');
+            },
+            set: function (val) {
+                this.set('title_ru', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'defaultPlayMode',
-            {
-                get: function () {
-                    return this.get('defaultPlayMode');
-                },
-                set: function (val) {
-                    this.set('defaultPlayMode', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'title_ro', {
+            get: function () {
+                return this.get('title_ro');
+            },
+            set: function (val) {
+                this.set('title_ro', val);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'title_en', {
+            get: function () {
+                return this.get('title_en');
+            },
+            set: function (val) {
+                this.set('title_en', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'title_ru',
-            {
-                get: function () {
-                    return this.get('title_ru');
-                },
-                set: function (val) {
-                    this.set('title_ru', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'information_ru', {
+            get: function () {
+                return this.get('information_ru');
+            },
+            set: function (val) {
+                this.set('information_ru', val);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'information_ro', {
+            get: function () {
+                return this.get('information_ro');
+            },
+            set: function (val) {
+                this.set('information_ro', val);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'information_en', {
+            get: function () {
+                return this.get('information_en');
+            },
+            set: function (val) {
+                this.set('information_en', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'title_ro',
-            {
-                get: function () {
-                    return this.get('title_ro');
-                },
-                set: function (val) {
-                    this.set('title_ro', val);
-                }
-            });
-        Object.defineProperty(Route.prototype, 'title_en',
-            {
-                get: function () {
-                    return this.get('title_en');
-                },
-                set: function (val) {
-                    this.set('title_en', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'start_route', {
+            get: function () {
+                return this.get('start_route');
+            },
+            set: function (val) {
+                this.set('start_route', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'information_ru',
-            {
-                get: function () {
-                    return this.get('information_ru');
-                },
-                set: function (val) {
-                    this.set('information_ru', val);
-                }
-            });
-        Object.defineProperty(Route.prototype, 'information_ro',
-            {
-                get: function () {
-                    return this.get('information_ro');
-                },
-                set: function (val) {
-                    this.set('information_ro', val);
-                }
-            });
-        Object.defineProperty(Route.prototype, 'information_en',
-            {
-                get: function () {
-                    return this.get('information_en');
-                },
-                set: function (val) {
-                    this.set('information_en', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'waypoints', {
+            get: function () {
+                return this.get('waypoints');
+            },
+            set: function (val) {
+                this.set('waypoints', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'start_route',
-            {
-                get: function () {
-                    return this.get('start_route');
-                },
-                set: function (val) {
-                    this.set('start_route', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'end_route', {
+            get: function () {
+                return this.get('end_route');
+            },
+            set: function (val) {
+                this.set('end_route', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'waypoints',
-            {
-                get: function () {
-                    return this.get('waypoints');
-                },
-                set: function (val) {
-                    this.set('waypoints', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'center_map', {
+            get: function () {
+                return this.get('center_map');
+            },
+            set: function (val) {
+                this.set('center_map', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'end_route',
-            {
-                get: function () {
-                    return this.get('end_route');
-                },
-                set: function (val) {
-                    this.set('end_route', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'image', {
+            get: function () {
+                return this.get('image');
+            },
+            set: function (val) {
+                this.set('image', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'center_map',
-            {
-                get: function () {
-                    return this.get('center_map');
-                },
-                set: function (val) {
-                    this.set('center_map', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'imageThumb', {
+            get: function () {
+                return this.get('imageThumb');
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'image',
-            {
-                get: function () {
-                    return this.get('image');
-                },
-                set: function (val) {
-                    this.set('image', val);
-                }
-            });
+        Object.defineProperty(Route.prototype, 'deletedimage', {
+            get: function () {
+                return this.get('deletedimage');
+            },
+            set: function (value) {
+                this.set('deletedimage', value);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'deletedicon', {
+            get: function () {
+                return this.get('deletedicon');
+            },
+            set: function (value) {
+                this.set('deletedicon', value);
+            }
+        });
 
+        Object.defineProperty(Route.prototype, 'icon', {
+            get: function () {
+                return this.get('icon');
+            },
+            set: function (val) {
+                this.set('icon', val);
+            }
+        });
 
-        Object.defineProperty(Route.prototype, 'imageThumb',
-            {
-                get: function () {
-                    return this.get('imageThumb');
-                }
-            });
+        Object.defineProperty(Route.prototype, 'order', {
+            get: function () {
+                return this.get('order');
+            },
+            set: function (val) {
+                this.set('order', val);
+            }
+        });
 
-        //Schimbari//
-        Object.defineProperty(Route.prototype, 'deletedimage',
-            {
-                get: function () {
-                    return this.get('deletedimage');
-                },
-                set: function (value) {
-                    this.set('deletedimage', value);
-                }
-            });
-
-        //Schimbari//
-
-
-
-        //Schimbari//
-        Object.defineProperty(Route.prototype, 'deletedicon',
-            {
-                get: function () {
-                    return this.get('deletedicon');
-                },
-                set: function (value) {
-                    this.set('deletedicon', value);
-                }
-            });
-
-        //Schimbari//
-
-
-        Object.defineProperty(Route.prototype, 'icon',
-            {
-                get: function () {
-                    return this.get('icon');
-                },
-                set: function (val) {
-                    this.set('icon', val);
-                }
-            });
-
-        Object.defineProperty(Route.prototype, 'order',
-            {
-                get: function () {
-                    return this.get('order');
-                },
-                set: function (val) {
-                    this.set('order', val);
-                }
-            });
-        Object.defineProperty(Route.prototype, 'periods',
-            {
-                get: function () {
-                    return this.get('periods');
-                },
-                set: function (val) {
-                    this.set('periods', val);
-                }
-            });
-
+        Object.defineProperty(Route.prototype, 'periods', {
+            get: function () {
+                return this.get('periods');
+            },
+            set: function (val) {
+                this.set('periods', val);
+            }
+        });
         return Route;
-
     });

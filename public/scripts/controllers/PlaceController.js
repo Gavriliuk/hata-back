@@ -1,10 +1,7 @@
 'use strict';
-
 angular.module('nearPlaceApp')
   .controller('PlaceCtrl',
     function ($scope, $mdDialog, $mdToast, Place, Route, Auth) {
-
-      // Pagination options
       $scope.rowOptions = [10, 20, 40];
 
       $scope.query = {
@@ -20,26 +17,20 @@ angular.module('nearPlaceApp')
       };
 
       $scope.places = [];
-
-
-      //Order by//
-
       $scope.sortColumn = "title_ru";
       $scope.reverseSort = false;
 
       $scope.sortData = function (column) {
         $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
         $scope.sortColumn = column;
+      };
 
-      }
       $scope.getSortClass = function (column) {
         if ($scope.sortColumn == column) {
           return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
         }
         return '';
       };
-
-      //Order by//
 
       var showSimpleToast = function (message) {
         $mdToast.show(
@@ -58,8 +49,6 @@ angular.module('nearPlaceApp')
         });
       };
 
-
-
       loadPlaces();
 
       var loadCount = function () {
@@ -68,7 +57,7 @@ angular.module('nearPlaceApp')
             $scope.query.total = total;
           });
         });
-      }
+      };
 
       loadCount();
 
@@ -77,10 +66,9 @@ angular.module('nearPlaceApp')
         $scope.query.total = 0;
         loadPlaces();
         loadCount();
-      }
+      };
 
       $scope.onCreatePlace = function (ev) {
-
         $mdDialog.show({
           controller: 'DialogPlaceController',
           templateUrl: '/views/partials/place.html',
@@ -112,7 +100,6 @@ angular.module('nearPlaceApp')
       }
 
       $scope.onUpdateExpiresAt = function (ev, place) {
-
         $mdDialog.show({
           controller: 'DialogPlaceExpiresAtController',
           templateUrl: '/views/partials/expiration-modal.html',
@@ -123,13 +110,10 @@ angular.module('nearPlaceApp')
             place: place
           }
         });
-
-      }
+      };
 
       $scope.onUpdatePlace = function (ev, place) {
-
         var objPlace = angular.copy(place);
-
         $mdDialog.show({
           controller: 'DialogPlaceController',
           templateUrl: '/views/partials/place.html',
@@ -138,12 +122,11 @@ angular.module('nearPlaceApp')
           locals: {
             place: objPlace
           },
-          clickOutsideToClose: true
+          clickOutsideToClose: true,
         });
       };
 
       $scope.onDestroyPlace = function (ev, place) {
-
         var confirm = $mdDialog.confirm()
           .title('Confirm action')
           .content('Are you sure you want to delete this place?')
@@ -152,7 +135,6 @@ angular.module('nearPlaceApp')
           .targetEvent(ev);
 
         $mdDialog.show(confirm).then(function () {
-
           Place.destroy(place).then(function (success) {
             showSimpleToast('Place deleted.');
             loadPlaces();
@@ -161,41 +143,31 @@ angular.module('nearPlaceApp')
             function (error) {
               showSimpleToast(error.message);
             });
-
         });
       };
 
       $scope.onUpdateIsApproved = function (place, isApproved) {
-
         place.isApproved = isApproved;
         place.unset('expiresAt');
-
         Place.update(place).then(function (success) {
           showSimpleToast('Place updated');
         }, function (error) {
           showSimpleToast('There was an error');
         });
-
       };
-
-
     }).controller('DialogPlaceController', function ($scope, $mdDialog, $mdToast, Place, Category, Route, File, NgMap, GeoCoder, place) {
-
       var marker, map;
-
       var loadCategories = function () {
         $scope.promise = Category.all({}).then(function (categories) {
           $scope.categories = categories;
-
         });
       };
+
       loadCategories();
 
       $scope.routes = [];
-
       $scope.isCreating = false;
       $scope.isUploading = false;
-
       $scope.place = {};
       $scope.place.images = [];
       $scope.place.website = 'http://';
@@ -203,7 +175,6 @@ angular.module('nearPlaceApp')
       $scope.input = {};
       $scope.searchAddress = "Chisinau";
       $scope.isImageUploading = false;
-
       $scope.audioFilename = {};
       $scope.isAudioUploading = {
         ro: false,
@@ -216,40 +187,25 @@ angular.module('nearPlaceApp')
 
 
       if (place) {
-
         $scope.isCreating = false;
         $scope.place = place;
-
         $scope.input.latitude = $scope.place.location.latitude,
-          $scope.input.longitude = $scope.place.location.longitude
-
+        $scope.input.longitude = $scope.place.location.longitude
         $scope.imageFilenames = place.images.map(function (image) {
           return image.name();
         });
-
         if (place.audio_ru) {
           $scope.audioFilename.ru = place.audio_ru.name();
-
-
         }
         if (place.audio_ro) {
           $scope.audioFilename.ro = place.audio_ro.name();
-
         }
-
         if (place.audio_en) {
           $scope.audioFilename.en = place.audio_en.name();
-
         }
-
-
       } else {
-
         $scope.isCreating = true;
-
       }
-
-
 
       Route.all({
         page: 1,
@@ -269,20 +225,13 @@ angular.module('nearPlaceApp')
         );
       };
 
-      //audio//
-
-
-
-
       $scope.uploadAudio = function (file, invalidFile, lang) {
 
         if (file) {
-
           $scope.isAudioUploading[lang] = true;
           $scope.audioFilename[lang] = file.name;
 
           File.uploadAudio(file).then(function (savedFile) {
-
             $scope.place['audio_' + lang] = savedFile;
             $scope.isAudioUploading[lang] = false;
             showSimpleToast('Audio uploaded');
@@ -304,17 +253,12 @@ angular.module('nearPlaceApp')
         GeoCoder.geocode({
           address: $scope.searchAddress
         }).then(function (result) {
-
           if (map) {
-
             var location = result[0].geometry.location;
             location = new google.maps.LatLng(location.lat(), location.lng());
-
             map.setCenter(location);
             map.setZoom(15);
-
             marker.setPosition(location);
-
             $scope.input.latitude = location.lat();
             $scope.input.longitude = location.lng();
           }
@@ -322,19 +266,15 @@ angular.module('nearPlaceApp')
       };
 
       NgMap.getMap().then(function (objMap) {
-
         map = objMap;
         marker = map.markers[0];
-
         // Fix gray area in second render
         google.maps.event.trigger(map, 'resize');
 
         if (place) {
-
           var placeLocation = new google.maps.LatLng(
             place.location.latitude,
             place.location.longitude);
-
           map.setCenter(placeLocation)
           marker.setPosition(placeLocation);
           map.setZoom(15);
@@ -362,7 +302,6 @@ angular.module('nearPlaceApp')
       $scope.onInputLocationChanged = function () {
 
         if ($scope.input.latitude && $scope.input.longitude && map) {
-
           $scope.place.location = new Parse.GeoPoint({
             latitude: $scope.input.latitude,
             longitude: $scope.input.longitude
@@ -385,12 +324,10 @@ angular.module('nearPlaceApp')
       $scope.uploadImageFile = function (file, invalidFile) {
 
         if (file) {
-
           $scope.isImageUploading = true;
           $scope.imageFilenames = file.name;
 
           File.upload(file).then(function (savedFile) {
-
             $scope.place.images.push(savedFile);
             $scope.isImageUploading = false;
             showSimpleToast('Image uploaded');
@@ -426,7 +363,6 @@ angular.module('nearPlaceApp')
         } else if (!$scope.place.location) {
           showSimpleToast('Ubication is required');
         } else {
-
           Place.create($scope.place).then(function (success) {
             showSimpleToast('Place saved');
             $mdDialog.hide();
@@ -443,42 +379,30 @@ angular.module('nearPlaceApp')
         $scope.isSavingPlace = true;
         for (var i = 0; i < $scope.place.images.length; i++) {
           if ($scope.place.images[i].$$hashKey === ev.$$hashKey) {
-
-
-
             $scope.place.images.splice(i, 1);
-
             showSimpleToast('Image deleted.');
             $scope.isSavingPlace = false;
-
-
             $scope.imageFilenames = $scope.place.images.map(function (image) {
               return image.name();
             });
-
           }
         }
       };
 
 
       $scope.onDeleteAudio = function (lang) {
-
         $scope.isSavingPlace = true;
         $scope.place['audio_' + lang] = null;
-
         $scope.audioFilename[lang] = null;
-
 
         showSimpleToast('Audio deleted.');
         $scope.isSavingPlace = false;
       };
 
-
       $scope.onUpdatePlace = function (isFormValid) {
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-
           $scope.isSavingPlace = true;
 
           Place.update($scope.place).then(function (place) {
@@ -490,16 +414,13 @@ angular.module('nearPlaceApp')
               showSimpleToast('Error. Place not updated.', error.message);
               $scope.isSavingPlace = false;
             });
-
         }
       };
-
     }).controller('DialogPlaceExpiresAtController',
       function ($scope, $mdDialog, $mdToast, Place, place) {
 
         $scope.place = place;
         $scope.formData = {};
-
 
         var showToast = function (message) {
           $mdToast.show(
@@ -512,16 +433,14 @@ angular.module('nearPlaceApp')
 
         $scope.isDayInvalid = function () {
           var days = $scope.formData.days;
-
           if (days) {
             days = parseInt(days, 10);
             return days < 1;
           }
           return true;
-        }
+        };
 
         $scope.onUpdateExpiresAt = function () {
-
           var expiresAt = moment().add($scope.formData.days, 'days').toDate();
           place.expiresAt = expiresAt;
           place.isApproved = true;
@@ -537,7 +456,7 @@ angular.module('nearPlaceApp')
               $scope.isSavingExpiresAt = false;
               showToast('There was an error');
             });
-        }
+        };
 
         $scope.hide = function () {
           $mdDialog.hide();
@@ -559,7 +478,6 @@ angular.module('nearPlaceApp')
               }
               return undefined;
             }
-
             ngModelCtrl.$parsers.push(fromUser);
           }
         };

@@ -1,38 +1,27 @@
 'use strict';
-
 angular.module('nearPlaceApp')
 	.controller('RoutesCtrl', function ($scope, $mdDialog, Route, Place, Auth) {
-		// Pagination options.
 		$scope.rowOptions = [10, 20, 40];
-
 		$scope.query = {
 			filter: '',
 			limit: 40,
 			page: 1,
 			total: 0
 		};
-
 		$scope.routes = [];
+		$scope.sortColumn = "title_ru";
+		$scope.reverseSort = false;
+		$scope.sortData = function (column) {
+			$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+			$scope.sortColumn = column;
+		};
 
-
-		//Order by//
-
-$scope.sortColumn = "title_ru";
-$scope.reverseSort = false;
-
-$scope.sortData = function(column){
-$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
-$scope.sortColumn = column;
-
-}
-$scope.getSortClass = function(column){
-    if ($scope.sortColumn == column){
-        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-    }
-    return '';
-};
-//Order by //
-
+		$scope.getSortClass = function (column) {
+			if ($scope.sortColumn == column) {
+				return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+			}
+			return '';
+		};
 
 		var loadRoutes = function () {
 			Auth.ensureLoggedIn().then(function () {
@@ -40,7 +29,7 @@ $scope.getSortClass = function(column){
 					$scope.routes = routes;
 				});
 			});
-		}
+		};
 
 		loadRoutes();
 
@@ -50,7 +39,7 @@ $scope.getSortClass = function(column){
 					$scope.query.total = total;
 				});
 			});
-		}
+		};
 
 		loadCount();
 
@@ -72,7 +61,6 @@ $scope.getSortClass = function(column){
 		};
 
 		$scope.onNewRoute = function (ev) {
-
 			$mdDialog.show({
 				controller: 'DialogRouteController',
 				templateUrl: '/views/partials/route.html',
@@ -90,7 +78,6 @@ $scope.getSortClass = function(column){
 		};
 
 		$scope.onEditRoute = function (ev, route) {
-
 			$mdDialog.show({
 				controller: 'DialogRouteController',
 				templateUrl: '/views/partials/route.html',
@@ -107,7 +94,6 @@ $scope.getSortClass = function(column){
 		};
 
 		$scope.onDestroyRoute = function (ev, route) {
-
 			var confirm = $mdDialog.confirm()
 				.title('Confirm action')
 				.content('Are you sure you want to delete this route? Places of this route will be deleted.')
@@ -116,7 +102,6 @@ $scope.getSortClass = function(column){
 				.targetEvent(ev);
 
 			$mdDialog.show(confirm).then(function () {
-
 				Route.destroy(route.id).then(function (success) {
 					loadRoutes();
 					loadCount();
@@ -126,49 +111,34 @@ $scope.getSortClass = function(column){
 
 			});
 		};
-	})
-
-	.controller('DialogRouteController',
+	}).controller('DialogRouteController',
 		function ($scope, $mdDialog, $mdToast, Route, Place, File, route) {
 			$scope.placesAll = [];
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
 			$scope.objRoute.periods = [];
-		
-         
-
 			$scope.isCreating = false;
 			$scope.isUploading = false;
 			$scope.isUploadingIcon = false;
 			$scope.imageFilename = '';
 			$scope.iconFilename = '';
-
-
-			$scope.playModes = [{label:'Poi Only',value:"poiOnly"} ,{label:'Story Only',value:"storyOnly"} ,{label:'Story Poi',value:"storyPoi"}];
+			$scope.playModes = [{ label: 'Poi Only', value: "poiOnly" }, { label: 'Story Only', value: "storyOnly" }, { label: 'Story Poi', value: "storyPoi" }];
 
 			if (route) {
-
 				$scope.isCreating = false;
-				
-
-			
-				$scope.iconFilename = route.icon ? route.icon.name():"";
-				
-				if(route.image){
-
-					$scope.imageFilename = route.image ? route.image.name():"";
+				$scope.iconFilename = route.icon ? route.icon.name() : "";
+				if (route.image) {
+					$scope.imageFilename = route.image ? route.image.name() : "";
 				}
-
 				$scope.objRoute = route;
-
 				if (!$scope.objRoute.periods) {
 					$scope.objRoute.periods = [];
 				}
 
 			} else {
 				$scope.isCreating = true;
-				
 			}
+
 			Place.all({ page: 1, limit: 1000, filter: '' })
 				.then(function (places) {
 					$scope.placesAll = places;
@@ -219,8 +189,6 @@ $scope.getSortClass = function(column){
 				$scope.isSavingRoute = true;
 				$scope.objRoute.image = null;
 				$scope.imageFilename = null;
-
-
 				showToast('Image deleted.');
 				$scope.isSavingRoute = false;
 			};
@@ -229,7 +197,6 @@ $scope.getSortClass = function(column){
 				$scope.isSavingRoute = true;
 				$scope.objRoute.icon = null;
 				$scope.iconFilename = null;
-
 
 				showToast('Icon deleted.');
 				$scope.isSavingRoute = false;
@@ -270,7 +237,6 @@ $scope.getSortClass = function(column){
 				} else if (!$scope.objRoute.image) {
 					showToast('Upload an image');
 				} else {
-
 					$scope.isSavingRoute = true;
 
 					Route.create($scope.objRoute).then(function (route) {
@@ -282,10 +248,7 @@ $scope.getSortClass = function(column){
 						$scope.isSavingRoute = false;
 					});
 				}
-
 			};
-
-
 
 			$scope.onUpdateRoute = function (isFormValid) {
 
@@ -294,11 +257,7 @@ $scope.getSortClass = function(column){
 				} else if (!$scope.objRoute.image) {
 					showToast('Upload an image');
 				} else {
-
 					$scope.isSavingRoute = true;
-
-
-
 
 					Route.update($scope.objRoute).then(function (route) {
 						showToast('Route updated');
@@ -310,5 +269,4 @@ $scope.getSortClass = function(column){
 					});
 				}
 			};
-
 		});

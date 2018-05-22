@@ -1,9 +1,6 @@
 'use strict';
-
 angular.module('nearPlaceApp')
-    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth,) {
-
-        // Pagination options.
+    .controller('StoryCtrl', function ($scope, $mdDialog, Story, Auth, ) {
         $scope.rowOptions = [10, 20, 40];
 
         $scope.query = {
@@ -17,34 +14,26 @@ angular.module('nearPlaceApp')
 
         $scope.stories = [];
 
-
         $scope.onPaginationChange = function (page, limit) {
             $scope.query.page = page;
             $scope.query.limit = limit;
             loadStories();
         };
 
+        $scope.sortColumn = "name";
+        $scope.reverseSort = false;
 
-//Order by//
+        $scope.sortData = function (column) {
+            $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+            $scope.sortColumn = column;
+        };
 
-$scope.sortColumn = "name";
-$scope.reverseSort = false;
-
-$scope.sortData = function(column){
-$scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
-$scope.sortColumn = column;
-
-}
-$scope.getSortClass = function(column){
-    if ($scope.sortColumn == column){
-        return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-    }
-    return '';
-};
-//Order by //
-
-
-
+        $scope.getSortClass = function (column) {
+            if ($scope.sortColumn == column) {
+                return $scope.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+            }
+            return '';
+        };
 
         var loadStories = function () {
             Auth.ensureLoggedIn().then(function () {
@@ -62,7 +51,7 @@ $scope.getSortClass = function(column){
                     $scope.query.total = total;
                 });
             });
-        }
+        };
 
         loadCount();
 
@@ -71,12 +60,9 @@ $scope.getSortClass = function(column){
             $scope.query.total = 0;
             loadStories();
             loadCount();
-        }
-
-
+        };
 
         $scope.onCreateStory = function (ev) {
-
             $mdDialog.show({
                 controller: 'DialogStoryController',
                 templateUrl: '/views/partials/story.html',
@@ -93,14 +79,11 @@ $scope.getSortClass = function(column){
                 });
         };
 
-
         $scope.onPaginationChange = function (page, limit) {
             $scope.query.page = page;
             $scope.query.limit = limit;
             loadStories();
         };
-
-
 
         $scope.openMenu = function ($mdOpenMenu, ev) {
             $mdOpenMenu(ev);
@@ -108,11 +91,9 @@ $scope.getSortClass = function(column){
 
         $scope.isDate = function (date) {
             return angular.isDate(date);
-        }
-
+        };
 
         $scope.onEditStory = function (ev, story) {
-
             $mdDialog.show({
                 controller: 'DialogStoryController',
                 templateUrl: '/views/partials/story.html',
@@ -138,61 +119,44 @@ $scope.getSortClass = function(column){
                 .targetEvent(ev);
 
             $mdDialog.show(confirm).then(function () {
-
                 Story.destroy(story.id).then(function (success) {
                     loadStories();
                     loadCount();
                 }, function (error) {
                     showSimpleToast(error.message);
                 });
-
             });
         };
-
     }).controller('DialogStoryController',
         function ($scope, $mdDialog, $mdToast, Story, File, story) {
             $scope.isCreating = false;
             $scope.isUploading = false;
-
             $scope.audioFilename = {};
             $scope.isAudioUploading = {
                 ru: false,
                 ro: false,
                 en: false
             };
-
             $scope.audioFilename.ru = '';
             $scope.audioFilename.ro = '';
             $scope.audioFilename.en = '';
-
-
             $scope.objStory = {};
 
             if (story) {
-
                 $scope.isCreating = false;
                 $scope.objStory = story;
 
-                if (story.audio_ru){
+                if (story.audio_ru) {
                     $scope.audioFilename.ru = story.audio_ru.name();
-
-
                 }
-            if (story.audio_ro){
-                $scope.audioFilename.ro = story.audio_ro.name();
-
-            }
-
-            if(story.audio_en){
-                $scope.audioFilename.en = story.audio_en.name();
-
-            }
-
-
-         } else {
-
+                if (story.audio_ro) {
+                    $scope.audioFilename.ro = story.audio_ro.name();
+                }
+                if (story.audio_en) {
+                    $scope.audioFilename.en = story.audio_en.name();
+                }
+            } else {
                 $scope.isCreating = true;
-
             }
 
             var showToast = function (message) {
@@ -212,17 +176,12 @@ $scope.getSortClass = function(column){
                 $mdDialog.cancel();
             };
 
-
-
             $scope.uploadAudio = function (file, invalidFile, lang) {
 
                 if (file) {
-
                     $scope.isAudioUploading[lang] = true;
                     $scope.audioFilename[lang] = file.name;
-
                     File.uploadAudio(file).then(function (savedFile) {
-
                         $scope.objStory['audio_' + lang] = savedFile;
                         $scope.isAudioUploading[lang] = false;
                         showToast('Audio uploaded');
@@ -245,13 +204,10 @@ $scope.getSortClass = function(column){
                 if (!isFormValid) {
                     showToast('Please correct all highlighted errors and try again');
                     return;
-
                 } else if (!$scope.objStory.audio_ru) {
                     showToast('Upload an ru audio');
                 } else {
-
                     $scope.isSavingStory = true;
-
                     Story.create($scope.objStory).then(function (story) {
                         showToast('Story saved');
                         $mdDialog.hide();
@@ -261,7 +217,6 @@ $scope.getSortClass = function(column){
                         $scope.isSavingStory = false;
                     });
                 }
-
             };
 
             $scope.onDeleteAudio = function (lang) {
@@ -270,8 +225,6 @@ $scope.getSortClass = function(column){
                 $scope.audioFilename[lang] = null;
                 showToast('Audio deleted.');
                 $scope.isSavingStory = false;
-
-
             };
 
             $scope.onUpdateStory = function (isFormValid) {
@@ -281,7 +234,6 @@ $scope.getSortClass = function(column){
                 } else if (!$scope.objStory.audio_ru) {
                     showToast('Upload an ru audio');
                 } else {
-
                     $scope.isSavingStory = true;
 
                     Story.update($scope.objStory).then(function (story) {
@@ -294,5 +246,4 @@ $scope.getSortClass = function(column){
                     });
                 }
             };
-
         });

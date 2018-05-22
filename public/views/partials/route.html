@@ -16,15 +16,10 @@
         <md-chips ng-model="objRoute.periods" readonly="false" md-removable="true"></md-chips>
         <!-- </md-input-container> -->
 
-
-        <!-- //lucrez// -->
         <md-input-container>
           <label>PlayModes</label>
-
           <md-select ng-model="objRoute.playModes" md-on-close="clearSearchTerm()" multiple=" ">
-
             <md-optgroup label="playModes">
-
               <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>
             </md-optgroup>
           </md-select>
@@ -32,19 +27,12 @@
 
         <md-input-container>
           <label>Default Play Mode</label>
-
           <md-select ng-model="objRoute.defaultPlayMode">
-
             <md-optgroup label="defaultPlayMode">
-
               <md-option ng-value="value.value" ng-repeat="value in playModes">{{value.label}}</md-option>
             </md-optgroup>
           </md-select>
         </md-input-container>
-
-        <!-- //lucre// -->
-
-
 
         <md-input-container>
           <label>Title: RU</label>
@@ -53,6 +41,7 @@
             <div ng-message="required">Title RU required</div>
           </div>
         </md-input-container>
+
         <md-input-container>
           <label>Title: RO</label>
           <input required name="title_ro" ng-model="objRoute.title_ro">
@@ -60,6 +49,7 @@
             <div ng-message="required">Title RO required</div>
           </div>
         </md-input-container>
+
         <md-input-container>
           <label>Title: EN</label>
           <input required name="title_en" ng-model="objRoute.title_en">
@@ -75,6 +65,7 @@
             <div ng-message="required">Information RU required</div>
           </div>
         </md-input-container>
+
         <md-input-container>
           <label>Information: RO</label>
           <input required name="information_ro" ng-model="objRoute.information_ro">
@@ -82,6 +73,7 @@
             <div ng-message="required">Information RO required</div>
           </div>
         </md-input-container>
+
         <md-input-container>
           <label>Information: EN</label>
           <input required name="information_en" ng-model="objRoute.information_en">
@@ -130,7 +122,6 @@
           </div>
         </md-input-container>
 
-
         <div layout="column">
           <md-input-container class="layout-row">
             <div ng-show="objRoute.image">
@@ -139,11 +130,7 @@
             </div>
           </md-input-container>
 
-
-
-
           <div layout="row" layout-align="start center">
-
             <md-input-container md-no-float>
               <label>Upload Image</label>
               <input type="text" ng-model="imageFilename" disabled>
@@ -156,10 +143,7 @@
             </ng-md-icon>
             <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploading">
             </md-progress-circular>
-
           </div>
-
-
 
           <div layout="column">
             <md-input-container class="layout-row">
@@ -168,7 +152,6 @@
                 <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
               </div>
             </md-input-container>
-
 
             <div layout="row" layout-align="start center">
               <md-input-container md-no-float>

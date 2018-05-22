@@ -1,10 +1,7 @@
 'use strict';
-
 angular.module('nearPlaceApp')
   .controller('PromocodeCtrl',
-    function ($scope, $mdDialog, $mdToast, Promocode, Route, Auth) {
-
-      // Pagination options
+    function ($scope, $element, $mdDialog, $mdToast, Promocode, Route, Auth) {
       $scope.rowOptions = [10, 20, 40];
 
       $scope.query = {
@@ -20,18 +17,11 @@ angular.module('nearPlaceApp')
         endDate: null
       };
 
-      $scope.promocodes = [];
-
-
-
       $scope.toggleSelectAll = function (ev) {
         $scope.promocodes.forEach(function (promocode) {
           promocode.selected = ev;
-
         });
       }
-
-
 
       $scope.sortData = function (column) {
         $scope.query.reverseSort = ($scope.query.sortColumn == column) ? !$scope.query.reverseSort : false;
@@ -39,16 +29,13 @@ angular.module('nearPlaceApp')
         loadPromocodes();
         loadCount();
       }
+
       $scope.getSortClass = function (column) {
         if ($scope.query.sortColumn == column) {
           return $scope.query.reverseSort ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
-
         }
-
         return '';
       };
-
-
 
       var showSimpleToast = function (message) {
         $mdToast.show(
@@ -58,7 +45,6 @@ angular.module('nearPlaceApp')
             .hideDelay(3000)
         );
       };
-
 
       var loadPromocodes = function () {
         Auth.ensureLoggedIn().then(function () {
@@ -77,7 +63,6 @@ angular.module('nearPlaceApp')
         Auth.ensureLoggedIn().then(function () {
           Promocode.count($scope.query).then(function (total) {
             $scope.query.total = total;
-
           });
         });
       }
@@ -91,9 +76,7 @@ angular.module('nearPlaceApp')
         loadCount();
       }
 
-
       $scope.onCreatePromocode = function (ev) {
-
         $mdDialog.show({
           controller: 'DialogPromocodeController',
           templateUrl: '/views/partials/promocode.html',
@@ -122,10 +105,9 @@ angular.module('nearPlaceApp')
 
       $scope.isDate = function (date) {
         return angular.isDate(date);
-      }
+      };
 
       $scope.onUpdateExpiresAt = function (ev, promocode) {
-
         $mdDialog.show({
           controller: 'DialogPromocodeExpiresAtController',
           templateUrl: '/views/partials/expiration-modal.html',
@@ -136,13 +118,10 @@ angular.module('nearPlaceApp')
             promocode: promocode
           }
         });
-
-      }
+      };
 
       $scope.onUpdatePromocode = function (ev, promocode) {
-
         var objPromocode = angular.copy(promocode);
-
         $mdDialog.show({
           controller: 'DialogPromocodeController',
           templateUrl: '/views/partials/promocode.html',
@@ -156,7 +135,6 @@ angular.module('nearPlaceApp')
       };
 
       $scope.onDestroyPromocode = function (ev, promocode) {
-
         var confirm = $mdDialog.confirm()
           .title('Confirm action')
           .content('Are you sure you want to delete this promocode?')
@@ -165,7 +143,6 @@ angular.module('nearPlaceApp')
           .targetEvent(ev);
 
         $mdDialog.show(confirm).then(function () {
-
           Promocode.destroy(promocode).then(function (success) {
             showSimpleToast('Promocode deleted.');
             loadPromocodes();
@@ -174,7 +151,6 @@ angular.module('nearPlaceApp')
             function (error) {
               showSimpleToast(error.message);
             });
-
         });
       };
 
@@ -185,62 +161,68 @@ angular.module('nearPlaceApp')
         }
         promocode.isApproved = isApproved;
         promocode.unset('expiresAt');
-
         Promocode.update(promocode).then(function (success) {
           showSimpleToast('Promocode updated');
         }, function (error) {
           showSimpleToast('There was an error');
         });
-
       };
-      $scope.onUpdateIsUsed = function (promocode, isUsed) {
 
+      $scope.onUpdateIsUsed = function (promocode, isUsed) {
         promocode.isUsed = isUsed;
         // promocode.unset('expiresAt');
-
         Promocode.update(promocode).then(function (success) {
           showSimpleToast('Promocode updated');
         }, function (error) {
           showSimpleToast('There was an error');
         });
-
       };
 
       $scope.onDowlandPromocodes = function (ev) {
-   
         var csvContent = '';
         var cvsPromocodesHeader = '';
-        
         var cvsPromocodesValues = '';
-    
-        
-        cvsPromocodesHeader = Promocode.getAllAttributes().join(';')+'\n';
-     
-        $scope.promocodes.forEach(function (promocode, index, infoArray,) {
-   
-          if (promocode.selected) {
-            Promocode.getAllAttributes().forEach(function (key) {
-              cvsPromocodesValues += promocode.attributes[key]+';';
-            });
 
-            cvsPromocodesValues+='\n';
-          }
-          
+
+        cvsPromocodesHeader = Promocode.getAllAttributes().join(';') + '\n';
+
+        Route.all({}).then(function (routes) {
+
+          $scope.promocodes.forEach(function (promocode, index, infoArray, ) {
+            if (promocode.selected) {
+              Promocode.getAllAttributes().forEach(function (attributeName) {
+                if (attributeName == 'route' && promocode.attributes[attributeName]) {
+                  if (promocode.attributes[attributeName][0] != "all") {
+                    cvsPromocodesValues += promocode.attributes[attributeName].map(function (routeId) {
+                      return routes.find(function (value) {
+                        return routeId == value.id;
+                      }).title_ru;
+
+                    }) + ';'
+                  } else {
+                    cvsPromocodesValues += promocode.attributes[attributeName] + ";"
+                  }
+                }
+                else {
+                  cvsPromocodesValues += promocode.attributes[attributeName] + ';';
+                }
+              });
+              cvsPromocodesValues += '\n';
+            }
+          });
+          csvContent += cvsPromocodesHeader + cvsPromocodesValues;
+          downloadFile(csvContent, 'Promocodes.csv');
+
         });
-
-        csvContent+=cvsPromocodesHeader+cvsPromocodesValues;
-
         function downloadFile(content, fileName, strMimeType) {
-
           var D = document;
           var a = D.createElement('a');
           strMimeType = strMimeType || 'application/octet-stream;charset=utf-8';
           var rawFile;
-          if (navigator.msSaveBlob) { // IE10
+          if (navigator.msSaveBlob) {
             return navigator.msSaveBlob(new Blob([content], {
               type: strMimeType
             }), fileName);
-
 
           } if ('download' in a) {
             var blob = new Blob([content], {
@@ -268,15 +250,9 @@ angular.module('nearPlaceApp')
 
           }, 100);
         }
-
-        downloadFile(csvContent, 'PromocodUpload.csv');
       };
 
-
-      // Mistakes
-
       $scope.onDestroyPromocodes = function (ev) {
-
         var confirm = $mdDialog.confirm()
           .title('Confirm action')
           .content('Are you sure you want to delete this promocodes?')
@@ -285,49 +261,39 @@ angular.module('nearPlaceApp')
           .targetEvent(ev);
 
         $mdDialog.show(confirm).then(function () {
-
           var promocodeDeleted = [];
-
           $scope.promocodes.forEach(function (promocodes) {
             if (promocodes.selected) {
-
               promocodeDeleted.push(Promocode.destroy(promocodes));
-
             };
           });
 
           Promise.all(promocodeDeleted).then(function () {
             loadPromocodes();
             loadCount();
-
           })
         });
       };
-
-
     }).controller('DialogPromocodeController', function ($scope, $mdDialog, $mdToast, Promocode, File, promocode, Route) {
 
       var loadRouties = function () {
         $scope.promise = Route.all({}).then(function (routies) {
           $scope.routies = routies;
-          console.log(routies);
+
         });
       };
       loadRouties();
-
       $scope.promocode = {
         prefix: "DMS-",
         charset: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         length: 5
       };
-      $scope.howMany = 1;
 
+      $scope.howMany = 1;
       $scope.isCreating = true;
 
       if (promocode) {
-
         $scope.promocode = promocode;
-
         $scope.isCreating = false;
       }
 
@@ -349,11 +315,9 @@ angular.module('nearPlaceApp')
       };
 
       $scope.onSavePromocode = function (isFormValid) {
-
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-
           if ($scope.howMany > 1) {
             var promises = [];
             var title = $scope.promocode.title;
@@ -387,7 +351,6 @@ angular.module('nearPlaceApp')
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-
           $scope.isSavingPromocode = true;
 
           Promocode.update($scope.promocode).then(function (promocode) {
@@ -399,78 +362,72 @@ angular.module('nearPlaceApp')
               showSimpleToast('Error. Promocode not updated.', error.message);
               $scope.isSavingPromocode = false;
             });
-
         }
       };
 
-    })
-  .controller('DialogPlaceExpiresAtController',
-    function ($scope, $mdDialog, $mdToast, Promocode, promocode) {
+    }).controller('DialogPlaceExpiresAtController',
+      function ($scope, $mdDialog, $mdToast, Promocode, promocode) {
 
-      $scope.promocode = promocode;
-      $scope.formData = {};
-      $scope.promocodesAll = [];
+        $scope.promocode = promocode;
+        $scope.formData = {};
+        $scope.promocodesAll = [];
 
-      var showToast = function (message) {
-        $mdToast.show(
-          $mdToast.simple()
-            .content(message)
-            .action('OK')
-            .hideDelay(3000)
-        );
-      };
+        var showToast = function (message) {
+          $mdToast.show(
+            $mdToast.simple()
+              .content(message)
+              .action('OK')
+              .hideDelay(3000)
+          );
+        };
 
-      $scope.isDayInvalid = function () {
-        var days = $scope.formData.days;
-
-        if (days) {
-          days = parseInt(days, 10);
-          return days < 1;
-        }
-        return true;
-      }
-
-      $scope.onUpdateExpiresAt = function () {
-
-        var expiresAt = moment().add($scope.formData.days, 'days').toDate();
-        promocode.expiresAt = expiresAt;
-        promocode.isApproved = true;
-
-        $scope.isSavingExpiresAt = true;
-
-        Promocode.update(promocode).then(function (success) {
-          $scope.isSavingExpiresAt = false;
-          showToast('Promocode updated');
-          $scope.hide();
-        },
-          function (error) {
-            $scope.isSavingExpiresAt = false;
-            showToast('There was an error');
-          });
-      }
-
-      $scope.hide = function () {
-        $mdDialog.hide();
-      };
-
-    }).directive('numbersOnly', function () {
-      return {
-        require: 'ngModel',
-        link: function (scope, element, attr, ngModelCtrl) {
-          function fromUser(text) {
-            if (text) {
-              var transformedInput = text.repromocode(/[^0-9]/g, '');
-
-              if (transformedInput !== text) {
-                ngModelCtrl.$setViewValue(transformedInput);
-                ngModelCtrl.$render();
-              }
-              return transformedInput;
-            }
-            return undefined;
+        $scope.isDayInvalid = function () {
+          var days = $scope.formData.days;
+          if (days) {
+            days = parseInt(days, 10);
+            return days < 1;
           }
-
-          ngModelCtrl.$parsers.push(fromUser);
+          return true;
         }
-      };
-    });
+
+        $scope.onUpdateExpiresAt = function () {
+          var expiresAt = moment().add($scope.formData.days, 'days').toDate();
+          promocode.expiresAt = expiresAt;
+          promocode.isApproved = true;
+
+          $scope.isSavingExpiresAt = true;
+
+          Promocode.update(promocode).then(function (success) {
+            $scope.isSavingExpiresAt = false;
+            showToast('Promocode updated');
+            $scope.hide();
+          },
+            function (error) {
+              $scope.isSavingExpiresAt = false;
+              showToast('There was an error');
+            });
+        }
+
+        $scope.hide = function () {
+          $mdDialog.hide();
+        };
+
+      }).directive('numbersOnly', function () {
+        return {
+          require: 'ngModel',
+          link: function (scope, element, attr, ngModelCtrl) {
+            function fromUser(text) {
+              if (text) {
+                var transformedInput = text.repromocode(/[^0-9]/g, '');
+                if (transformedInput !== text) {
+                  ngModelCtrl.$setViewValue(transformedInput);
+                  ngModelCtrl.$render();
+                }
+                return transformedInput;
+              }
+              return undefined;
+            }
+            ngModelCtrl.$parsers.push(fromUser);
+          }
+        };
+      });
