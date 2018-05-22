@@ -162,11 +162,11 @@ Parse.Cloud.define('applyPromocode', function (req, res) {
             objPromocode = dbPromocode[0];
             objPromocode.set("deviceId", deviceId);
             objPromocode.set("isUsed", true);
-            response.action = 'ok';
+            response.action = dbPromocode[0].get("route");
             response.payload = objPromocode;
             return objPromocode.save(null, { useMasterKey: true });
         } else {
-            response.action = 'ko';
+            response.action = '[]';
             response.error = 'Promocode Not Found!';
         }
     }).then(function () {
@@ -179,7 +179,6 @@ Parse.Cloud.define('applyPromocode', function (req, res) {
 Parse.Cloud.define('validatePromocode', function (req, res) {
 
     var promocode = req.params.promocode;
-    var routeId = req.params.routeId;
 
     var objPromocode;
     var query = new Parse.Query('Promocode');
@@ -187,11 +186,11 @@ Parse.Cloud.define('validatePromocode', function (req, res) {
     var response = { action: null };
 
     query.find().then(function (dbPromocode) {
-        if (dbPromocode.length && !dbPromocode[0].get("isUsed") && dbPromocode[0].get("isApproved") && dbPromocode[0].get("route").includes(routeId)) {
-            response.action = 'ok';
+        if (dbPromocode.length && !dbPromocode[0].get("isUsed") && dbPromocode[0].get("isApproved")) {
+            response.action = dbPromocode[0].get("route");
             return response;
         } else {
-            response.action = 'ko';
+            response.action = '[]';
             response.error = 'Promocode Not Valid!';
         }
     }).then(function () {
