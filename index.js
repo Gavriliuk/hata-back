@@ -320,6 +320,9 @@ app.get('/dashboard/stories', isAdmin, function (req, res) {
 app.get('/dashboard/promocodes', isAdmin, function (req, res) {
     res.render('promocodes');
 });
+app.get('/dashboard/bundles', isAdmin, function (req, res) {
+    res.render('bundles');
+});
 
 
 app.get('/dashboard/categories', isAdmin, function (req, res) {

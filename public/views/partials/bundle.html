@@ -1,0 +1,95 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Bundle Dialog">
+    <form name="form" role="form" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-show="isCreating">New entry</h2>
+                <h2 [UpperCaseText] ng-show="!isCreating">{{::bundle.productId}}{{::bundle.id.toLowerCase()}}</h2>
+                <span flex></span>
+                <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content layout="column" layout-padding>
+                <md-input-container class="md-block">
+                    <label>Title RU</label>
+                    <input type="text" required name="title_ru" ng-model="bundle.title_ru">
+                    <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title EN required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title RO</label>
+                    <input type="text" required name="title_ro" ng-model="bundle.title_ro">
+                    <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title RO required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Title EN</label>
+                    <input type="text" required name="title_en" ng-model="bundle.title_en">
+                    <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Title EN required</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container>
+                    <label>Add Route </label>
+                    <md-select ng-model="bundle.route" md-on-close="clearSearchTerm()" multiple=" ">
+                        <!-- <md-option value="all">All Routes</md-option> -->
+                        <md-option ng-disabled="bundle.route=='all'" ng-value="route.id" ng-repeat="route in routies">{{route.title_ru}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description RU</label>
+                    <textarea name="description_ru" ng-maxlength="600" ng-model="bundle.description_ru" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_ru.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RU required</div>
+                        <div ng-message="maxlength">Description RU too large</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Description RO</label>
+                    <textarea name="description_ro" ng-maxlength="600" ng-model="bundle.description_ro" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_ro.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description RO required</div>
+                        <div ng-message="maxlength">Description RO too large</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Description EN</label>
+                    <textarea name="description_en" ng-maxlength="600" ng-model="bundle.description_en" columns="2" md-maxlength="600">
+                    </textarea>
+                    <div ng-messages="form.description_en.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Description EN required</div>
+                        <div ng-message="maxlength">Description EN too large</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Sum</label>
+                    <input type="number" required name="sum" ng-model="bundle.sum">
+                    <div ng-messages="form.sum.$error" ng-show="form.$submitted">
+                        <div ng-message="required">Sum Required</div>
+                    </div>
+                </md-input-container>
+
+            </md-content>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onSaveBundle(form.$valid)" ng-disabled="isSavingBundle"
+                ng-show="isCreating">
+                {{ !isSavingBundle ? 'Save' : 'Saving...' }}
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="onUpdateBundle(form.$valid)" ng-disabled="isSavingBundle"
+                ng-show="!isCreating">
+                {{ !isSavingBundle ? 'Update' : 'Updating...' }}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

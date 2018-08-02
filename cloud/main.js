@@ -200,6 +200,58 @@ Parse.Cloud.define('validatePromocode', function (req, res) {
     });
 });
 
+
+Parse.Cloud.define('applyBundle', function (req, res) {
+    var bundle = req.params.bundle;
+    var deviceId = req.params.deviceId;
+
+    var objBundle;
+    var query = new Parse.Query('Bundle');
+    query.equalTo('code', bundle);
+    var response = { action: null };
+
+    query.find().then(function (dbBundle) {
+        if (dbBundle.length && !dbBundle[0].get("isUsed") && dbBundle[0].get("isApproved")) {
+            objBundle = dbBundle[0];
+            objBundle.set("deviceId", deviceId);
+            objBundle.set("isUsed", true);
+            response.action = dbBundle[0].get("route");
+            response.payload = objBundle;
+            return objBundle.save(null, { useMasterKey: true });
+        } else {
+            response.action = '[]';
+            response.error = 'Bundle Not Found!';
+        }
+    }).then(function () {
+        res.success(response);
+    }, function (error) {
+        res.error(error.message);
+    });
+});
+
+Parse.Cloud.define('validateBundle', function (req, res) {
+    var bundle = req.params.bundle;
+    var objBundle;
+    var query = new Parse.Query('Bundle');
+    query.equalTo('code', bundle);
+    var response = { action: null };
+
+    query.find().then(function (dbBundle) {
+        if (dbBundle.length && !dbBundle[0].get("isUsed") && dbBundle[0].get("isApproved")) {
+            response.action = dbBundle[0].get("route");
+            return response;
+        } else {
+            response.action = '[]';
+            response.error = 'Bundle Not Valid!';
+        }
+    }).then(function () {
+        res.success(response);
+    }, function (error) {
+        res.error(error.message);
+    });
+});
+
+
 Parse.Cloud.define('getUsers', function (req, res) {
 
     var params = req.params;
@@ -580,6 +632,29 @@ Parse.Cloud.beforeSave('Promocode', function (req, res) {
     }
     if (promocode.dirty('title') && promocode.get('title')) {
         promocode.set('canonical', promocode.get('title').toLowerCase());
+    }
+    res.success();
+});
+
+Parse.Cloud.beforeSave('Bundle', function (req, res) {
+    var bundle = req.object;
+    var user = req.user;
+
+    if (req.master) {
+        return res.success();
+    }
+    if (!user) {
+        return res.error('Not Authorized');
+    }
+    if (!bundle.existed()) {
+        var acl = new Parse.ACL();
+        acl.setPublicReadAccess(true);
+        acl.setRoleWriteAccess('Admin', true);
+        acl.setWriteAccess(user, true);
+        bundle.setACL(acl);
+    }
+    if ((bundle.dirty('title_ru') && bundle.get('title_ru')) || (bundle.dirty('title_ro') && bundle.get('title_ro')) || (bundle.dirty('title_en') && bundle.get('title_en'))){
+        bundle.set('canonical', (bundle.get('title_ru') + bundle.dirty('title_ro') + bundle.dirty('title_en')).toLowerCase());
     }
     res.success();
 });
