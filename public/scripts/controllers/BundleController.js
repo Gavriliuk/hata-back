@@ -6,9 +6,8 @@ angular.module('nearPlaceApp')
 
       $scope.query = {
         filter: '',
-        filterprefix: '',
         limit: 40,
-        sortColumn: 'isUsed',
+        sortColumn: '',
         reverseSort: false,
         page: 1,
         total: 0,
@@ -22,7 +21,6 @@ angular.module('nearPlaceApp')
       $scope.toggleSelectAll = function (ev) {
         $scope.bundles.forEach(function (bundle) {
           bundle.selected = ev;
-          // bundle.productId = 'com.innapp.dromos.';
         });
       }
       $scope.sortColumn = "title_ru";
@@ -70,7 +68,6 @@ angular.module('nearPlaceApp')
           });
         });
       }
-
       loadCount();
 
       $scope.onQueryChange = function () {
@@ -111,19 +108,6 @@ angular.module('nearPlaceApp')
         return angular.isDate(date);
       };
 
-      $scope.onUpdateExpiresAt = function (ev, bundle) {
-        $mdDialog.show({
-          controller: 'DialogBundleExpiresAtController',
-          templateUrl: '/views/partials/expiration-modal.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose: true,
-          locals: {
-            bundle: bundle
-          }
-        });
-      };
-
       $scope.onUpdateBundle = function (ev, bundle) {
         var objBundle = angular.copy(bundle);
         $mdDialog.show({
@@ -161,35 +145,10 @@ angular.module('nearPlaceApp')
         });
       };
 
-      $scope.onUpdateIsApproved = function (bundle, isApproved) {
-        if (bundle.isUsed) {
-          showSimpleToast('No Changes approved after used');
-          return;
-        }
-        bundle.isApproved = isApproved;
-        bundle.unset('expiresAt');
-        Bundle.update(bundle).then(function (success) {
-          showSimpleToast('Bundle updated');
-        }, function (error) {
-          showSimpleToast('There was an error');
-        });
-      };
-
-      $scope.onUpdateIsUsed = function (bundle, isUsed) {
-        bundle.isUsed = isUsed;
-        // bundle.unset('expiresAt');
-        Bundle.update(bundle).then(function (success) {
-          showSimpleToast('Bundle updated');
-        }, function (error) {
-          showSimpleToast('There was an error');
-        });
-      };
-
       $scope.onDowlandBundles = function (ev) {
         var csvContent = '';
         var cvsBundlesHeader = '';
         var cvsBundlesValues = '';
-
 
         cvsBundlesHeader = Bundle.getAllAttributes().join(';') + '\n';
 
@@ -290,14 +249,7 @@ angular.module('nearPlaceApp')
         });
       };
       loadRouties();
-      // $scope.bundle = {
-      //   productId: "com.innapp.dromos."
-      // };
-      $scope.bundle = {  
-         prefix: "com.innapp.dromos."
-      };
 
-      $scope.howMany = 1;
       $scope.isCreating = true;
 
       if (bundle) {
@@ -326,22 +278,6 @@ angular.module('nearPlaceApp')
         if (!isFormValid) {
           showSimpleToast('Please correct all highlighted errors and try again');
         } else {
-          if ($scope.howMany > 1) {
-            var promises = [];
-            var title = $scope.bundle.title_ru;
-            for (var i = 1; i <= $scope.howMany; i++) {
-              $scope.bundle.title_ru = i + " - " + title;
-              promises.push(Bundle.create($scope.bundle));
-            }
-            Promise.all(promises).then(function (values) {
-              showSimpleToast('All Bundles saved');
-              $mdDialog.hide();
-              $scope.isSavingBundle = false;
-            }, function (error) {
-              showSimpleToast(error.message);
-              $scope.isSavingBundle = false;
-            });
-          } else {
             Bundle.create($scope.bundle).then(function (success) {
               showSimpleToast('Bundle saved');
               $mdDialog.hide();
@@ -352,7 +288,6 @@ angular.module('nearPlaceApp')
                 $scope.isSavingBundle = false;
               });
           }
-        }
       };
 
       $scope.onUpdateBundle = function (isFormValid) {
@@ -375,70 +310,4 @@ angular.module('nearPlaceApp')
             });
         }
       };
-
-    }).controller('DialogPlaceExpiresAtController',
-      function ($scope, $mdDialog, $mdToast, Bundle, bundle) {
-
-        $scope.bundle = bundle;
-        $scope.formData = {};
-        $scope.bundlesAll = [];
-
-        var showToast = function (message) {
-          $mdToast.show(
-            $mdToast.simple()
-              .content(message)
-              .action('OK')
-              .hideDelay(3000)
-          );
-        };
-
-        $scope.isDayInvalid = function () {
-          var days = $scope.formData.days;
-          if (days) {
-            days = parseInt(days, 10);
-            return days < 1;
-          }
-          return true;
-        }
-
-        $scope.onUpdateExpiresAt = function () {
-          var expiresAt = moment().add($scope.formData.days, 'days').toDate();
-          bundle.expiresAt = expiresAt;
-          bundle.isApproved = true;
-
-          $scope.isSavingExpiresAt = true;
-
-          Bundle.update(bundle).then(function (success) {
-            $scope.isSavingExpiresAt = false;
-            showToast('Bundle updated');
-            $scope.hide();
-          },
-            function (error) {
-              $scope.isSavingExpiresAt = false;
-              showToast('There was an error');
-            });
-        }
-
-        $scope.hide = function () {
-          $mdDialog.hide();
-        };
-
-      }).directive('numbersOnly', function () {
-        return {
-          require: 'ngModel',
-          link: function (scope, element, attr, ngModelCtrl) {
-            function fromUser(text) {
-              if (text) {
-                var transformedInput = text.rebundle(/[^0-9]/g, '');
-                if (transformedInput !== text) {
-                  ngModelCtrl.$setViewValue(transformedInput);
-                  ngModelCtrl.$render();
-                }
-                return transformedInput;
-              }
-              return undefined;
-            }
-            ngModelCtrl.$parsers.push(fromUser);
-          }
-        };
-      });
+    });

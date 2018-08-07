@@ -35,7 +35,6 @@
                 <md-input-container>
                     <label>Add Route </label>
                     <md-select ng-model="bundle.route" md-on-close="clearSearchTerm()" multiple=" ">
-                        <!-- <md-option value="all">All Routes</md-option> -->
                         <md-option ng-disabled="bundle.route=='all'" ng-value="route.id" ng-repeat="route in routies">{{route.title_ru}}</md-option>
                     </md-select>
                 </md-input-container>

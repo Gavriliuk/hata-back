@@ -200,58 +200,6 @@ Parse.Cloud.define('validatePromocode', function (req, res) {
     });
 });
 
-
-Parse.Cloud.define('applyBundle', function (req, res) {
-    var bundle = req.params.bundle;
-    var deviceId = req.params.deviceId;
-
-    var objBundle;
-    var query = new Parse.Query('Bundle');
-    query.equalTo('code', bundle);
-    var response = { action: null };
-
-    query.find().then(function (dbBundle) {
-        if (dbBundle.length && !dbBundle[0].get("isUsed") && dbBundle[0].get("isApproved")) {
-            objBundle = dbBundle[0];
-            objBundle.set("deviceId", deviceId);
-            objBundle.set("isUsed", true);
-            response.action = dbBundle[0].get("route");
-            response.payload = objBundle;
-            return objBundle.save(null, { useMasterKey: true });
-        } else {
-            response.action = '[]';
-            response.error = 'Bundle Not Found!';
-        }
-    }).then(function () {
-        res.success(response);
-    }, function (error) {
-        res.error(error.message);
-    });
-});
-
-Parse.Cloud.define('validateBundle', function (req, res) {
-    var bundle = req.params.bundle;
-    var objBundle;
-    var query = new Parse.Query('Bundle');
-    query.equalTo('code', bundle);
-    var response = { action: null };
-
-    query.find().then(function (dbBundle) {
-        if (dbBundle.length && !dbBundle[0].get("isUsed") && dbBundle[0].get("isApproved")) {
-            response.action = dbBundle[0].get("route");
-            return response;
-        } else {
-            response.action = '[]';
-            response.error = 'Bundle Not Valid!';
-        }
-    }).then(function () {
-        res.success(response);
-    }, function (error) {
-        res.error(error.message);
-    });
-});
-
-
 Parse.Cloud.define('getUsers', function (req, res) {
 
     var params = req.params;

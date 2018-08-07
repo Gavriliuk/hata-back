@@ -6,13 +6,6 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
     getStatus: function () {
       if (moment().toDate() >= this.expiresAt) {
         return 'Expired';
-      }
-      else if (this.isApproved && !this.isUsed) {
-        return 'Active';
-      } else if (this.isApproved === false) {
-        return 'Rejected';
-      } else if (this.isUsed) {
-        return 'Used';
       } else {
         return 'Pending';
       }
@@ -28,13 +21,7 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
         var defer = $q.defer();
         var objBundle = new Bundle();
         bundle.user = Parse.User.current();
-        bundle.isApproved = true;
-        bundle.isUsed = false;
         bundle.productId = "com.innapp.dromos."
-        console.log('BUNDLE:',bundle);
-        bundle.code = voucher_codes.generate({
-          prefix: promocode.prefix || "com.innapp.dromos."
-        })[0];
         objBundle.save(bundle, {
           success: function (success) {
             defer.resolve(success);
@@ -72,33 +59,6 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
         if (params.filter != '') {
           query.contains('canonical', params.filter);
         }
-        if (params.filterprefix != '') {
-          query.contains('prefix', params.filterprefix);
-        }
-
-
-        if (params.status && params.status !== null) {
-
-          if (params.status === 'pending') {
-            query.doesNotExist('isApproved');
-          } else if (params.status === 'rejected') {
-            query.equalTo('isApproved', false);
-          } else if (params.status === 'approved') {
-            query.equalTo('isApproved', true);
-          } else if (params.status === 'used') {
-            query.equalTo('isUsed', true);
-          } else if (params.status === 'expired') {
-            query.lessThanOrEqualTo('expiresAt', moment().toDate());
-          } else if (params.status === 'expireInTenDays') {
-            var expiresAt = moment().add(10, 'days').toDate();
-            query.lessThanOrEqualTo('expiresAt', expiresAt);
-            query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-          } else if (params.status === 'expireInThirtyDays') {
-            var expiresAt = moment().add(30, 'days').toDate();
-            query.lessThanOrEqualTo('expiresAt', expiresAt);
-            query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-          }
-        }
 
         if (params.sortColumn) {
           if (params.reverseSort) {
@@ -128,10 +88,6 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
           query.contains('canonical', params.filter);
         }
         
-        if (params.filterprefix != '') {
-          query.contains('prefix', params.filterprefix);
-        }
-
         if (params.date && params.date !== null) {
           var start = moment(params.date).startOf('day');
           var end = moment(params.date).endOf('day');
@@ -139,29 +95,6 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
           query.lessThanOrEqualTo('createdAt', end.toDate());
         }
 
-        if (params.status && params.status !== null) {
-
-          if (params.status === 'pending') {
-            query.doesNotExist('isApproved');
-          } else if (params.status === 'rejected') {
-            query.equalTo('isApproved', false);
-          } else if (params.status === 'approved') {
-            query.equalTo('isApproved', true);
-            query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-          } else if (params.status === 'used') {
-            query.equalTo('isUsed', true);
-          } else if (params.status === 'expired') {
-            query.lessThanOrEqualTo('expiresAt', moment().toDate());
-          } else if (params.status === 'expireInTenDays') {
-            var expiresAt = moment().add(10, 'days').toDate();
-            query.lessThanOrEqualTo('expiresAt', expiresAt);
-            query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-          } else if (params.status === 'expireInThirtyDays') {
-            var expiresAt = moment().add(30, 'days').toDate();
-            query.lessThanOrEqualTo('expiresAt', expiresAt);
-            query.greaterThanOrEqualTo('expiresAt', moment().toDate());
-          }
-        }
         query.count({
           success: function (count) {
             defer.resolve(count);
@@ -249,38 +182,13 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
       this.set('sum', value);
     }
   });
-  Object.defineProperty(Bundle.prototype, 'prefix', {
-    get: function () {
-      return this.get('prefix');
-    },
-    set: function (value) {
-      this.set('prefix', value);
-    }
-  });
-
+ 
   Object.defineProperty(Bundle.prototype, 'currency', {
     get: function () {
       return this.get('currency');
     },
     set: function (value) {
       this.set('currency', value);
-    }
-  });
-
-  Object.defineProperty(Bundle.prototype, 'isApproved', {
-    get: function () {
-      return this.get('isApproved');
-    },
-    set: function (value) {
-      this.set('isApproved', value);
-    }
-  });
-  Object.defineProperty(Bundle.prototype, 'isUsed', {
-    get: function () {
-      return this.get('isUsed');
-    },
-    set: function (value) {
-      this.set('isUsed', value);
     }
   });
 
