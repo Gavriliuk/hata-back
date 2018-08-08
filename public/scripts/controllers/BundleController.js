@@ -52,7 +52,7 @@ angular.module('nearPlaceApp')
           $scope.promise = Bundle.all($scope.query).then(function (bundles) {
             $scope.bundles = bundles.map(function (promoCd) {
               promoCd.selected = false;
-              promoCd.productId = 'com.innapp.dromos.';
+              promoCd.productId = 'com.innapp.dromos.bundle.';
               return promoCd;
             })
           });

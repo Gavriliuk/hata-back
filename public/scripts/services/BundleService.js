@@ -21,7 +21,6 @@ angular.module('nearPlaceApp').factory('Bundle', function ($q, moment) {
         var defer = $q.defer();
         var objBundle = new Bundle();
         bundle.user = Parse.User.current();
-        bundle.productId = "com.innapp.dromos."
         objBundle.save(bundle, {
           success: function (success) {
             defer.resolve(success);
