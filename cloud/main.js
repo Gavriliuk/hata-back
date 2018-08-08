@@ -602,7 +602,7 @@ Parse.Cloud.beforeSave('Bundle', function (req, res) {
         bundle.setACL(acl);
     }
     if ((bundle.dirty('title_ru') && bundle.get('title_ru')) || (bundle.dirty('title_ro') && bundle.get('title_ro')) || (bundle.dirty('title_en') && bundle.get('title_en'))){
-        bundle.set('canonical', (bundle.get('title_ru') + bundle.dirty('title_ro') + bundle.dirty('title_en')).toLowerCase());
+        bundle.set('canonical', (bundle.get('title_ru') + bundle.get('title_ro') + bundle.get('title_en')).toLowerCase());
     }
     res.success();
 });
