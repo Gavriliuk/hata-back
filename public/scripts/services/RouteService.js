@@ -188,7 +188,6 @@ angular.module('nearPlaceApp')
             },
 
             all: function (params) {
-
                 var defer = $q.defer();
                 var query = new Parse.Query(this);
 

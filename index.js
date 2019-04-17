@@ -305,6 +305,18 @@ app.get('/dashboard/places', isAdmin, function (req, res) {
   res.render('places');
 });
 
+app.get('/dashboard/countries', isAdmin, function (req, res) {
+  res.render('countries');
+});
+
+app.get('/dashboard/country/:id', isAdmin, function (req, res) {
+  res.render('country',{ id: req.params.id});
+});
+
+app.get('/dashboard/city/:id', isAdmin, function (req, res) {
+  res.render('city',{ id: req.params.id});
+});
+
 app.get('/dashboard/routes', isAdmin, function (req, res) {
   res.render('routes');
 });

@@ -1,0 +1,105 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog Country">
+    <form name="form" role="form" novalidate>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 ng-show="isCreating">New country</h2>
+          <h2 ng-show="!isCreating">Edit country-{{::objCountry.title_ru}}</h2>
+          <span flex></span>
+          <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+        </div>
+      </md-toolbar>
+  
+      <md-dialog-content>
+        <md-content layout="column" layout-padding>
+          <md-input-container>
+            <label>Title: RU</label>
+            <input required name="title_ru" ng-model="objCountry.title_ru">
+            <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+              <div ng-message="required">Title RU required</div>
+            </div>
+          </md-input-container>
+  
+          <md-input-container>
+            <label>Title: RO</label>
+            <input required name="title_ro" ng-model="objCountry.title_ro">
+            <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+              <div ng-message="required">Title RO required</div>
+            </div>
+          </md-input-container>
+  
+          <md-input-container>
+            <label>Title: EN</label>
+            <input required name="title_en" ng-model="objCountry.title_en">
+            <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+              <div ng-message="required">Title en required</div>
+            </div>
+          </md-input-container>
+  
+          <md-input-container>
+            <label>Information: RU</label>
+            <input required name="information_ru" ng-model="objCountry.information_ru">
+            <div ng-messages="form.information_ru.$error" ng-show="form.$submitted">
+              <div ng-message="required">Information RU required</div>
+            </div>
+          </md-input-container>
+  
+          <md-input-container>
+            <label>Information: RO</label>
+            <input required name="information_ro" ng-model="objCountry.information_ro">
+            <div ng-messages="form.information_ro.$error" ng-show="form.$submitted">
+              <div ng-message="required">Information RO required</div>
+            </div>
+          </md-input-container>
+  
+          <md-input-container>
+            <label>Information: EN</label>
+            <input required name="information_en" ng-model="objCountry.information_en">
+            <div ng-messages="form.information_en.$error" ng-show="form.$submitted">
+              <div ng-message="required">Information EN required</div>
+            </div>
+          </md-input-container>
+  
+            <div layout="column">
+              <md-input-container class="layout-row">
+                <div ng-show="objCountry.icon">
+                  <img class="icon-thumb placeImg" actual-src="{{ objCountry.icon.url() }}" />
+                  <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
+                </div>
+              </md-input-container>
+  
+              <div layout="row" layout-align="start center">
+                <md-input-container md-no-float>
+                  <label>Upload Icon</label>
+                  <input type="text" ng-model="iconFilename" disabled>
+                </md-input-container>
+                <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objCountry.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
+                  ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
+                  <md-tooltip>
+                    Add an Icon
+                  </md-tooltip>
+                </ng-md-icon>
+                <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
+                </md-progress-circular>
+              </div>
+  
+              <div class="hint">
+                * The icon image's dimensions should be 64x64 px
+              </div>
+            </div>
+        </md-content>
+      </md-dialog-content>
+  
+      <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+          Cancel
+        </md-button>
+        <md-button type="submit" class="md-raised md-primary" ng-show="isCreating" ng-disabled="isSavingCountry" ng-click="onSaveCountry(form.$valid)">
+          {{ !isSavingCountry ? 'Save' : 'Saving...' }}
+        </md-button>
+        <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingCountry" ng-click="onUpdateCountry(form.$valid)">
+          {{ !isSavingCountry ? 'Update' : 'Updating...' }}
+        </md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>

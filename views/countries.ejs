@@ -1,0 +1,144 @@
+<md-content ng-controller="CountriesCtrl">
+	<md-table-toolbar layout="row" flex>
+		<md-input-container class="md-block" flex-gt-xs>
+			<input type="text" placeholder="Search by title..." ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onSearch()">
+		</md-input-container>
+	</md-table-toolbar>
+	<md-table-container>
+		<h3>Countries</h3>
+		<table md-table md-progress="promise">
+			<thead md-head md-order="query.order" class="toolBarRouteRelation" md-trigger="onOrderChange">
+				<tr md-row>
+					<!-- <th md-column></th> -->
+					<th md-column>Icon</th>
+					<th md-column ng-click="sortData('title_ru')">
+						Title: RU
+						<ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
+					</th>
+					<th md-column>View</th>
+					<th md-column></th>
+				</tr>
+			</thead>
+			<tbody md-body ng-repeat="country in countries | orderBy:sortColumn:reverseSort">
+				<tr md-row>
+					<!-- <td md-cell>
+						<img class="img-thumb img-circle" ng-src="/images/placeholder.png" actual-src="{{ country.imageThumb.url() }}" />
+					</td> -->
+					<td md-cell>
+						<img width="32" height="32" ng-src="/images/placeholder.png" actual-src="{{ country.icon.url() }}" />
+					</td>
+					<td md-cell>{{:: country.title_ru }}</td>
+					<td md-cell>
+						<a class="colorHref" href="/dashboard/country/{{country.id}}">View</a>
+					</td>
+					<td md-cell>
+						<md-menu>
+							<md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+								<ng-md-icon md-menu-origin icon="more_vert" layout="row" layout-align="start center">
+								</ng-md-icon>
+							</md-button>
+							<md-menu-content width="3">
+								<md-menu-item>
+									<md-button aria-label="Edit country" ng-click="onEditCountry($event, country)">
+										Edit
+									</md-button>
+								</md-menu-item>
+								<md-menu-item>
+									<md-button aria-label="Delete country" ng-click="onDestroyCountry($event, country)">
+										Delete
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>
+	<md-table-pagination md-options="rowOptions" md-limit="query.limit" md-page="query.page" md-total="{{query.total}}" md-on-paginate="onPaginationChange">
+	</md-table-pagination>
+	<md-button class="md-fab md-primary md-fab-bottom-right" aria-label="New country" ng-click="onNewCountry($event)">
+		<ng-md-icon class="icon-add" icon="add" layout="column" layout-align="center center">
+		</ng-md-icon>
+	</md-button>
+</md-content>
+
+
+
+
+
+
+
+
+
+<!-- <md-content ng-controller="CountryCtrl">
+    <md-table-toolbar>
+        <div layout="row">
+            <md-content flex-gt-md="65" flex="100" style="overflow: hidden">
+                <br>
+                <div layout-gt-sm="row" class="filter-bar">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Search by Title</label>
+                        <input type="text" ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
+                    </md-input-container>
+                </div>
+        </div>
+    </md-table-toolbar>
+
+    <md-table-container>
+        <table md-table md-progress="promise">
+            <thead md-head>
+                <tr md-row>
+                    <th md-column>Icon</th>
+                    <th md-column ng-click="sortData('title_ru')">
+                        Title
+                        <ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
+                    </th>
+                    <th md-column ng-click="sortData('createdAt')">
+                        Created At
+                        <ng-md-icon ng-hide="sortColumn!='createdAt'" icon="{{getSortClass('createdAt')}}"></ng-md-icon>
+                    </th>
+                    <th name="Actions">
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="country in countries | orderBy:sortColumn:reverseSort" ">                   
+                    <td md-cell>
+						<img width="32 " height="32 " ng-src="/images/placeholder.png " actual-src="{{ country.icon.url() }} " />
+					</td>
+                    <td md-cell>{{:: country.title_ru }}</td> 
+                    <td md-cell>{{ country.createdAt | date:'mediumDate' }}</td>          
+                    <td md-cell>
+                        <md-menu>
+                            <md-button aria-label="Open menu " class="md-icon-button " ng-click="openMenu($mdOpenMenu,
+                    $event) ">
+                                <ng-md-icon md-menu-origin icon="more_vert " layout="row " layout-align="start center ">
+                                </ng-md-icon>
+                            </md-button>
+                            <md-menu-content width="3 ">
+                                <md-menu-item>
+                                    <md-button aria-label="Edit country " ng-click="onUpdateCountry($event, country) ">
+                                        Edit
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item aria-label="Delete country ">
+                                    <md-button aria-label="Delete country " ng-click="onDestroyCountry($event, country) ">
+                                        Delete
+                                    </md-button>
+                                </md-menu-item>
+                                </md-divider>
+                            </md-menu-content>
+                        </md-menu>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination md-options="rowOptions " md-limit="query.limit " md-page="query.page " md-total="{{query.total}}
+                    " md-on-paginate="onPaginationChange ">
+    </md-table-pagination>
+    <md-button class="md-fab md-primary md-fab-bottom-right " aria-label="New Country " ng-click="onCreateCountry($event) ">
+     <ng-md-icon class="icon-add " icon="add " layout="column " layout-align="center center ">
+     </ng-md-icon>
+    </md-button>
+</md-content> -->
