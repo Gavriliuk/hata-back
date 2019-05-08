@@ -47,6 +47,7 @@ var api = new ParseServer({
   cloud: config.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey,
+  verbose: true,
   serverURL: serverUrl,
   filesAdapter: filesAdapter,
   verifyUserEmails: false,
@@ -66,7 +67,7 @@ var api = new ParseServer({
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": "http://localhost:1337/parse",
+      "serverURL": serverUrl,
       "appId": "dromos-cms",
       "masterKey": "dromos-cms-123!",
       "appName": "Dromos CMS"
@@ -269,14 +270,20 @@ app.post('/install', [urlencodedParser, isNotInstalled], function (req, res) {
   user.setACL(acl);
 
   var query = new Parse.Query(Parse.Role);
+  console.log("Parse::",Parse);
 
   query.find().then(function (objRoles) {
+    console.log("objRoles::",objRoles);
+    
     return Parse.Object.destroyAll(objRoles, { useMasterKey: true });
   }).then(function () {
     return Parse.Object.saveAll(roles);
-  }).then(function () {
-    return user.signUp();
+  }).then(function (roles) {
+    console.log("Parse.Object.saveAll(roles)::",roles);
+
+    return user.signUp({},{ useMasterKey: true });
   }).then(function (objUser) {
+    console.log("objUser::",objUser);
 
     req.session.user = objUser;
     req.session.token = objUser.getSessionToken();

@@ -1,24 +1,23 @@
-version: '3.0'
+version: '2.0'
 
 services:
   mongo:
-    container_name: mongo
     image: mongo
+    # ports:
+    #   - "27019:27017"
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app/
+    environment:
+      NODE_ENV: docker
+    command: [sh, -c, 'npm run start-cms-do-docker']
     ports:
-      - "27017:27017"
-  # nearme-cms-server:
-  #   build:
-  #     context: .
-  #     dockerfile: nearme-cms-server-Dockerfile
-  #   volumes:
-  #     - .:/usr/app/
-  #   environment:
-  #     APP_ENV: .env.dev
-  #   command: [sh, -c, 'APP_ENV=.env.dev npm start']
-  #   ports:
-  #     - '3001:3001'
-  #   links:
-  #     - mongo
-  #   depends_on:
-  #     - mongo
+      - '1339:1339'
+    links:
+      - mongo
+    depends_on:
+      - mongo
  
