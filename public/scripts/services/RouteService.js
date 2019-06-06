@@ -240,6 +240,14 @@ angular.module('nearPlaceApp')
                 this.set('playModes', val);
             }
         });
+        Object.defineProperty(Route.prototype, 'free', {
+            get: function () {
+                return this.get('free');
+            },
+            set: function (val) {
+                this.set('free', val);
+            }
+        });
 
         Object.defineProperty(Route.prototype, 'defaultPlayMode', {
             get: function () {
