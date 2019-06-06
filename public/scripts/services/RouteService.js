@@ -391,6 +391,14 @@ angular.module('nearPlaceApp')
                 this.set('order', val);
             }
         });
+        Object.defineProperty(Route.prototype, 'free', {
+            get: function () {
+                return this.get('free');
+            },
+            set: function (val) {
+                this.set('free', val);
+            }
+        });
 
         Object.defineProperty(Route.prototype, 'periods', {
             get: function () {
