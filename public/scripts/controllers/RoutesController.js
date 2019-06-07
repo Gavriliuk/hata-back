@@ -117,6 +117,7 @@ angular.module('nearPlaceApp')
 			$scope.objRoute = {};
 			$scope.objRoute.places = [];
 			$scope.objRoute.periods = [];
+			$scope.objRoute.free = false;
 			$scope.isCreating = false;
 			$scope.isUploading = false;
 			$scope.isUploadingIcon = false;
