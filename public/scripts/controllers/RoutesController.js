@@ -115,6 +115,7 @@ angular.module('nearPlaceApp')
 		function ($scope, $mdDialog, $mdToast, Route, Place, File, route) {
 			$scope.placesAll = [];
 			$scope.objRoute = {};
+			$scope.objRoute.free = false;
 			$scope.objRoute.places = [];
 			$scope.objRoute.periods = [];
 			$scope.isCreating = false;

@@ -400,5 +400,14 @@ angular.module('nearPlaceApp')
                 this.set('periods', val);
             }
         });
+        
+        Object.defineProperty(Route.prototype, 'free', {
+            get: function () {
+                return this.get('free');
+            },
+            set: function (val) {
+                this.set('free', val);
+            }
+        });
         return Route;
     });
