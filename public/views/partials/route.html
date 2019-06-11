@@ -54,7 +54,12 @@
             <div ng-message="required">Title RO required</div>
           </div>
         </md-input-container>
-
+        <md-input-container>
+          <md-switch ng-model="objRoute.free">
+            Free: {{objRoute.free}}
+          </md-switch>
+          <md-divider></md-divider>
+        </md-input-container>
         <md-input-container>
           <label>Title: EN</label>
           <input required name="title_en" ng-model="objRoute.title_en">
