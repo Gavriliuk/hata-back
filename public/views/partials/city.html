@@ -1,0 +1,152 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog City">
+        <form name="form" role="form" novalidate>
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <h2 ng-show="isCreating">New city</h2>
+              <h2 ng-show="!isCreating">Edit city - {{::objCity.title_ru}}</h2>
+              <span flex></span>
+              <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+            </div>
+          </md-toolbar>
+      
+          <md-dialog-content>
+            <md-content layout="column" layout-padding>
+              <md-input-container>
+                <label>Title: RU</label>
+                <input required name="title_ru" ng-model="objCity.title_ru">
+                <div ng-messages="form.title_ru.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Title RU required</div>
+                </div>
+              </md-input-container>
+      
+              <md-input-container>
+                <label>Title: RO</label>
+                <input required name="title_ro" ng-model="objCity.title_ro">
+                <div ng-messages="form.title_ro.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Title RO required</div>
+                </div>
+              </md-input-container>
+      
+              <md-input-container>
+                <label>Title: EN</label>
+                <input required name="title_en" ng-model="objCity.title_en">
+                <div ng-messages="form.title_en.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Title en required</div>
+                </div>
+              </md-input-container>
+      
+              <md-input-container>
+                <label>Information: RU</label>
+                <input required name="information_ru" ng-model="objCity.information_ru">
+                <div ng-messages="form.information_ru.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Information RU required</div>
+                </div>
+              </md-input-container>
+      
+              <md-input-container>
+                <label>Information: RO</label>
+                <input required name="information_ro" ng-model="objCity.information_ro">
+                <div ng-messages="form.information_ro.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Information RO required</div>
+                </div>
+              </md-input-container>
+      
+              <md-input-container>
+                <label>Information: EN</label>
+                <input required name="information_en" ng-model="objCity.information_en">
+                <div ng-messages="form.information_en.$error" ng-show="form.$submitted">
+                  <div ng-message="required">Information EN required</div>
+                </div>
+              </md-input-container>
+
+              <md-input-container class="md-block">
+                <label>Search Address:</label>
+                <input type="text" name="search_address" ng-model="searchAddress" ng-model-options="{ debounce: 2000 }" ng-change="onSearchAddressChanged()">
+              </md-input-container>
+              
+              <md-input-container>
+                <ng-map class="map" scrollwheel="false" map-type-control="false" street-view-control="false">
+                  <marker draggable="true" on-dragend="onMarkerDragEnd()"></marker>
+                  <!-- <shape name="circle" no-watcher="true"
+                    stroke-color="#FF0000"
+                    stroke-opacity="0.8"
+                    stroke-weight="2"
+                    fill-color="#FF0000"
+                    fill-opacity="0.35"
+                    center="[{{objCity.location.latitude}}, {{objCity.location.longitude}}]"
+                    radius="{{currentPosition.getRadius(objCity.radius)}}">
+                  </shape> -->
+                </ng-map>
+              </md-input-container>
+      
+              <div layout="row" layout-align="start center">
+                <md-input-container>
+                  <label>Latitude</label>
+                  <input type="number" name="latitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.latitude">
+                </md-input-container>
+      
+                <md-input-container>
+                  <label>Longitude</label>
+                  <input type="number" name="longitude" ng-change="onInputLocationChanged()" ng-model-options="{debounce:1000}" ng-model="input.longitude">
+                </md-input-container>
+              </div>
+              <md-input-container class="md-block">
+                <label>Radius for City (km)</label>
+                <input type="text" name="radius" ng-model="objCity.radius" required>
+                <!-- <md-slider flex md-discrete ng-model="objCity.radius" step="1" min="1" max="50"
+                           aria-label="radius"></md-slider> -->
+              </md-input-container>
+              <!-- <div layout>
+                <div flex="8" layout layout-align="center center">
+                  <span class="md-body-1">Radius(km)</span>
+                </div>
+                <md-slider flex md-discrete ng-model="objCity.radius" step="1" min="1" max="50"
+                           aria-label="radius"></md-slider>
+              </div> -->
+
+
+                <div layout="column">
+                  <md-input-container class="layout-row">
+                    <div ng-show="objCity.icon">
+                      <img class="icon-thumb placeImg" actual-src="{{ objCity.icon.url() }}" />
+                      <ng-md-icon icon="clear" style="fill:green" class="photo-camera imgClearPlace" ng-click="onDeleteIcon()"></ng-md-icon>
+                    </div>
+                  </md-input-container>
+      
+                  <div layout="row" layout-align="start center">
+                    <md-input-container md-no-float>
+                      <label>Upload Icon</label>
+                      <input type="text" ng-model="iconFilename" disabled>
+                    </md-input-container>
+                    <ng-md-icon icon="photo_camera" class="photo-camera" ng-class="{ 'photo-active': objCity.icon.url() }" ngf-dimensions="$width === 64 && $height === 64"
+                      ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB" ngf-pattern="'image/*'" accept="image/*">
+                      <md-tooltip>
+                        Add an Icon
+                      </md-tooltip>
+                    </ng-md-icon>
+                    <md-progress-circular class="md-primary" md-diameter="30" ng-if="isUploadingIcon">
+                    </md-progress-circular>
+                  </div>
+      
+                  <div class="hint">
+                    * The icon image's dimensions should be 64x64 px
+                  </div>
+                </div>
+            </md-content>
+          </md-dialog-content>
+      
+          <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+              Cancel
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-show="isCreating" ng-disabled="isSavingCity" ng-click="onSaveCity(form.$valid)">
+              {{ !isSavingCity ? 'Save' : 'Saving...' }}
+            </md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating" ng-disabled="isSavingCity" ng-click="onUpdateCity(form.$valid)">
+              {{ !isSavingCity ? 'Update' : 'Updating...' }}
+            </md-button>
+          </md-dialog-actions>
+        </form>
+      </md-dialog>
+      

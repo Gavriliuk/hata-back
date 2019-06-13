@@ -1,6 +1,6 @@
 'use strict';
 angular.module('nearPlaceApp')
-	.controller('RoutesCtrl', function ($scope, $mdDialog, Route, Place, Auth) {
+	.controller('CountriesCtrl', function ($scope, $mdToast, $mdDialog, Country, Auth, City) {
 		$scope.rowOptions = [10, 20, 40];
 		$scope.query = {
 			filter: '',
@@ -8,7 +8,7 @@ angular.module('nearPlaceApp')
 			page: 1,
 			total: 0
 		};
-		$scope.routes = [];
+		$scope.countries = [];
 		$scope.sortColumn = "title_ru";
 		$scope.reverseSort = false;
 		$scope.sortData = function (column) {
@@ -23,19 +23,19 @@ angular.module('nearPlaceApp')
 			return '';
 		};
 
-		var loadRoutes = function () {
+		var loadCountries = function () {
 			Auth.ensureLoggedIn().then(function () {
-				$scope.promise = Route.all($scope.query).then(function (routes) {
-					$scope.routes = routes;
+				$scope.promise = Country.all($scope.query).then(function (countries) {
+					$scope.countries = countries;
 				});
 			});
 		};
 
-		loadRoutes();
+		loadCountries();
 
 		var loadCount = function () {
 			Auth.ensureLoggedIn().then(function () {
-				Route.count($scope.query).then(function (total) {
+				Country.count($scope.query).then(function (total) {
 					$scope.query.total = total;
 				});
 			});
@@ -46,105 +46,115 @@ angular.module('nearPlaceApp')
 		$scope.onSearch = function () {
 			$scope.query.page = 1;
 			$scope.query.total = 0;
-			loadRoutes();
+			loadCountries();
 			loadCount();
 		};
 
 		$scope.onPaginationChange = function (page, limit) {
 			$scope.query.page = page;
 			$scope.query.limit = limit;
-			loadRoutes();
+			loadCountries();
 		};
 
 		$scope.openMenu = function ($mdOpenMenu, ev) {
 			$mdOpenMenu(ev);
 		};
 
-		$scope.onNewRoute = function (ev) {
+		$scope.onNewCountry = function (ev) {
 			$mdDialog.show({
-				controller: 'DialogRouteController',
-				templateUrl: '/views/partials/route.html',
+				controller: 'DialogCountryController',
+				templateUrl: '/views/partials/country.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
 				locals: {
-					route: null
+					country: null
 				},
 				clickOutsideToClose: true
 			})
 				.then(function (answer) {
-					loadRoutes();
+					loadCountries();
 					loadCount();
 				});
 		};
 
-		$scope.onEditRoute = function (ev, route) {
+		$scope.onEditCountry = function (ev, country) {
 			$mdDialog.show({
-				controller: 'DialogRouteController',
-				templateUrl: '/views/partials/route.html',
+				controller: 'DialogCountryController',
+				templateUrl: '/views/partials/country.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
 				locals: {
-					route: angular.copy(route)
+					country: angular.copy(country)
 				},
 				clickOutsideToClose: true
 			})
 				.then(function (answer) {
-					loadRoutes();
+					loadCountries();
 				});
 		};
 
-		$scope.onDestroyRoute = function (ev, route) {
+		$scope.onDestroyCountry = function (ev, country) {
 			var confirm = $mdDialog.confirm()
 				.title('Confirm action')
-				.content('Are you sure you want to delete this route? Places of this route will be deleted.')
+				.content('Are you sure you want to delete this country? Cities of this country will be deleted.')
 				.ok('Delete')
 				.cancel('Cancel')
 				.targetEvent(ev);
-
 			$mdDialog.show(confirm).then(function () {
-				Route.destroy(route.id).then(function (success) {
-					loadRoutes();
+				$scope.removeCitiesInCurrentCountry(country);
+				Country.destroy(country.id).then(function (success) {
+					loadCountries();
 					loadCount();
 				}, function (error) {
 					showSimpleToast(error.message);
 				});
-
 			});
 		};
-	}).controller('DialogRouteController',
-		function ($scope, $mdDialog, $mdToast, Route, Place, File, route) {
-			$scope.placesAll = [];
-			$scope.objRoute = {};
-			$scope.objRoute.free = false;
-			$scope.objRoute.places = [];
-			$scope.objRoute.free = false;
-			$scope.objRoute.periods = [];
-			$scope.objRoute.free = false;
+
+		$scope.removeCitiesInCurrentCountry = function (country) {
+			Country.destroyAllCities(country).then(function (success) {
+				showSimpleToast('All cities in this country have been deleted.');
+			}, function (error) {
+				showSimpleToast('Error. All cities not deleted.', error.message);
+			});
+		};
+
+		var showSimpleToast = function (message) {
+			$mdToast.show(
+				$mdToast.simple()
+					.content(message)
+					.action('OK')
+					.hideDelay(3000)
+			);
+		};
+
+
+	}).controller('DialogCountryController', function ($scope, $mdDialog, $mdToast, Country, City, File, country) {
+			$scope.citiesAll = [];
+			$scope.objCountry = {};
+			$scope.objCountry.cities = [];
+			$scope.objCountry.periods = [];
 			$scope.isCreating = false;
 			$scope.isUploading = false;
 			$scope.isUploadingIcon = false;
-			$scope.imageFilename = '';
 			$scope.iconFilename = '';
 			$scope.playModes = [{ label: 'Poi Only', value: "poiOnly" }, { label: 'Story Only', value: "storyOnly" }, { label: 'Story Poi', value: "storyPoi" }];
 
-			if (route) {
+			if (country) {
 				$scope.isCreating = false;
-				$scope.iconFilename = route.icon ? route.icon.name() : "";
-				if (route.image) {
-					$scope.imageFilename = route.image ? route.image.name() : "";
-				}
-				$scope.objRoute = route;
-				if (!$scope.objRoute.periods) {
-					$scope.objRoute.periods = [];
+				$scope.iconFilename = country.icon ? country.icon.name() : "";
+				$scope.objCountry = country;
+				if (!$scope.objCountry.periods) {
+					$scope.objCountry.periods = [];
 				}
 
 			} else {
 				$scope.isCreating = true;
 			}
 
-			Place.all({ page: 1, limit: 1000, filter: '' })
-				.then(function (places) {
-					$scope.placesAll = places;
+			City.all({ page: 1, limit: 1000, filter: '' })
+				.then(function (cities) {
+					$scope.citiesAll = cities;
 				});
 
 			var showToast = function (message) {
@@ -165,13 +175,11 @@ angular.module('nearPlaceApp')
 			};
 
 			$scope.uploadImage = function (file, invalidFile) {
-
 				if (file) {
-					$scope.imageFilename = file.name;
 					$scope.isUploading = true;
 
 					File.upload(file).then(function (savedFile) {
-						$scope.objRoute.image = savedFile;
+						$scope.objCountry.image = savedFile;
 						$scope.isUploading = false;
 						showToast('Image uploaded');
 					},
@@ -188,32 +196,23 @@ angular.module('nearPlaceApp')
 				}
 			};
 
-			$scope.onDeleteImage = function () {
-				$scope.isSavingRoute = true;
-				$scope.objRoute.image = null;
-				$scope.imageFilename = null;
-				showToast('Image deleted.');
-				$scope.isSavingRoute = false;
-			};
-
 			$scope.onDeleteIcon = function () {
-				$scope.isSavingRoute = true;
-				$scope.objRoute.icon = null;
+				$scope.isSavingCountry = true;
+				$scope.objCountry.icon = null;
 				$scope.iconFilename = null;
 
 				showToast('Icon deleted.');
-				$scope.isSavingRoute = false;
+				$scope.isSavingCountry = false;
 			};
 
 
 			$scope.uploadIcon = function (file, invalidFile) {
-
 				if (file) {
 					$scope.iconFilename = file.name;
 					$scope.isUploadingIcon = true;
 
 					File.upload(file).then(function (savedFile) {
-						$scope.objRoute.icon = savedFile;
+						$scope.objCountry.icon = savedFile;
 						$scope.isUploadingIcon = false;
 						showToast('Icon uploaded');
 					}, function (error) {
@@ -231,44 +230,36 @@ angular.module('nearPlaceApp')
 				}
 			};
 
-			$scope.onSaveRoute = function (isFormValid) {
-
+			$scope.onSaveCountry = function (isFormValid) {
 				if (!isFormValid) {
 					showToast('Please correct all highlighted errors and try again');
 					return;
-
-				} else if (!$scope.objRoute.image) {
-					showToast('Upload an image');
 				} else {
-					$scope.isSavingRoute = true;
-
-					Route.create($scope.objRoute).then(function (route) {
-						showToast('Route saved');
+					$scope.isSavingCountry = true;
+					Country.create($scope.objCountry).then(function (country) {
+						showToast('Country saved');
 						$mdDialog.hide();
-						$scope.isSavingRoute = false;
+						$scope.isSavingCountry = false;
 					}, function (error) {
 						showToast(error.message);
-						$scope.isSavingRoute = false;
+						$scope.isSavingCountry = false;
 					});
 				}
 			};
 
-			$scope.onUpdateRoute = function (isFormValid) {
+			$scope.onUpdateCountry = function (isFormValid) {
 
 				if (!isFormValid) {
 					showToast('Please correct all highlighted errors and try again');
-				} else if (!$scope.objRoute.image) {
-					showToast('Upload an image');
 				} else {
-					$scope.isSavingRoute = true;
-
-					Route.update($scope.objRoute).then(function (route) {
-						showToast('Route updated');
+					$scope.isSavingCountry = true;
+					Country.update($scope.objCountry).then(function (country) {
+						showToast('Country updated');
 						$mdDialog.hide();
-						$scope.isSavingRoute = false;
+						$scope.isSavingCountry = false;
 					}, function (error) {
 						showToast(error.message);
-						$scope.isSavingRoute = false;
+						$scope.isSavingCountry = false;
 					});
 				}
 			};

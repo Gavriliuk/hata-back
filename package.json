@@ -35,10 +35,15 @@
     "winston": "2.3.0"
   },
   "scripts": {
+    "start-cms-local-docker": "NODE_ENV=local-docker node ./index.js",
+    "start-cms-do-docker": "NODE_ENV=do-docker node ./index.js",
+    "build": "tar --exclude './releases' --exclude './files'  --exclude './logs' -cvzf releases/release-v1.0.0.tar.gz ./",
     "start": "cross-env NODE_ENV=dev nodemon index.js",
     "start-cms-test": " NODE_ENV=test node ./index.js",
+    "start-cms": "node ./index.js",
     "start-cms-prod": "",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "rm-node_modules": "rm -rf node_modules/"
   },
   "engines": {
     "node": "4.8.0"

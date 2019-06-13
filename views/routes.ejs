@@ -1,23 +1,18 @@
 <md-content ng-controller="RoutesCtrl">
-	<md-table-toolbar>
-		<div layout="row">
-			<md-content flex-gt-md="40" flex="100">
-				<md-input-container class="md-block" flex-gt-xs>
-					<input type="text" placeholder="Search by title..." ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onSearch()">
-				</md-input-container>
-			</md-content>
-		</div>
+	<md-table-toolbar layout="row" flex>
+		<md-input-container class="md-block" flex-gt-xs>
+			<input type="text" placeholder="Search by title..." ng-model="query.filter" ng-model-options="{ debounce: 1000 }" ng-change="onSearch()">
+		</md-input-container>
 	</md-table-toolbar>
 	<md-table-container>
 		<table md-table md-progress="promise">
-			<thead md-head md-order="query.order" md-trigger="onOrderChange">
+			<thead md-head md-order="query.order" class="toolBarRouteRelation" md-trigger="onOrderChange">
 				<tr md-row>
 					<th md-column></th>
 					<th md-column>Icon</th>
 					<th md-column ng-click="sortData('title_ru')">
 						Title: RU
 						<ng-md-icon ng-hide="sortColumn!='title_ru'" icon="{{getSortClass('title_ru')}}"></ng-md-icon>
-
 					</th>
 					<th md-column ng-click="sortData('order')">
 						Order

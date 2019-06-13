@@ -188,7 +188,6 @@ angular.module('nearPlaceApp')
             },
 
             all: function (params) {
-
                 var defer = $q.defer();
                 var query = new Parse.Query(this);
 
@@ -239,6 +238,14 @@ angular.module('nearPlaceApp')
             },
             set: function (val) {
                 this.set('playModes', val);
+            }
+        });
+        Object.defineProperty(Route.prototype, 'free', {
+            get: function () {
+                return this.get('free');
+            },
+            set: function (val) {
+                this.set('free', val);
             }
         });
 

@@ -8,7 +8,7 @@
 			</md-card-title-text>
 			<md-card-title-media>
 				<div class="md-media-md card-media">
-					<img class="img-thumb img-circle" ng-src="/images/placeholder.png" actual-src="{{ route.imageThumb.url() }}" />
+					<img class="img-circle" ng-src="/images/placeholder.png" actual-src="{{ route.imageThumb.url() }}" />
 				</div>
 			</md-card-title-media>
 		</md-card-title>
@@ -50,7 +50,7 @@
 							</tr>
 						</thead>
 						<tbody md-body>
-							<tr md-row ng-repeat="place in relationsPlaces | orderBy:sortColumn:reverseSort" ">
+							<tr md-row ng-repeat="place in relationsPlaces | orderBy:sortColumn:reverseSort">
 								<td md-cell>
 									<img class="img-categRelationPlace img-circle " ng-src="/images/placeholder.png " actual-src="{{ place.imageThumb.url()
 							 }} "
@@ -82,8 +82,8 @@
 								</td>
 							</tr>
 						</tbody>
+					</table>
 				</md-table-container>
-				</table>
 				<md-table-pagination md-options="rowOptions " md-limit="query.limit " md-page="query.page " md-total="{{query.total}}
 							 " md-on-paginate="onPaginationChange ">
 				</md-table-pagination>
