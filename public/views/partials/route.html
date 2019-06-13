@@ -33,7 +33,12 @@
             </md-optgroup>
           </md-select>
         </md-input-container>
-
+        <md-input-container>
+          <md-switch ng-model="objRoute.free">
+            Free: {{objRoute.free}}
+          </md-switch>
+          <md-divider></md-divider>
+        </md-input-container>
         <md-input-container>
           <label>Title: RU</label>
           <input required name="title_ru" ng-model="objRoute.title_ru">
