@@ -20,7 +20,7 @@
     "forever-monitor": "1.7.1",
     "fs": "0.0.1-security",
     "jimp": "0.2.27",
-    "kerberos": "0.0.23",
+    "kerberos": "1.0.0",
     "mailgun-js": "0.7.7",
     "method-override": "2.3.5",
     "mongodb": "2.2.28",
